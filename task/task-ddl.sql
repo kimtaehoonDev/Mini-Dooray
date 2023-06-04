@@ -1,3 +1,14 @@
+DROP TABLE IF EXISTS Projects;
+DROP TABLE IF EXISTS Tasks;
+DROP TABLE IF EXISTS Tags_Tasks;
+DROP TABLE IF EXISTS Task_Managers;
+DROP TABLE IF EXISTS MileStones;
+DROP TABLE IF EXISTS Tags;
+DROP TABLE IF EXISTS Comments;
+DROP TABLE IF EXISTS Color_Code;
+DROP TABLE IF EXISTS Members;
+
+
 CREATE TABLE `Projects` (
 	`project_id`	BIGINT	NOT NULL,
 	`admin_id`	int	NULL,
@@ -42,6 +53,13 @@ CREATE TABLE `MileStones` (
 	`end_date`	DATETIME	NULL
 );
 
+CREATE TABLE `Members` (
+	`member_id`	INT	NOT NULL,
+	`name`	varchar(255)	NULL,
+	`email`	varchar(255)	NULL,
+	`phone_num`	varchar(255)	NULL
+);
+
 CREATE TABLE `Tags_Tasks` (
 	`tags_tasks_id`	BIGINT	NOT NULL,
 	`tag_id`	bigint	NOT NULL,
@@ -78,6 +96,10 @@ ALTER TABLE `Tags` ADD CONSTRAINT `PK_TAGS` PRIMARY KEY (
 
 ALTER TABLE `MileStones` ADD CONSTRAINT `PK_MILESTONES` PRIMARY KEY (
 	`milestone_id`
+);
+
+ALTER TABLE `Members` ADD CONSTRAINT `PK_MEMBERS` PRIMARY KEY (
+	`member_id`
 );
 
 ALTER TABLE `Tags_Tasks` ADD CONSTRAINT `PK_TAGS_TASKS` PRIMARY KEY (
