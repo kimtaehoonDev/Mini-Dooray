@@ -10,8 +10,8 @@ import javax.persistence.Table;
  * Project 도메인객체.
  */
 @Entity
-@Table
-public class Projects {
+@Table(name = "projects")
+public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long projectId;
