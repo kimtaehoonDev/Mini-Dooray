@@ -155,4 +155,7 @@ Temporary Items
 # iCloud generated files
 *.icloud
 
+### custom ###
+!**/src/main/resources/application.properties
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,intellij
