@@ -1,12 +1,13 @@
 package com.kimtaehoonki.account.application.dto;
 
-import lombok.AllArgsConstructor;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AuthInfoServiceResponseDto {
     @Getter
-    private String id;
+    private Integer memberId;
 
     private String password;
 

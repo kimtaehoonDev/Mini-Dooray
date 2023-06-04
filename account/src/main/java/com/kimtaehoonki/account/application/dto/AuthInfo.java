@@ -7,9 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class AuthInfo {
     @Getter
-    private String memberId;
+    private Integer memberId;
 
     public static AuthInfo of(AuthInfoServiceResponseDto dto) {
-        return new AuthInfo(dto.getId());
+        return new AuthInfo(dto.getMemberId());
     }
 }
