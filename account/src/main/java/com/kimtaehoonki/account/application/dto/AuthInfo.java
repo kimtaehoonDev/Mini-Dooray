@@ -9,7 +9,7 @@ public class AuthInfo {
     @Getter
     private String memberId;
 
-    public static AuthInfo of(FindInfoResponseDto dto) {
+    public static AuthInfo of(AuthInfoServiceResponseDto dto) {
         return new AuthInfo(dto.getId());
     }
 }

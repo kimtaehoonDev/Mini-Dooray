@@ -2,7 +2,7 @@ package com.kimtaehoonki.account.application.dto;
 
 import lombok.Getter;
 
-public class FindInfoResponseDto {
+public class AuthInfoServiceResponseDto {
     @Getter
     private String id;
 
