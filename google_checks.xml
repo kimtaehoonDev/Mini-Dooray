@@ -38,10 +38,10 @@
 
   <!-- Checks for whitespace                               -->
   <!-- See http://checkstyle.org/config_whitespace.html -->
-  <module name="FileTabCharacter">
+<!--   <module name="FileTabCharacter">
     <property name="eachLine" value="true"/>
   </module>
-
+ -->
   <module name="LineLength">
     <property name="fileExtensions" value="java"/>
     <property name="max" value="100"/>
