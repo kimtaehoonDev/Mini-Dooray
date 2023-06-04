@@ -6,6 +6,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+/**
+ * Project 도메인객체.
+ */
 @Entity
 @Table
 public class Projects {
