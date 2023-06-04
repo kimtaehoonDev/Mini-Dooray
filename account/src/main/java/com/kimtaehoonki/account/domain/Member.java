@@ -25,7 +25,14 @@ public class Member {
     @Column(name = "member_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    private String username;
+
     private String name;
+
     private String email;
+
     private String phoneNum;
+
+    private String password;
 }
