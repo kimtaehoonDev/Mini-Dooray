@@ -1,6 +1,5 @@
 package com.kimtaehoonki.task.domain.entity;
 
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,22 +9,20 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * MileStone 엔티티.
+ * TaskManager 엔티티.
  */
 @Entity
-@Table(name = "milestones")
-public class MileStone {
+@Table(name = "task_managers")
+public class TaskManager {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long milestoneId;
+    private long taskManagersId;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "task_id")
+    private Task task;
 
-    private String name;
+    private int managerId;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
+    private String managerName;
 }

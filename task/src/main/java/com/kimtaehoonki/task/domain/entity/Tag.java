@@ -1,7 +1,5 @@
 package com.kimtaehoonki.task.domain.entity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,34 +9,22 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Task 엔티티.
+ * Tag 엔티티.
  */
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "tags")
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long taskId;
+    private long tagId;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
+    private String name;
+
     @ManyToOne
-    @JoinColumn(name = "milestone_id")
-    private MileStone mileStone;
-
-    private int indexInProject;
-
-    private String title;
-
-    private String contents;
-
-    private int writerId;
-
-    private String writerName;
-
-    private String email;
-
-    private LocalDateTime createdAt;
+    @JoinColumn(name = "color_id")
+    private ColorCode colorCode;
 }

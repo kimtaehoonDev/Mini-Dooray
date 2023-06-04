@@ -10,35 +10,22 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-/**
- * Task 엔티티.
- */
 @Entity
-@Table(name = "tasks")
-public class Task {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long taskId;
+    private long commentId;
 
     @ManyToOne
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "task_id")
+    private Task task;
 
-    @ManyToOne
-    @JoinColumn(name = "milestone_id")
-    private MileStone mileStone;
-
-    private int indexInProject;
-
-    private String title;
-
-    private String contents;
+    private LocalDateTime createdAt;
 
     private int writerId;
 
     private String writerName;
 
-    private String email;
-
-    private LocalDateTime createdAt;
+    private String contents;
 }
