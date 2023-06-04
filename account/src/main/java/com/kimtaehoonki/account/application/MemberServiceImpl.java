@@ -9,7 +9,7 @@ import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
 import com.kimtaehoonki.account.exception.impl.UserNotMatchException;
 import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
 import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
-import com.kimtaehoonki.account.presentation.dto.response.GetMemberResponseDto;
+import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,8 +22,9 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public AuthInfo getAuthInfo(String username, String password) {
-        AuthInfoServiceResponseDto dto = memberRepository.findInfoByUsername(username)
-            .orElseThrow(UserNotMatchException::new);
+        AuthInfoServiceResponseDto dto =
+            memberRepository.findByUsername(username, AuthInfoServiceResponseDto.class)
+                .orElseThrow(UserNotMatchException::new);
         boolean isCorrectPassword = dto.checkPasswordIsSame(password);
         if (!isCorrectPassword) {
             throw new UserNotMatchException();
@@ -51,8 +52,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public GetMemberResponseDto findMember(Integer userId) {
-        return memberRepository.findMemberById(userId)
+    public MemberInfo findMember(Integer memberId) {
+        return memberRepository.findMemberById(memberId)
                 .orElseThrow(UserNotFoundException::new);
     }
 }

@@ -1,7 +1,9 @@
 package com.kimtaehoonki.account.application.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+@AllArgsConstructor
 public class AuthInfoServiceResponseDto {
     @Getter
     private String id;

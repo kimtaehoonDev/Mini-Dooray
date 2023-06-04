@@ -1,9 +1,13 @@
 package com.kimtaehoonki.account.presentation.dto;
 
 import com.kimtaehoonki.account.domain.Member;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class MemberRegisterRequestDto {
     private String username;
     private String name;
