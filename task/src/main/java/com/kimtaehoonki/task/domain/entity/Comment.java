@@ -2,6 +2,8 @@ package com.kimtaehoonki.task.domain.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import javax.lang.model.element.Name;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,7 +17,8 @@ import javax.persistence.Table;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long commentId;
+    @Column(name = "comment_id")
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "task_id")

@@ -1,5 +1,6 @@
 package com.kimtaehoonki.task.domain.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,7 +15,8 @@ import javax.persistence.Table;
 public class ColorCode {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private byte colorId;
+    @Column(name = "color_id")
+    private byte id;
 
     private String colorCode;
 }

@@ -1,6 +1,7 @@
 package com.kimtaehoonki.task.domain.entity;
 
 import java.time.LocalDateTime;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,8 @@ import javax.persistence.Table;
 public class MileStone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long milestoneId;
+    @Column(name = "milestone_id")
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "project_id")

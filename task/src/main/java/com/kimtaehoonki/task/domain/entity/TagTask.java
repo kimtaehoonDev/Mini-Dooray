@@ -1,5 +1,6 @@
 package com.kimtaehoonki.task.domain.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,7 +17,8 @@ import javax.persistence.Table;
 public class TagTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long tagsTasksId;
+    @Column(name = "tags_tasks_id")
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")

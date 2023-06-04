@@ -16,7 +16,8 @@ import javax.persistence.Table;
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long projectId;
+    @Column(name = "project_id")
+    private long id;
 
     private int adminId;
 
