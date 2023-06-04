@@ -3,7 +3,7 @@ package com.kimtaehoonki.account.presentation;
 import com.kimtaehoonki.account.application.MemberService;
 import com.kimtaehoonki.account.application.dto.AuthInfo;
 import com.kimtaehoonki.account.presentation.dto.LoginRequestDto;
-import com.kimtaehoonki.account.presentation.dto.RegisterRequestDto;
+import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.GetMemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,7 +35,7 @@ public class MemberController {
      * 회원의 이메일이 중복된 경우 UserEmailDuplicateException을 반환합니다
      */
     @PostMapping("/users")
-    public ResponseEntity<Integer> register(@RequestBody RegisterRequestDto dto) {
+    public ResponseEntity<Integer> register(@RequestBody MemberRegisterRequestDto dto) {
         Integer memberId = memberService.register(dto);
         return new ResponseEntity<>(memberId, HttpStatus.CREATED);
     }

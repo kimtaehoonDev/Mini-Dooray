@@ -4,8 +4,10 @@ import com.kimtaehoonki.account.application.dto.AuthInfo;
 import com.kimtaehoonki.account.application.dto.FindInfoResponseDto;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
+import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotMatchException;
-import com.kimtaehoonki.account.presentation.dto.RegisterRequestDto;
+import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
+import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.GetMemberResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,9 +31,22 @@ public class MemberServiceImpl implements MemberService {
         return AuthInfo.of(dto);
     }
 
+    @Transactional
     @Override
-    public Integer register(RegisterRequestDto dto) {
-        return null;
+    public Integer register(MemberRegisterRequestDto dto) {
+        boolean isIdAlreadyExist = memberRepository.existsByUsername(dto.getUsername());
+        if (isIdAlreadyExist) {
+            throw new UsernameDuplicateException();
+        }
+        boolean isEmailAlreadyExist = memberRepository.existsByEmail(dto.getEmail());
+        if (isEmailAlreadyExist) {
+            throw new UserEmailDuplicateException();
+        }
+
+        Member member = dto.makeMember();
+        memberRepository.save(member);
+
+        return member.getId();
     }
 
     @Override
