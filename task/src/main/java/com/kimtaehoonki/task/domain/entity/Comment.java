@@ -12,6 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Comment 엔티티.
+ */
 @Entity
 @Table(name = "comments")
 public class Comment {
