@@ -1,6 +1,6 @@
-package com.kimtaehoonki.task.task;
+package com.kimtaehoonki.task.task.domain;
 
-import com.kimtaehoonki.task.milestone.Milestone;
+import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import java.time.LocalDateTime;
 import javax.persistence.Column;

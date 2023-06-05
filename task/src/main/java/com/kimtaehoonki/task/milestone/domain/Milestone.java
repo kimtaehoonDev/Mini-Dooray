@@ -1,6 +1,6 @@
-package com.kimtaehoonki.task.comment;
+package com.kimtaehoonki.task.milestone.domain;
 
-import com.kimtaehoonki.task.task.Task;
+import com.kimtaehoonki.task.project.domain.entity.Project;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,25 +12,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Comment 엔티티.
+ * Milestone 엔티티.
  */
 @Entity
-@Table(name = "comments")
-public class Comment {
+@Table(name = "milestones")
+public class Milestone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
+    @Column(name = "milestone_id")
     private long id;
 
     @ManyToOne
-    @JoinColumn(name = "task_id")
-    private Task task;
+    @JoinColumn(name = "project_id")
+    private Project project;
 
-    private LocalDateTime createdAt;
+    private String name;
 
-    private int writerId;
+    private LocalDateTime startDate;
 
-    private String writerName;
-
-    private String contents;
+    private LocalDateTime endDate;
 }

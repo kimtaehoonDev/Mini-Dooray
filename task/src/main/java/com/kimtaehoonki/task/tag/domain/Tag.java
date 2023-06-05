@@ -1,7 +1,7 @@
-package com.kimtaehoonki.task.milestone;
+package com.kimtaehoonki.task.tag.domain;
 
+import com.kimtaehoonki.task.ColorCode.ColorCode;
 import com.kimtaehoonki.task.project.domain.entity.Project;
-import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,14 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * Milestone 엔티티.
+ * Tag 엔티티.
  */
 @Entity
-@Table(name = "milestones")
-public class Milestone {
+@Table(name = "tags")
+public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "milestone_id")
+    @Column(name = "tag_id")
     private long id;
 
     @ManyToOne
@@ -28,7 +28,7 @@ public class Milestone {
 
     private String name;
 
-    private LocalDateTime startDate;
-
-    private LocalDateTime endDate;
+    @ManyToOne
+    @JoinColumn(name = "color_id")
+    private ColorCode colorCode;
 }
