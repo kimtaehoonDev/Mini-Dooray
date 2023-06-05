@@ -45,10 +45,8 @@ public class MemberServiceImpl implements MemberService {
             throw new UserEmailDuplicateException();
         }
 
-        Member member = dto.makeMember();
-        memberRepository.save(member);
-
-        return member.getId();
+        Member createdMember = memberRepository.save(dto.makeMember());
+        return createdMember.getId();
     }
 
     @Override

@@ -1,7 +1,11 @@
 package com.kimtaehoonki.account.application;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+
 import com.kimtaehoonki.account.application.dto.AuthInfo;
 import com.kimtaehoonki.account.application.dto.AuthInfoServiceResponseDto;
+import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
@@ -114,9 +118,11 @@ class MemberServiceImplTest {
 
         Mockito.when(memberRepository.existsByUsername("id1")).thenReturn(false);
         Mockito.when(memberRepository.existsByEmail("kim11@naver.com")).thenReturn(false);
+        Mockito.when(memberRepository.save(any()))
+            .thenReturn(new Member(10, null, null, null, null, null));
 
         Integer registerMemberId = memberService.register(dto);
-        Assertions.assertThat(registerMemberId).isNull();
+        Assertions.assertThat(registerMemberId).isEqualTo(10);
     }
 
     @Test
