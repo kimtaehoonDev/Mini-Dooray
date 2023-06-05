@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.tag;
 
-import com.kimtaehoonki.task.ColorCode.ColorCode;
+import com.kimtaehoonki.task.colorcode.ColorCode;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import javax.persistence.Column;
 import javax.persistence.Entity;

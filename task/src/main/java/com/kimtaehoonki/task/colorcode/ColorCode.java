@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.ColorCode;
+package com.kimtaehoonki.task.colorcode;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
