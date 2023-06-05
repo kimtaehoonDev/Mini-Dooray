@@ -1,5 +1,6 @@
 package com.kimtaehoonki.task.project.presentation.controller;
 
+import com.kimtaehoonki.task.project.domain.ProjectService;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
@@ -8,6 +9,9 @@ import com.kimtaehoonki.task.project.presentation.dto.GetTagsByProjectIdResponse
 import com.kimtaehoonki.task.project.presentation.dto.RegisterUserResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.UpdateProjectStatusResponseDto;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,23 +19,28 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * ProjectController.
  */
 @RestController
+@RequiredArgsConstructor
 public class ProjectController {
+    private final ProjectService projectService;
     /**
      * 프로젝트를 만든다.
+     * 프로젝트 이름이 중복되는 경우 예외를 반환한다
      *
-     * @param requestDto CreateProjectRequestDto
+     * @param dto CreateProjectRequestDto
      * @return CreateProjectResponseDto
      */
     @PostMapping("/projects")
-    public CreateProjectResponseDto createProject(
-            @RequestBody CreateProjectRequestDto requestDto) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long createProject(
+            @RequestBody CreateProjectRequestDto dto) {
+        return projectService.createProject(dto);
     }
 
     /**
