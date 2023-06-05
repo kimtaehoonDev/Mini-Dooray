@@ -10,6 +10,6 @@ public class AuthInfo {
     private Integer memberId;
 
     public static AuthInfo of(AuthInfoServiceResponseDto dto) {
-        return new AuthInfo(dto.getMemberId());
+        return new AuthInfo(dto.getId());
     }
 }

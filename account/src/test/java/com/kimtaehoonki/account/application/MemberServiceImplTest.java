@@ -177,12 +177,33 @@ class MemberServiceImplTest {
 
     @Test
     void 유저정보를_가져온다() {
-        MemberInfo memberInfo = new MemberInfo();
-        memberInfo.setId(1);
-        memberInfo.setUsername("id1");
-        memberInfo.setName("kim");
-        memberInfo.setEmail("kim11@naver.com");
-        memberInfo.setPhoneNum("010-1234-1234");
+        MemberInfo memberInfo = new MemberInfo() {
+
+            @Override
+            public Integer getId() {
+                return 1;
+            }
+
+            @Override
+            public String getUsername() {
+                return "id1";
+            }
+
+            @Override
+            public String getName() {
+                return "kim";
+            }
+
+            @Override
+            public String getEmail() {
+                return "kim11@naver.com";
+            }
+
+            @Override
+            public String getPhoneNum() {
+                return "010-1234-1234";
+            }
+        };
 
         Mockito.when(memberRepository.findMemberById(1)).thenReturn(Optional.of(memberInfo));
 

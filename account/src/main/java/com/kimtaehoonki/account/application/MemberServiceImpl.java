@@ -25,11 +25,10 @@ public class MemberServiceImpl implements MemberService {
         AuthInfoServiceResponseDto dto =
             memberRepository.findByUsername(username, AuthInfoServiceResponseDto.class)
                 .orElseThrow(UserNotMatchException::new);
-        boolean isCorrectPassword = dto.checkPasswordIsSame(password);
-        if (!isCorrectPassword) {
+
+        if (!password.equals(dto.getPassword())) {
             throw new UserNotMatchException();
         }
-
         return AuthInfo.of(dto);
     }
 

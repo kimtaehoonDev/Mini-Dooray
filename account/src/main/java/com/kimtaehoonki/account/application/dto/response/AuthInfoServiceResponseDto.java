@@ -1,17 +1,8 @@
 package com.kimtaehoonki.account.application.dto.response;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AuthInfoServiceResponseDto {
-    @Getter
-    private Integer memberId;
+public interface AuthInfoServiceResponseDto {
+    Integer getId();
 
-    private String password;
-
-    public boolean checkPasswordIsSame(String password) {
-        return this.password.equals(password);
-    }
+    String getPassword();
 }
