@@ -1,13 +1,14 @@
 package com.kimtaehoonki.task.project.presentation.controller;
 
+import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.domain.ProjectService;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
-import com.kimtaehoonki.task.project.presentation.dto.CreateProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
-import com.kimtaehoonki.task.project.presentation.dto.GetProjectResponseDto;
+import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetTagsByProjectIdResponseDto;
-import com.kimtaehoonki.task.project.presentation.dto.RegisterUserResponseDto;
-import com.kimtaehoonki.task.project.presentation.dto.UpdateProjectStatusResponseDto;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,47 +16,54 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * ProjectController.
  */
 @RestController
+@RequiredArgsConstructor
 public class ProjectController {
+    private final ProjectService projectService;
+
     /**
      * 프로젝트를 만든다.
+     * 프로젝트 이름이 중복되는 경우 예외를 반환한다
      *
-     * @param requestDto CreateProjectRequestDto
+     * @param dto CreateProjectRequestDto
      * @return CreateProjectResponseDto
      */
     @PostMapping("/projects")
-    public CreateProjectResponseDto createProject(
-            @RequestBody CreateProjectRequestDto requestDto) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public Long createProject(
+        @RequestBody CreateProjectRequestDto dto) {
+        return projectService.createProject(dto);
     }
 
     /**
-     * 프로젝트 목록을 확인한다.
-     * 사용자마다 보여주는게 다르다
-     * 아이디는 쿠키로 넘어온다
+     * 각 사용자마다 속해있는 프로젝트 목록을 보여준다.
      *
      * @param userId @CookieValue
      * @return List.GetProjectResponseDto
      */
     @GetMapping("/projects")
-    public List<GetProjectResponseDto> getProjects(@CookieValue String userId) {
-        return null;
+    @ResponseStatus(HttpStatus.OK)
+    public List<String> showProjectsNameBelongsToMember(@CookieValue Integer userId) {
+        return projectService.showProjectsNameBelongsToMember(userId);
     }
 
     /**
-     * 특정 프로젝트에 들어간다.
+     * 선택한 프로젝트에 대해 보여준다.
      *
      * @param projectId @PathVariable
      * @return GetProjectResponseDto
      */
     @GetMapping("/projects/{id}")
-    public GetProjectResponseDto getProject(@PathVariable("id") Long projectId) {
-        return null;
+    @ResponseStatus(HttpStatus.OK)
+    public ShowProjectResponseDto showProject(@PathVariable("id") Long projectId,
+                                              @CookieValue Integer memberId) {
+        return projectService.showProject(projectId, memberId);
     }
 
     /**
@@ -67,22 +75,22 @@ public class ProjectController {
      * @return UpdateProjectStatusResponseDto
      */
     @PutMapping("/projects/{id}/status")
-    public UpdateProjectStatusResponseDto updateProjectStatus(@PathVariable("id") Long projectId) {
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public void updateProjectStatus(@PathVariable("id") Long projectId,
+                                    @CookieValue Integer memberId,
+                                    @RequestParam ProjectStatus status) {
+        projectService.updateProjectStatus(projectId, memberId, status);
     }
 
     /**
-     * 프로젝트에 특정 유저를 등록한다.
-     *
-     * @param projectId @PathVariable
-     * @param userId @RequestParam
-     * @return RegisterUserResponseDto
+     * 프로젝트에 사용자를 등록한다.
      */
     @PostMapping("/projects/{id}/register")
-    public RegisterUserResponseDto registerUser(@PathVariable("id") Long projectId,
-                                                @RequestParam("userId") Integer userId) {
-
-        return null;
+    @ResponseStatus(HttpStatus.CREATED)
+    public void registerUserInProject(@PathVariable("id") Long projectId,
+                                      @CookieValue Integer memberId,
+                                      @RequestParam("userId") Integer targetId) {
+        projectService.registerUserInProject(projectId, memberId, targetId);
     }
 
     /**
@@ -93,6 +101,7 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}/tags")
     public GetTagsByProjectIdResponseDto getTagsByProject(@PathVariable("id") Long projectId) {
+        // TODO 태그 관련한 패키지가 만들어진 이후 작업할 예정입니다
         return null;
     }
 
@@ -104,6 +113,7 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}/milestones")
     public GetMilestonesByProjectId getMilestonesByProjectId(@PathVariable("id") Long projectId) {
+        // TODO 마일스톤 관련한 패키지가 만들어진 이후 작업할 예정입니다
         return null;
     }
 }
