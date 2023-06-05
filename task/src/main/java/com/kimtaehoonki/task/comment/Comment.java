@@ -1,5 +1,7 @@
-package com.kimtaehoonki.task.domain.entity;
+package com.kimtaehoonki.task.comment;
 
+import com.kimtaehoonki.task.task.Task;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,21 +12,25 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * TaskManager 엔티티.
+ * Comment 엔티티.
  */
 @Entity
-@Table(name = "task_managers")
-public class TaskManager {
+@Table(name = "comments")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "task_managers_id")
+    @Column(name = "comment_id")
     private long id;
 
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
 
-    private int managerId;
+    private LocalDateTime createdAt;
 
-    private String managerName;
+    private int writerId;
+
+    private String writerName;
+
+    private String contents;
 }

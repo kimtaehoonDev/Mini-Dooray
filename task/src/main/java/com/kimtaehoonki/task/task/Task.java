@@ -1,6 +1,7 @@
-package com.kimtaehoonki.task.domain.entity;
+package com.kimtaehoonki.task.task;
 
-import java.time.LocalDate;
+import com.kimtaehoonki.task.milestone.Milestone;
+import com.kimtaehoonki.task.project.domain.entity.Project;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "milestone_id")
-    private MileStone mileStone;
+    private Milestone mileStone;
 
     private int indexInProject;
 

@@ -1,5 +1,6 @@
-package com.kimtaehoonki.task.domain.entity;
+package com.kimtaehoonki.task.milestone;
 
+import com.kimtaehoonki.task.project.domain.entity.Project;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,11 +12,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 /**
- * MileStone 엔티티.
+ * Milestone 엔티티.
  */
 @Entity
 @Table(name = "milestones")
-public class MileStone {
+public class Milestone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "milestone_id")
