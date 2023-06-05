@@ -1,11 +1,10 @@
-package com.kimtaehoonki.account.presentation.dto;
+package com.kimtaehoonki.account.presentation.dto.request;
 
 import com.kimtaehoonki.account.domain.Member;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

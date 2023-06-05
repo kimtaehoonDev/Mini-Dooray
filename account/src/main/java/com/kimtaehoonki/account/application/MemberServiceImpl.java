@@ -1,14 +1,14 @@
 package com.kimtaehoonki.account.application;
 
-import com.kimtaehoonki.account.application.dto.AuthInfo;
-import com.kimtaehoonki.account.application.dto.AuthInfoServiceResponseDto;
+import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.application.dto.response.AuthInfoServiceResponseDto;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
 import com.kimtaehoonki.account.exception.impl.UserNotMatchException;
 import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
-import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
+import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,9 +1,9 @@
 package com.kimtaehoonki.account.presentation;
 
 import com.kimtaehoonki.account.application.MemberService;
-import com.kimtaehoonki.account.application.dto.AuthInfo;
-import com.kimtaehoonki.account.presentation.dto.LoginRequestDto;
-import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
+import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.presentation.dto.request.LoginRequestDto;
+import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,5 @@
 package com.kimtaehoonki.account;
 
-import com.kimtaehoonki.account.exception.ErrorCode;
 import com.kimtaehoonki.account.exception.ErrorResponse;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;

@@ -1,6 +1,5 @@
 package com.kimtaehoonki.account.presentation.dto.response;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

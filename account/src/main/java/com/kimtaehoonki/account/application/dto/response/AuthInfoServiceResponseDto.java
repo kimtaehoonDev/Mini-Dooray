@@ -1,4 +1,4 @@
-package com.kimtaehoonki.account.application.dto;
+package com.kimtaehoonki.account.application.dto.response;
 
 import lombok.AccessLevel;
 import lombok.Getter;

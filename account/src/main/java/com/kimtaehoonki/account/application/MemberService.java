@@ -1,7 +1,7 @@
 package com.kimtaehoonki.account.application;
 
-import com.kimtaehoonki.account.application.dto.AuthInfo;
-import com.kimtaehoonki.account.presentation.dto.MemberRegisterRequestDto;
+import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 
 public interface MemberService {
