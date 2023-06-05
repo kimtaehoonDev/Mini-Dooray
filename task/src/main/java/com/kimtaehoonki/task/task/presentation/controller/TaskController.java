@@ -38,7 +38,7 @@ public class TaskController {
      * @return GetTasksResponseDto
      */
     @GetMapping("/tasks")
-    public List<GetTaskResponseDto> getTasks(@RequestParam int page) {
+    public List<GetTaskResponseDto> getTasks(@RequestParam(required = false) int page) {
         return null;
     }
 
