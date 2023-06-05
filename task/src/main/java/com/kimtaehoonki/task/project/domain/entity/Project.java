@@ -1,11 +1,13 @@
-package com.kimtaehoonki.task.domain.entity;
+package com.kimtaehoonki.task.project.domain.entity;
 
+import com.kimtaehoonki.task.ProjectStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -25,4 +27,7 @@ public class Project {
 
     @Column(columnDefinition = "TEXT")
     private String description;
+
+    @Enumerated(EnumType.STRING)
+    private ProjectStatus status;
 }
