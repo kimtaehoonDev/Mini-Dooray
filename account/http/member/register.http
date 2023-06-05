@@ -1,0 +1,47 @@
+### 회원가입 실패 - 파라미터 누락
+POST localhost:9091/users
+Content-Type: application/json
+
+{
+  "name": "김태훈",
+  "email": "qwer@maver.com",
+  "phoneNum": "010-1111-1111",
+  "password": "12345"
+}
+
+### 회원가입 성공
+POST localhost:9091/users
+Content-Type: application/json
+
+{
+  "username": "qwer123",
+  "name": "김태훈",
+  "email": "qwer@maver.com",
+  "phoneNum": "010-1111-1111",
+  "password": "12345"
+}
+
+### 회원가입 실패 - username 중복
+POST localhost:9091/users
+Content-Type: application/json
+
+{
+  "username": "qwer123",
+  "name": "김태훈",
+  "email": "poiw@maver.com",
+  "phoneNum": "010-1111-1111",
+  "password": "12345"
+}
+
+### 회원가입 실패 - email 중복
+POST localhost:9091/users
+Content-Type: application/json
+
+{
+  "username": "wowowo",
+  "name": "김태훈",
+  "email": "qwer@maver.com",
+  "phoneNum": "010-1111-1111",
+  "password": "12345"
+}
+

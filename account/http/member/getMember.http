@@ -1,0 +1,20 @@
+### init - 회원가입 성공
+POST localhost:9091/users
+Content-Type: application/json
+
+{
+  "username": "getmember123",
+  "name": "김태훈",
+  "email": "qwer@maver.com",
+  "phoneNum": "010-1111-1111",
+  "password": "12345"
+}
+
+### 회원 조회 성공 - 계정이 존재하는 경우
+GET localhost:9091/users/1
+
+### 회원 조회 실패 - 계정이 없는 경우
+GET localhost:9091/users/123123
+
+### 회원 조회 실패 - 정수 이외의 숫자가 들어온 경우
+GET localhost:9091/users/ds
