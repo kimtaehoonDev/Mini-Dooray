@@ -24,7 +24,7 @@ public class MemberController {
      * id, password가 매치되는 게 없으면 UserNotMatchException을 반환한다
      */
     @PostMapping("/login")
-    public ResponseEntity<AuthInfo> login(LoginRequestDto dto) {
+    public ResponseEntity<AuthInfo> login(@RequestBody LoginRequestDto dto) {
         AuthInfo info = memberService.getAuthInfo(dto.getUsername(), dto.getPassword());
         return new ResponseEntity<>(info, HttpStatus.CREATED);
     }
@@ -49,6 +49,5 @@ public class MemberController {
         MemberInfo result = memberService.findMember(memberId);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 }
 
