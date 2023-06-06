@@ -2,10 +2,12 @@ package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.exception.impl.AlreadyProjectMemberException;
+import com.kimtaehoonki.task.exception.impl.AuthenticationException;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
 import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
 import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
@@ -13,7 +15,6 @@ import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
-import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -55,9 +56,24 @@ public class ProjectServiceImpl implements ProjectService {
         return memberInProjectQueryRepository.findProjectsPreviewsUsingMemberId(memberId);
     }
 
+    /**
+     * 특정 프로젝트의 정보를 조회한다
+     * 해당 유저가 해당 프로젝트에 속해있는지 확인한다
+     * 만약, 조회한 프로젝트의 상태가 활성, 휴면이 아니라면 예외를 반환한다
+     */
     @Override
-    public ShowProjectResponseDto showProject(Long projectId, Integer memberId) {
-        return null;
+    public ProjectDetail showProject(Long projectId, Integer memberId) {
+        boolean isProjectMember =
+            memberInProjectRepository.existsByProject_idAndMemberId(projectId, memberId);
+        if (!isProjectMember) {
+            throw new AuthenticationException();
+        }
+        ProjectDetail detail = projectRepository.findById(projectId, ProjectDetail.class)
+            .orElseThrow(ProjectNotFoundException::new);
+        if (detail.isExit()) {
+            throw new ProjectExitException();
+        }
+        return detail;
     }
 
     /**

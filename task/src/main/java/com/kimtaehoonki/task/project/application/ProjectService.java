@@ -1,9 +1,9 @@
 package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
-import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
 import java.util.List;
 
 public interface ProjectService {
@@ -27,7 +27,7 @@ public interface ProjectService {
      * 해당 유저가 해당 프로젝트에 속해있는지 확인한다
      * 만약, 조회한 프로젝트의 상태가 활성, 휴면이 아니라면 예외를 반환한다
      */
-    ShowProjectResponseDto showProject(Long projectId, Integer memberId);
+    ProjectDetail showProject(Long projectId, Integer memberId);
 
     /**
      * 해당 유저가 존재하는지, 어드민이 맞는지 확인한다
