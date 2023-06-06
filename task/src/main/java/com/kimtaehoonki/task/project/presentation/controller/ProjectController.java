@@ -2,10 +2,10 @@ package com.kimtaehoonki.task.project.presentation.controller;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.project.application.ProjectService;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
-import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetTagsByProjectIdResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -45,13 +45,13 @@ public class ProjectController {
     /**
      * 각 사용자마다 속해있는 프로젝트 목록을 보여준다.
      *
-     * @param userId @CookieValue
+     * @param memberId @CookieValue
      * @return List.GetProjectResponseDto
      */
     @GetMapping("/projects")
     @ResponseStatus(HttpStatus.OK)
-    public List<ProjectPreview> showProjectsNameBelongsToMember(@CookieValue Integer userId) {
-        return projectService.showProjectsPreviewsBelongsToMember(userId);
+    public List<ProjectPreview> showProjectsNameBelongsToMember(@CookieValue Integer memberId) {
+        return projectService.showProjectsPreviewsBelongsToMember(memberId);
     }
 
     /**
@@ -62,8 +62,8 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ShowProjectResponseDto showProject(@PathVariable("id") Long projectId,
-                                              @CookieValue Integer memberId) {
+    public ProjectDetail showProject(@PathVariable("id") Long projectId,
+                                     @CookieValue Integer memberId) {
         return projectService.showProject(projectId, memberId);
     }
 
@@ -90,7 +90,7 @@ public class ProjectController {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerUserInProject(@PathVariable("id") Long projectId,
                                       @CookieValue Integer memberId,
-                                      @RequestParam("userId") Integer targetId) {
+                                      @RequestParam("targetId") Integer targetId) {
         projectService.registerMemberInProject(projectId, memberId, targetId);
     }
 

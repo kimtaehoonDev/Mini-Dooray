@@ -43,6 +43,8 @@ public class ProjectServiceImpl implements ProjectService {
 
         Project project = Project.make(dto.getAdminId(), dto.getName(), dto.getDescription());
         Project saveProject = projectRepository.save(project);
+        MemberInProject memberInProject = MemberInProject.make(project, dto.getAdminId());
+        memberInProjectRepository.save(memberInProject);
         return saveProject.getId();
     }
 
@@ -70,7 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         ProjectDetail detail = projectRepository.findById(projectId, ProjectDetail.class)
             .orElseThrow(ProjectNotFoundException::new);
-        if (detail.isExit()) {
+        if (detail.getStatus() == ProjectStatus.EXIT) {
             throw new ProjectExitException();
         }
         return detail;
