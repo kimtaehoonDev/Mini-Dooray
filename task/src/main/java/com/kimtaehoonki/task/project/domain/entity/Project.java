@@ -41,4 +41,19 @@ public class Project {
     public static Project make(int adminId, String name, String description) {
         return new Project(null, adminId, name, description, ProjectStatus.ACTIVATION);
     }
+
+    public boolean checkAdmin(int adminId) {
+        return this.adminId == adminId;
+    }
+
+    public boolean isExit() {
+        return this.status == ProjectStatus.EXIT;
+    }
+
+    public void changeStatus(ProjectStatus status) {
+        if (status == null) {
+            throw new IllegalArgumentException("상태값에는 Null이 들어올 수 없습니다");
+        }
+        this.status = status;
+    }
 }

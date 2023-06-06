@@ -33,7 +33,7 @@ public interface ProjectService {
      * 프로젝트의 status가 종료인 경우 예외를 반환한다
      * 위 조건을 모두 만족하면 해당 Project의 상태를 변경한다
      */
-    void updateProjectStatus(Long projectId, Integer memberId, ProjectStatus status);
+    void updateProjectStatus(Long projectId, int adminId, ProjectStatus status);
 
     /**
      * 해당 유저가 존재하는지, 어드민이 맞는지 확인한다

@@ -7,5 +7,9 @@ package com.kimtaehoonki.task;
 public enum ProjectStatus {
     ACTIVATION,
     DORMANT,
-    EXIT
+    EXIT;
+
+    public boolean isExit() {
+        return this == EXIT;
+    }
 }
