@@ -41,5 +41,5 @@ public interface ProjectService {
      * 프로젝트의 status가 종료인 경우 예외를 반환한다
      * 위 조건을 모두 만족하면 해당 Project의 상태를 변경한다
      */
-    void registerUserInProject(Long projectId, Integer registerId, Integer targetId);
+    Long registerMemberInProject(Long projectId, Integer registerId, Integer targetId);
 }

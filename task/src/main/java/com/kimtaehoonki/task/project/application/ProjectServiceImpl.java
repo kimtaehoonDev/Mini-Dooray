@@ -1,11 +1,14 @@
 package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.exception.impl.AlreadyProjectMemberException;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
 import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
+import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
@@ -19,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
+    private final MemberInProjectRepository memberInProjectRepository;
 
     /**
      * 생성된 프로젝트의 ID를 반환한다
@@ -56,11 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public void updateProjectStatus(Long projectId, int adminId, ProjectStatus status) {
-        Project project = projectRepository.findById(projectId)
-            .orElseThrow(ProjectNotFoundException::new);
-        if (project.isExit()) {
-            throw new ProjectExitException();
-        }
+        Project project = getProjectNotExit(projectId);
         boolean isAdmin = project.checkAdmin(adminId);
         if (!isAdmin) {
             throw new AuthorizedException();
@@ -68,8 +68,40 @@ public class ProjectServiceImpl implements ProjectService {
         project.changeStatus(status);
     }
 
+    /**
+     * 해당 유저가 존재하는지, 어드민이 맞는지 확인한다
+     * 해당 유저가 존재하는지 확인한다
+     * 프로젝트의 status가 종료인 경우 예외를 반환한다
+     * 위 조건을 모두 만족하면 해당 Project의 상태를 변경한다
+     */
+    @Transactional
     @Override
-    public void registerUserInProject(Long projectId, Integer registerId, Integer targetId) {
+    public Long registerMemberInProject(Long projectId, Integer registerId, Integer targetId) {
+        Project project = getProjectNotExit(projectId);
+        boolean isAdmin = project.checkAdmin(registerId);
+        if (!isAdmin) {
+            throw new AuthorizedException();
+        }
+        boolean isProjectsMember =
+            memberInProjectRepository.existsByProject_idAndMemberId(projectId, targetId);
+        if (isProjectsMember) {
+            throw new AlreadyProjectMemberException();
+        }
+        MemberInProject memberInProject = MemberInProject.make(project, targetId);
+        MemberInProject savedMemberInProject = memberInProjectRepository.save(memberInProject);
+        return savedMemberInProject.getId();
+    }
 
+    /**
+     * 프로젝트를 가져온다
+     * 프로젝트의 상태가 Exit인 경우 예외를 반환한다
+     */
+    private Project getProjectNotExit(Long projectId) {
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(ProjectNotFoundException::new);
+        if (project.isExit()) {
+            throw new ProjectExitException();
+        }
+        return project;
     }
 }

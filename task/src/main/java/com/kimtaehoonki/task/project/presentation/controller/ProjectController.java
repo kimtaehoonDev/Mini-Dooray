@@ -90,7 +90,7 @@ public class ProjectController {
     public void registerUserInProject(@PathVariable("id") Long projectId,
                                       @CookieValue Integer memberId,
                                       @RequestParam("userId") Integer targetId) {
-        projectService.registerUserInProject(projectId, memberId, targetId);
+        projectService.registerMemberInProject(projectId, memberId, targetId);
     }
 
     /**
