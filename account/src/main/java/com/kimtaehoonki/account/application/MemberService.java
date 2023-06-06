@@ -1,17 +1,10 @@
 package com.kimtaehoonki.account.application;
 
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
-import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 
 public interface MemberService {
-    /**
-     * username, password를 통해서 인증에 관련한 정보들을 가져온다
-     * 인증에 관련한 정보는 다음과 같다.
-     * - memberId
-     */
-    AuthInfo getAuthInfo(String username, String password);
 
     /**
      * Member를 저장한다
@@ -25,5 +18,7 @@ public interface MemberService {
      */
     MemberInfo findMember(Integer memberId);
 
-    FindMemberPasswordDto findMemberPassword(Integer memberId);
+    AuthInfo showAuthInfo(Integer memberId);
+
+    AuthInfo findMemberUsingEmail(String email);
 }

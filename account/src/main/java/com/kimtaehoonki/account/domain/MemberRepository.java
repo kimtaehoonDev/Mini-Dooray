@@ -1,6 +1,6 @@
 package com.kimtaehoonki.account.domain;
 
-import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
+import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,4 +17,6 @@ public interface MemberRepository extends JpaRepository<Member, Integer> {
     <T> Optional<T> findByUsername(String username, Class<T> type);
 
     <T> Optional<T> findById(Integer id, Class<T> type);
+
+    Optional<AuthInfo> findByEmail(String email);
 }

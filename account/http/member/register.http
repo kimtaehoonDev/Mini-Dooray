@@ -1,5 +1,5 @@
 ### 회원가입 실패 - 파라미터 누락
-POST localhost:9091/users
+POST localhost:9091/members
 Content-Type: application/json
 
 {
@@ -10,7 +10,7 @@ Content-Type: application/json
 }
 
 ### 회원가입 성공
-POST localhost:9091/users
+POST localhost:9091/members
 Content-Type: application/json
 
 {
@@ -22,7 +22,7 @@ Content-Type: application/json
 }
 
 ### 회원가입 실패 - username 중복
-POST localhost:9091/users
+POST localhost:9091/members
 Content-Type: application/json
 
 {
@@ -34,7 +34,7 @@ Content-Type: application/json
 }
 
 ### 회원가입 실패 - email 중복
-POST localhost:9091/users
+POST localhost:9091/members
 Content-Type: application/json
 
 {
@@ -45,3 +45,8 @@ Content-Type: application/json
   "password": "12345"
 }
 
+### 아이디로 회원정보를 가져온다
+GET localhost:9091/members/1/auth-info
+
+### 이메일로 회원정보를 가져온다
+GET localhost:9091/members/search?email=qwer@maver.com

@@ -1,12 +1,12 @@
 package com.kimtaehoonki.account.presentation;
 
 import com.kimtaehoonki.account.application.MemberService;
-import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
+import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,9 +28,9 @@ public class MemberController {
      * 회원의 이메일이 중복된 경우 UserEmailDuplicateException을 반환한다
      */
     @PostMapping
-    public ResponseEntity<Integer> register(@RequestBody MemberRegisterRequestDto dto) {
-        Integer memberId = memberService.register(dto);
-        return new ResponseEntity<>(memberId, HttpStatus.CREATED);
+    @ResponseStatus(HttpStatus.CREATED)
+    public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto) {
+       return memberService.register(dto);
     }
 
 
@@ -39,27 +39,31 @@ public class MemberController {
      * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
      */
     @GetMapping("/{id}")
-    public ResponseEntity<MemberInfo> showMemberInfo(@PathVariable("id") Integer memberId) {
-        MemberInfo result = memberService.findMember(memberId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public MemberInfo showMemberInfo(@PathVariable("id") Integer memberId) {
+        return memberService.findMember(memberId);
     }
+
 
     /**
      * email을 통해서 사용자의 정보를 조회한다
      * OAuth를 지원하기 위해 존재합니다
+     *
+     * @return
      */
     @GetMapping("/search")
-    public void showMemberInfoUsingEmail(@RequestParam String email) {
-        // TODO
+    @ResponseStatus(HttpStatus.OK)
+    public AuthInfo showAuthInfoUsingEmail(@RequestParam String email) {
+        return memberService.findMemberUsingEmail(email);
     }
 
     /**
      * MemberId를 통해 암호화된 Password를 반환한다
      */
-    @GetMapping("/{id}/password")
+    @GetMapping("/{id}/auth-info")
     @ResponseStatus(HttpStatus.OK)
-    public FindMemberPasswordDto showPassword(@PathVariable("id") Integer memberId) {
-        return memberService.findMemberPassword(memberId);
+    public AuthInfo showAuthInfo(@PathVariable("id") Integer memberId) {
+        return memberService.showAuthInfo(memberId);
     }
 
 }
