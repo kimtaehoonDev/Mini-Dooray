@@ -6,6 +6,8 @@ import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
 import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
+import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
 import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
@@ -23,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
     private final MemberInProjectRepository memberInProjectRepository;
+    private final MemberInProjectQueryRepository memberInProjectQueryRepository;
 
     /**
      * 생성된 프로젝트의 ID를 반환한다
@@ -42,9 +45,14 @@ public class ProjectServiceImpl implements ProjectService {
         return saveProject.getId();
     }
 
+    /**
+     * 해당 유저가 속한 프로젝트의 목록을 보여준다
+     * 프로젝트의 상태가 활성인 경우만 보여준다
+     * userId가 존재하지 않으면 예외를 반환한다
+     */
     @Override
-    public List<String> showProjectsNameBelongsToMember(Integer userId) {
-        return null;
+    public List<ProjectPreview> showProjectsPreviewsBelongsToMember(Integer memberId) {
+        return memberInProjectQueryRepository.findProjectsPreviewsUsingMemberId(memberId);
     }
 
     @Override

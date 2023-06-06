@@ -1,6 +1,7 @@
 package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
 import java.util.List;
@@ -18,7 +19,7 @@ public interface ProjectService {
      * 프로젝트의 상태가 활성인 경우만 보여준다
      * userId가 존재하지 않으면 예외를 반환한다
      */
-    List<String> showProjectsNameBelongsToMember(Integer userId);
+    List<ProjectPreview> showProjectsPreviewsBelongsToMember(Integer memberId);
 
 
     /**

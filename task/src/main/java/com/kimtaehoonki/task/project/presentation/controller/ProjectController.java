@@ -2,6 +2,7 @@ package com.kimtaehoonki.task.project.presentation.controller;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.project.application.ProjectService;
+import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
 import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;
@@ -49,8 +50,8 @@ public class ProjectController {
      */
     @GetMapping("/projects")
     @ResponseStatus(HttpStatus.OK)
-    public List<String> showProjectsNameBelongsToMember(@CookieValue Integer userId) {
-        return projectService.showProjectsNameBelongsToMember(userId);
+    public List<ProjectPreview> showProjectsNameBelongsToMember(@CookieValue Integer userId) {
+        return projectService.showProjectsPreviewsBelongsToMember(userId);
     }
 
     /**
