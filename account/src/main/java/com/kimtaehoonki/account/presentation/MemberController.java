@@ -1,21 +1,22 @@
 package com.kimtaehoonki.account.presentation;
 
 import com.kimtaehoonki.account.application.MemberService;
-import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/members")
 @RequiredArgsConstructor
 public class MemberController {
@@ -49,16 +50,16 @@ public class MemberController {
      */
     @GetMapping("/search")
     public void showMemberInfoUsingEmail(@RequestParam String email) {
-
+        // TODO
     }
 
     /**
-     *
+     * MemberId를 통해 암호화된 Password를 반환한다
      */
     @GetMapping("/{id}/password")
-    public ResponseEntity<MemberInfo> showPassword(@PathVariable("id") Integer memberId) {
-        MemberInfo result = memberService.findMember(memberId);
-        return new ResponseEntity<>(result, HttpStatus.OK);
+    @ResponseStatus(HttpStatus.OK)
+    public FindMemberPasswordDto showPassword(@PathVariable("id") Integer memberId) {
+        return memberService.findMemberPassword(memberId);
     }
 
 }

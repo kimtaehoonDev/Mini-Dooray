@@ -2,6 +2,7 @@ package com.kimtaehoonki.account.application;
 
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.application.dto.response.AuthInfoServiceResponseDto;
+import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
@@ -50,7 +51,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberInfo findMember(Integer memberId) {
-        return memberRepository.findMemberById(memberId)
+        return memberRepository.findById(memberId, MemberInfo.class)
                 .orElseThrow(UserNotFoundException::new);
+    }
+
+    @Override
+    public FindMemberPasswordDto findMemberPassword(Integer memberId) {
+        return memberRepository.findById(memberId, FindMemberPasswordDto.class)
+            .orElseThrow(UserNotFoundException::new);
     }
 }

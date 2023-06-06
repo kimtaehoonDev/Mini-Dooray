@@ -1,6 +1,7 @@
 package com.kimtaehoonki.account.application;
 
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.application.dto.response.FindMemberPasswordDto;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 
@@ -23,4 +24,6 @@ public interface MemberService {
      * 민감정보에는 password가 존재한다
      */
     MemberInfo findMember(Integer memberId);
+
+    FindMemberPasswordDto findMemberPassword(Integer memberId);
 }
