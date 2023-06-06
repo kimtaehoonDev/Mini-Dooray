@@ -3,12 +3,10 @@ package com.kimtaehoonki.account.application;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
-import com.kimtaehoonki.account.application.dto.response.AuthInfoServiceResponseDto;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
-import com.kimtaehoonki.account.exception.impl.UserNotMatchException;
 import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
@@ -36,68 +34,7 @@ class MemberServiceImplTest {
         memberService = new MemberServiceImpl(memberRepository);
     }
 
-    @Test
-    void 존재하는_아이디와_알맞은_패스워드로_인증정보를_가져온다()
-        throws NoSuchMethodException, InvocationTargetException, InstantiationException,
-        IllegalAccessException, NoSuchFieldException {
-        Class<AuthInfoServiceResponseDto> clazz =
-            AuthInfoServiceResponseDto.class;
-        Constructor<AuthInfoServiceResponseDto> constructor =
-            clazz.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        AuthInfoServiceResponseDto dto = constructor.newInstance();
-
-        Field memberIdField = clazz.getDeclaredField("memberId");
-        memberIdField.setAccessible(true);
-        memberIdField.set(dto, 1);
-
-        Field passwordField = clazz.getDeclaredField("password");
-        passwordField.setAccessible(true);
-        passwordField.set(dto,"12345");
-
-        Mockito.when(memberRepository.findByUsername("kim", AuthInfoServiceResponseDto.class))
-            .thenReturn(Optional.of(dto));
-
-        AuthInfo info = memberService.getAuthInfo("kim", "12345");
-        Assertions.assertThat(info.getMemberId()).isEqualTo(1);
-    }
-
-    @Test
-    void 인증시_존재하지_않는_아이디로_조회시_예외를_반환한다() {
-        Mockito.when(memberRepository.findByUsername("kim", AuthInfoServiceResponseDto.class))
-            .thenReturn(Optional.empty());
-
-        Assertions.assertThatThrownBy(() -> memberService.getAuthInfo("kim", "12345"))
-            .isInstanceOf(UserNotMatchException.class);
-    }
-
-    @Test
-    void 인증시_패스워드가_틀리면_예외를_반환한다()
-        throws NoSuchMethodException, InvocationTargetException, InstantiationException,
-        IllegalAccessException, NoSuchFieldException {
-        Class<AuthInfoServiceResponseDto> clazz =
-            AuthInfoServiceResponseDto.class;
-        Constructor<AuthInfoServiceResponseDto> constructor =
-            clazz.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        AuthInfoServiceResponseDto dto = constructor.newInstance();
-
-        Field memberIdField = clazz.getDeclaredField("memberId");
-        memberIdField.setAccessible(true);
-        memberIdField.set(dto, 1);
-
-        Field passwordField = clazz.getDeclaredField("password");
-        passwordField.setAccessible(true);
-        passwordField.set(dto,"12345");
-
-        Mockito.when(memberRepository.findByUsername("kim", AuthInfoServiceResponseDto.class))
-            .thenReturn(Optional.of(dto));
-
-        Assertions.assertThatThrownBy(() -> memberService.getAuthInfo("kim", "nonono"))
-            .isInstanceOf(UserNotMatchException.class);
-    }
-
-    @Test
+        @Test
     void 회원가입을_한다() throws NoSuchMethodException, InvocationTargetException, InstantiationException,
         IllegalAccessException, NoSuchFieldException {
         Class<MemberRegisterRequestDto> clazz =
@@ -118,7 +55,8 @@ class MemberServiceImplTest {
         Mockito.when(memberRepository.existsByUsername("id1")).thenReturn(false);
         Mockito.when(memberRepository.existsByEmail("kim11@naver.com")).thenReturn(false);
         Mockito.when(memberRepository.save(any()))
-            .thenReturn(new Member(10, null, null, null, null, null));
+            .thenReturn(new Member(10, null, null,
+                null, null, null));
 
         Integer registerMemberId = memberService.register(dto);
         Assertions.assertThat(registerMemberId).isEqualTo(10);
@@ -175,8 +113,9 @@ class MemberServiceImplTest {
             UserEmailDuplicateException.class);
     }
 
+
     @Test
-    void 유저정보를_가져온다() {
+    void 멤버정보를_아이디로_가져온다() {
         MemberInfo memberInfo = new MemberInfo() {
 
             @Override
@@ -205,17 +144,70 @@ class MemberServiceImplTest {
             }
         };
 
-        Mockito.when(memberRepository.findMemberById(1)).thenReturn(Optional.of(memberInfo));
-
+        Mockito.when(memberRepository.findById(1, MemberInfo.class)).thenReturn(Optional.of(memberInfo));
         MemberInfo result = memberService.findMember(1);
-
         Assertions.assertThat(result.getUsername()).isEqualTo(memberInfo.getUsername());
     }
 
     @Test
-    void 유저정보가_없으면_예외를_반환한다() {
-        Mockito.when(memberRepository.findMemberById(1)).thenReturn(Optional.empty());
+    void 멤버정보가_없으면_예외를_반환한다() {
+        Mockito.when(memberRepository.findById(1, MemberInfo.class)).thenReturn(Optional.empty());
         Assertions.assertThatThrownBy(() -> memberService.findMember(1))
             .isInstanceOf(UserNotFoundException.class);
     }
+
+    @Test
+    void 멤버아이디로_인증정보를_가져온다() {
+        AuthInfo authInfo = new AuthInfo() {
+
+            @Override
+            public Integer getId() {
+                return 1;
+            }
+
+            @Override
+            public String getPassword() {
+                return "12345";
+            }
+        };
+
+        Mockito.when(memberRepository.findById(1, AuthInfo.class)).thenReturn(Optional.of(authInfo));
+        AuthInfo result = memberService.showAuthInfo(1);
+        Assertions.assertThat(result.getId()).isEqualTo(1);
+    }
+
+    @Test
+    void 멤버아이디로_조회시_존재하지_않는_멤버의_경우_예외를_반환한다() {
+        Mockito.when(memberRepository.findById(1, AuthInfo.class)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(() -> memberService.showAuthInfo(1))
+            .isInstanceOf(UserNotFoundException.class);
+    }
+
+    @Test
+    void 이메일로로_인증정보를_가져온다() {
+        AuthInfo authInfo = new AuthInfo() {
+
+            @Override
+            public Integer getId() {
+                return 1;
+            }
+
+            @Override
+            public String getPassword() {
+                return "12345";
+            }
+        };
+
+        Mockito.when(memberRepository.findByEmail("ds@naver.com")).thenReturn(Optional.of(authInfo));
+        AuthInfo result = memberService.findMemberUsingEmail("ds@naver.com");
+        Assertions.assertThat(result.getId()).isEqualTo(1);
+    }
+
+    @Test
+    void 이메일로_조회시_존재하지_않는_멤버의_경우_예외를_반환한다() {
+        Mockito.when(memberRepository.findByEmail("ds@naver.com")).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(() -> memberService.findMemberUsingEmail("ds@naver.com"))
+            .isInstanceOf(UserNotFoundException.class);
+    }
+
 }
