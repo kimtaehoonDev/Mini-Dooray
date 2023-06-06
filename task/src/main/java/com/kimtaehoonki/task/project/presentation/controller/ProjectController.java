@@ -1,7 +1,7 @@
 package com.kimtaehoonki.task.project.presentation.controller;
 
 import com.kimtaehoonki.task.ProjectStatus;
-import com.kimtaehoonki.task.project.domain.ProjectService;
+import com.kimtaehoonki.task.project.application.ProjectService;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
 import com.kimtaehoonki.task.project.presentation.dto.ShowProjectResponseDto;

@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.project.domain;
+package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
