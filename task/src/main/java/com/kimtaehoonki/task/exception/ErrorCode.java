@@ -9,7 +9,8 @@ public enum ErrorCode {
     AUTHORIZED("해당 자원에 접근권한이 없습니다"),
     AUTHENTICATED("인증되지 않은 사용자입니다"),
     PROJECT_EXIT("이미 종료된 프로젝트입니다"),
-    ALREADY_PROJECT_MEMBER("이미 해당 프로젝트에 소속된 멤버입니다");
+    ALREADY_PROJECT_MEMBER("이미 해당 프로젝트에 소속된 멤버입니다"),
+    MEMBER_NOT_FOUND("해당되는 멤버를 찾을 수 없습니다");
 
     private String message;
 

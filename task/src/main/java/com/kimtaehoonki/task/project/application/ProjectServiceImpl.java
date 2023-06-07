@@ -4,9 +4,12 @@ import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.exception.impl.AlreadyProjectMemberException;
 import com.kimtaehoonki.task.exception.impl.AuthenticationException;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
+import com.kimtaehoonki.task.exception.impl.MemberNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
 import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.member.AccountRestTemplate;
+import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
@@ -15,18 +18,25 @@ import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
+import java.net.URI;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
+
     private final ProjectRepository projectRepository;
     private final MemberInProjectRepository memberInProjectRepository;
     private final MemberInProjectQueryRepository memberInProjectQueryRepository;
+    private final AccountRestTemplate accountRt;
 
     /**
      * 생성된 프로젝트의 ID를 반환한다
@@ -36,6 +46,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public long createProject(CreateProjectRequestDto dto) {
+        accountRt.validateUserExists(dto.getAdminId());
+
         boolean isDuplicatedName = projectRepository.existsByName(dto.getName());
         if (isDuplicatedName) {
             throw new ProjectNameDuplicateException();
@@ -48,6 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
         return saveProject.getId();
     }
 
+
     /**
      * 해당 유저가 속한 프로젝트의 목록을 보여준다
      * 프로젝트의 상태가 활성인 경우만 보여준다
@@ -55,6 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public List<ProjectPreview> showProjectsPreviewsBelongsToMember(Integer memberId) {
+        accountRt.validateUserExists(memberId);
         return memberInProjectQueryRepository.findProjectsPreviewsUsingMemberId(memberId);
     }
 
@@ -65,6 +79,8 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public ProjectDetail showProject(Long projectId, Integer memberId) {
+        accountRt.validateUserExists(memberId);
+
         boolean isProjectMember =
             memberInProjectRepository.existsByProject_idAndMemberId(projectId, memberId);
         if (!isProjectMember) {
@@ -86,6 +102,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public void updateProjectStatus(Long projectId, int adminId, ProjectStatus status) {
+        accountRt.validateUserExists(adminId);
+
         Project project = getProjectNotExit(projectId);
         boolean isAdmin = project.checkAdmin(adminId);
         if (!isAdmin) {
@@ -103,6 +121,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public Long registerMemberInProject(Long projectId, Integer registerId, Integer targetId) {
+        accountRt.validateUserExists(registerId);
+        accountRt.validateUserExists(targetId);
+
         Project project = getProjectNotExit(projectId);
         boolean isAdmin = project.checkAdmin(registerId);
         if (!isAdmin) {
