@@ -5,6 +5,7 @@ import com.kimtaehoonki.task.project.application.ProjectService;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
+import com.kimtaehoonki.task.project.presentation.dto.CreateProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
 import com.kimtaehoonki.task.project.presentation.dto.GetTagsByProjectIdResponseDto;
 import java.util.List;
@@ -37,9 +38,10 @@ public class ProjectController {
      */
     @PostMapping("/projects")
     @ResponseStatus(HttpStatus.CREATED)
-    public Long createProject(
+    public CreateProjectResponseDto createProject(
         @RequestBody CreateProjectRequestDto dto) {
-        return projectService.createProject(dto);
+        long projectId = projectService.createProject(dto);
+        return new CreateProjectResponseDto(projectId);
     }
 
     /**
