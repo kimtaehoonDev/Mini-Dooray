@@ -45,7 +45,7 @@ public class MemberController {
 
     /**
      * 회원의 id를 통해 회원의 정보를 조회한다
-     * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
+     * 존재하지 않는 id가 입력되었거나, 탈퇴한 회원인 경우, UserNotFoundException을 반환한다
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)

@@ -3,8 +3,10 @@ package com.kimtaehoonki.account.application;
 import static org.mockito.ArgumentMatchers.any;
 
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.domain.Authority;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
+import com.kimtaehoonki.account.domain.MemberStatus;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
 import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
@@ -56,7 +58,7 @@ class MemberServiceImplTest {
         Mockito.when(memberRepository.existsByEmail("kim11@naver.com")).thenReturn(false);
         Mockito.when(memberRepository.save(any()))
             .thenReturn(new Member(10, null, null,
-                null, null, null));
+                null, null, null, null, null));
 
         Integer registerMemberId = memberService.register(dto);
         Assertions.assertThat(registerMemberId).isEqualTo(10);
@@ -142,6 +144,11 @@ class MemberServiceImplTest {
             public String getPhoneNum() {
                 return "010-1234-1234";
             }
+
+            @Override
+            public MemberStatus getStatus() {
+                return MemberStatus.SUBSCRIPTION;
+            }
         };
 
         Mockito.when(memberRepository.findById(1, MemberInfo.class)).thenReturn(Optional.of(memberInfo));
@@ -169,6 +176,16 @@ class MemberServiceImplTest {
             public String getPassword() {
                 return "12345";
             }
+
+            @Override
+            public MemberStatus getStatus() {
+                return null;
+            }
+
+            @Override
+            public Authority getAuthority() {
+                return null;
+            }
         };
 
         Mockito.when(memberRepository.findById(1, AuthInfo.class)).thenReturn(Optional.of(authInfo));
@@ -195,6 +212,16 @@ class MemberServiceImplTest {
             @Override
             public String getPassword() {
                 return "12345";
+            }
+
+            @Override
+            public MemberStatus getStatus() {
+                return null;
+            }
+
+            @Override
+            public Authority getAuthority() {
+                return null;
             }
         };
 

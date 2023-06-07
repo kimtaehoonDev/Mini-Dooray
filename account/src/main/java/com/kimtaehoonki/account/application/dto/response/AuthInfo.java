@@ -1,7 +1,13 @@
 package com.kimtaehoonki.account.application.dto.response;
 
+import com.kimtaehoonki.account.domain.Authority;
+import com.kimtaehoonki.account.domain.MemberStatus;
+
 public interface AuthInfo {
     Integer getId();
     String getPassword();
-    //TODO 권한도 보내주기
+
+    MemberStatus getStatus();
+
+    Authority getAuthority();
 }
