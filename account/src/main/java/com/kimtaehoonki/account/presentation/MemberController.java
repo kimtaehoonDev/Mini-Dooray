@@ -4,6 +4,7 @@ import com.kimtaehoonki.account.application.MemberService;
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
+import com.kimtaehoonki.account.presentation.dto.response.RegisterResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,12 +33,13 @@ public class MemberController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto,
-                            BindingResult bindingResult) {
+    public RegisterResponseDto register(@RequestBody @Valid MemberRegisterRequestDto dto,
+                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindMessageBeforeThrowError(bindingResult);
         }
-        return memberService.register(dto);
+        Integer newMemberId = memberService.register(dto);
+        return new RegisterResponseDto(newMemberId);
     }
 
 
