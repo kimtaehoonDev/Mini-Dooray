@@ -34,12 +34,8 @@ public class MemberController {
     @ResponseStatus(HttpStatus.CREATED)
     public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto,
                             BindingResult bindingResult) {
-        StringBuilder errorMessage = new StringBuilder();
         if (bindingResult.hasErrors()) {
-            for (FieldError fieldError : bindingResult.getFieldErrors()) {
-                errorMessage.append(fieldError.getField() + ": " + fieldError.getDefaultMessage()).append("; ");
-            }
-            throw new IllegalArgumentException(errorMessage.toString());
+            bindMessageBeforeThrowError(bindingResult);
         }
         return memberService.register(dto);
     }
@@ -78,6 +74,15 @@ public class MemberController {
     @ResponseStatus(HttpStatus.OK)
     public AuthInfo showAuthInfo(@PathVariable("id") Integer memberId) {
         return memberService.showAuthInfo(memberId);
+    }
+
+    private void bindMessageBeforeThrowError(BindingResult bindingResult) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessage.append(fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .append("; ");
+        }
+        throw new IllegalArgumentException(errorMessage.toString());
     }
 
 }
