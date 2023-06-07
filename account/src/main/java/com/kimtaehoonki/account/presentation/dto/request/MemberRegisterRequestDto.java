@@ -1,6 +1,8 @@
 package com.kimtaehoonki.account.presentation.dto.request;
 
+import com.kimtaehoonki.account.domain.Authority;
 import com.kimtaehoonki.account.domain.Member;
+import com.kimtaehoonki.account.domain.MemberStatus;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -32,6 +34,7 @@ public class MemberRegisterRequestDto {
     public Member makeMember() {
         return new Member(null,
             this.getUsername(), this.getName(), this.getEmail(),
-            this.getPhoneNum(), this.getPassword());
+            this.getPhoneNum(), this.getPassword(),
+            MemberStatus.SUBSCRIPTION, Authority.NORMAL);
     }
 }

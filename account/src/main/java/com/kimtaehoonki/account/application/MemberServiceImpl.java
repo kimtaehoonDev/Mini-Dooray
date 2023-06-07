@@ -3,6 +3,7 @@ package com.kimtaehoonki.account.application;
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.domain.Member;
 import com.kimtaehoonki.account.domain.MemberRepository;
+import com.kimtaehoonki.account.domain.MemberStatus;
 import com.kimtaehoonki.account.exception.impl.UserEmailDuplicateException;
 import com.kimtaehoonki.account.exception.impl.UserNotFoundException;
 import com.kimtaehoonki.account.exception.impl.UsernameDuplicateException;
@@ -36,19 +37,34 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberInfo findMember(Integer memberId) {
-        return memberRepository.findById(memberId, MemberInfo.class)
-                .orElseThrow(UserNotFoundException::new);
+        MemberInfo memberInfo = memberRepository.findById(memberId, MemberInfo.class)
+            .orElseThrow(UserNotFoundException::new);
+
+        if (memberInfo.getStatus() == MemberStatus.DORMANCY) {
+            throw new UserNotFoundException();
+        }
+        return memberInfo;
     }
 
     @Override
     public AuthInfo showAuthInfo(Integer memberId) {
-        return memberRepository.findById(memberId, AuthInfo.class)
+        AuthInfo authInfo = memberRepository.findById(memberId, AuthInfo.class)
             .orElseThrow(UserNotFoundException::new);
+
+        if (authInfo.getStatus() == MemberStatus.DORMANCY) {
+            throw new UserNotFoundException();
+        }
+        return authInfo;
     }
 
     @Override
     public AuthInfo findMemberUsingEmail(String email) {
-        return memberRepository.findByEmail(email)
+        AuthInfo authInfo = memberRepository.findByEmail(email)
             .orElseThrow(UserNotFoundException::new);
+
+        if (authInfo.getStatus() == MemberStatus.DORMANCY) {
+            throw new UserNotFoundException();
+        }
+        return authInfo;
     }
 }

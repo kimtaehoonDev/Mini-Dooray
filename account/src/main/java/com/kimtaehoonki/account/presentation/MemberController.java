@@ -4,6 +4,7 @@ import com.kimtaehoonki.account.application.MemberService;
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
+import com.kimtaehoonki.account.presentation.dto.response.RegisterResponseDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,18 +33,19 @@ public class MemberController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto,
-                            BindingResult bindingResult) {
+    public RegisterResponseDto register(@RequestBody @Valid MemberRegisterRequestDto dto,
+                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             bindMessageBeforeThrowError(bindingResult);
         }
-        return memberService.register(dto);
+        Integer newMemberId = memberService.register(dto);
+        return new RegisterResponseDto(newMemberId);
     }
 
 
     /**
      * 회원의 id를 통해 회원의 정보를 조회한다
-     * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
+     * 존재하지 않는 id가 입력되었거나, 탈퇴한 회원인 경우, UserNotFoundException을 반환한다
      */
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
