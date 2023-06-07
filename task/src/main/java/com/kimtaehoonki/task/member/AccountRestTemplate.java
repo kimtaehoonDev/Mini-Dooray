@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -23,10 +25,19 @@ public class AccountRestTemplate {
             .expand(memberId)
             .toUri();
 
-        ResponseEntity<MemberResponseDto> response = rt.getForEntity(uri, MemberResponseDto.class);
-        HttpStatus statusCode = response.getStatusCode();
-        if (statusCode == HttpStatus.NOT_FOUND) {
-            throw new MemberNotFoundException();
+        try {
+            ResponseEntity<MemberResponseDto> response = rt.getForEntity(uri, MemberResponseDto.class);
+            HttpStatus statusCode = response.getStatusCode();
+            if (statusCode == HttpStatus.OK) {
+                return;
+            }
+            throw new RuntimeException("예상하지 못한 응답코드입니다");
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException();
+            }
+        } catch (HttpServerErrorException e) {
+            throw new RuntimeException(e.getMessage());
         }
     }
 
