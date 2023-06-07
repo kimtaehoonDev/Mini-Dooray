@@ -2,14 +2,11 @@ package com.kimtaehoonki.task.project.application;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.exception.impl.AlreadyProjectMemberException;
-import com.kimtaehoonki.task.exception.impl.AuthenticationException;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
-import com.kimtaehoonki.task.exception.impl.MemberNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
 import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
-import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
@@ -17,16 +14,11 @@ import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
-import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
-import java.net.URI;
+import com.kimtaehoonki.task.project.presentation.dto.request.CreateProjectRequestDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 @Transactional(readOnly = true)
@@ -46,7 +38,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public long createProject(CreateProjectRequestDto dto) {
-        accountRt.validateUserExists(dto.getAdminId());
+        accountRt.validateMemberExists(dto.getAdminId());
 
         boolean isDuplicatedName = projectRepository.existsByName(dto.getName());
         if (isDuplicatedName) {
@@ -68,7 +60,7 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public List<ProjectPreview> showProjectsPreviewsBelongsToMember(Integer memberId) {
-        accountRt.validateUserExists(memberId);
+        accountRt.validateMemberExists(memberId);
         return memberInProjectQueryRepository.findProjectsPreviewsUsingMemberId(memberId);
     }
 
@@ -79,12 +71,12 @@ public class ProjectServiceImpl implements ProjectService {
      */
     @Override
     public ProjectDetail showProject(Long projectId, Integer memberId) {
-        accountRt.validateUserExists(memberId);
+        accountRt.validateMemberExists(memberId);
 
         boolean isProjectMember =
             memberInProjectRepository.existsByProject_idAndMemberId(projectId, memberId);
         if (!isProjectMember) {
-            throw new AuthenticationException();
+            throw new AuthorizedException();
         }
         ProjectDetail detail = projectRepository.findById(projectId, ProjectDetail.class)
             .orElseThrow(ProjectNotFoundException::new);
@@ -102,7 +94,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public void updateProjectStatus(Long projectId, int adminId, ProjectStatus status) {
-        accountRt.validateUserExists(adminId);
+        accountRt.validateMemberExists(adminId);
 
         Project project = getProjectNotExit(projectId);
         boolean isAdmin = project.checkAdmin(adminId);
@@ -121,8 +113,8 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public Long registerMemberInProject(Long projectId, Integer registerId, Integer targetId) {
-        accountRt.validateUserExists(registerId);
-        accountRt.validateUserExists(targetId);
+        accountRt.validateMemberExists(registerId);
+        accountRt.validateMemberExists(targetId);
 
         Project project = getProjectNotExit(projectId);
         boolean isAdmin = project.checkAdmin(registerId);

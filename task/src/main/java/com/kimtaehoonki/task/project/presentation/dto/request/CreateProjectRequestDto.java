@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.project.presentation.dto;
+package com.kimtaehoonki.task.project.presentation.dto.request;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

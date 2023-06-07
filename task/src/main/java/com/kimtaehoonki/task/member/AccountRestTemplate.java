@@ -18,7 +18,7 @@ public class AccountRestTemplate {
 
     private final RestTemplate rt;
 
-    public void validateUserExists(int memberId) {
+    public void validateMemberExists(int memberId) {
         URI uri = UriComponentsBuilder.fromUriString(ACCOUNT_SERVER_URL)
             .path("/members/{id}")
             .build()

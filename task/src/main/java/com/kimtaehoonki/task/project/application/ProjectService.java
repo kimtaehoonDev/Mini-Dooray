@@ -3,7 +3,7 @@ package com.kimtaehoonki.task.project.application;
 import com.kimtaehoonki.task.ProjectStatus;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
-import com.kimtaehoonki.task.project.presentation.dto.CreateProjectRequestDto;
+import com.kimtaehoonki.task.project.presentation.dto.request.CreateProjectRequestDto;
 import java.util.List;
 
 public interface ProjectService {
