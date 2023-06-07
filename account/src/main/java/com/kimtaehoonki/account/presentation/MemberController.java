@@ -7,6 +7,8 @@ import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
     private final MemberService memberService;
 
+
     /**
      * 회원을 등록한다
      * 회원의 아이디가 중복된 경우 UsernameDuplicateException을 반환한다
@@ -29,8 +32,12 @@ public class MemberController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto) {
-       return memberService.register(dto);
+    public Integer register(@RequestBody @Valid MemberRegisterRequestDto dto,
+                            BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            bindMessageBeforeThrowError(bindingResult);
+        }
+        return memberService.register(dto);
     }
 
 
@@ -47,7 +54,8 @@ public class MemberController {
 
     /**
      * email을 통해서 사용자의 정보를 조회한다
-     * OAuth를 지원하기 위해 존재합니다
+     * OAuth를 지원하기 위해 존재한다
+     * 존재하지 않는 email이 입력된 경우, UserNotFoundException을 반환한다
      *
      * @return
      */
@@ -57,8 +65,10 @@ public class MemberController {
         return memberService.findMemberUsingEmail(email);
     }
 
+
     /**
      * MemberId를 통해 암호화된 Password를 반환한다
+     * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
      */
     @GetMapping("/{id}/auth-info")
     @ResponseStatus(HttpStatus.OK)
@@ -66,5 +76,13 @@ public class MemberController {
         return memberService.showAuthInfo(memberId);
     }
 
-}
+    private void bindMessageBeforeThrowError(BindingResult bindingResult) {
+        StringBuilder errorMessage = new StringBuilder();
+        for (FieldError fieldError : bindingResult.getFieldErrors()) {
+            errorMessage.append(fieldError.getField() + ": " + fieldError.getDefaultMessage())
+                .append("; ");
+        }
+        throw new IllegalArgumentException(errorMessage.toString());
+    }
 
+}
