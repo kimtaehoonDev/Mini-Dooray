@@ -9,7 +9,6 @@ import com.kimtaehoonki.task.project.application.dto.response.QProjectPreview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
 public class MemberInProjectRepositoryImpl implements MemberInProjectRepositoryCustom {
