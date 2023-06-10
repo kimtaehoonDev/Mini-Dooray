@@ -188,15 +188,16 @@ class MemberServiceImplTest {
             }
         };
 
-        Mockito.when(memberRepository.findById(1, AuthInfo.class)).thenReturn(Optional.of(authInfo));
-        AuthInfo result = memberService.showAuthInfo(1);
+        Mockito.when(memberRepository.findByUsername("hello", AuthInfo.class)).thenReturn(Optional.of(authInfo));
+        AuthInfo result = memberService.findMemberUsingUsername("hello");
         Assertions.assertThat(result.getId()).isEqualTo(1);
     }
 
+
     @Test
     void 멤버아이디로_조회시_존재하지_않는_멤버의_경우_예외를_반환한다() {
-        Mockito.when(memberRepository.findById(1, AuthInfo.class)).thenReturn(Optional.empty());
-        Assertions.assertThatThrownBy(() -> memberService.showAuthInfo(1))
+        Mockito.when(memberRepository.findByUsername("hello", AuthInfo.class)).thenReturn(Optional.empty());
+        Assertions.assertThatThrownBy(() -> memberService.findMemberUsingUsername("hello"))
             .isInstanceOf(UserNotFoundException.class);
     }
 

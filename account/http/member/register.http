@@ -46,7 +46,7 @@ Content-Type: application/json
 }
 
 ### 아이디로 회원정보를 가져온다
-GET localhost:9091/members/1/auth-info
+GET localhost:9091/members/qwer123/auth-info
 
 ### 이메일로 회원정보를 가져온다
-GET localhost:9091/members/search?email=qwer@maver.com
+GET localhost:9091/members/auth-info?email=qwer@maver.com

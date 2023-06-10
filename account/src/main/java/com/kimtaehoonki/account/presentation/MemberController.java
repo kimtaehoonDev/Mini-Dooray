@@ -61,7 +61,7 @@ public class MemberController {
      *
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("/auth-info")
     @ResponseStatus(HttpStatus.OK)
     public AuthInfo showAuthInfoUsingEmail(@RequestParam String email) {
         return memberService.findMemberUsingEmail(email);
@@ -69,13 +69,13 @@ public class MemberController {
 
 
     /**
-     * MemberId를 통해 암호화된 Password를 반환한다
-     * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
+     * username을 통해 암호화된 Password를 반환한다
+     * 존재하지 않는 username이 입력된 경우, UserNotFoundException을 반환한다
      */
-    @GetMapping("/{id}/auth-info")
+    @GetMapping("/{username}/auth-info")
     @ResponseStatus(HttpStatus.OK)
-    public AuthInfo showAuthInfo(@PathVariable("id") Integer memberId) {
-        return memberService.showAuthInfo(memberId);
+    public AuthInfo showAuthInfo(@PathVariable String username) {
+        return memberService.findMemberUsingUsername(username);
     }
 
     private void bindMessageBeforeThrowError(BindingResult bindingResult) {
