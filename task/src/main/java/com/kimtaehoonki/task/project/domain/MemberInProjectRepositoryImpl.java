@@ -11,11 +11,11 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-@Repository
 @RequiredArgsConstructor
-public class MemberInProjectQueryRepository {
+public class MemberInProjectRepositoryImpl implements MemberInProjectRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
+    @Override
     public List<ProjectPreview> findProjectsPreviewsUsingMemberId(Integer memberId) {
         return queryFactory
             .select(new QProjectPreview(
