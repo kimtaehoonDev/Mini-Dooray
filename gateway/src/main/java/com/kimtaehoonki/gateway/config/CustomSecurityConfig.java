@@ -3,6 +3,7 @@ package com.kimtaehoonki.gateway.config;
 import com.kimtaehoonki.gateway.security.handler.CustomAuthenticationFailureHandler;
 import com.kimtaehoonki.gateway.security.handler.CustomLoginSuccessHandler;
 import com.kimtaehoonki.gateway.security.service.CustomOAuth2UserService;
+import com.kimtaehoonki.gateway.security.service.CustomUserDetailsService;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,8 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
-    private final DataSource dataSource;
     private final CustomOAuth2UserService customOAuth2UserService;
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -62,7 +63,7 @@ public class CustomSecurityConfig {
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
 
-
+                .userDetailsService(customUserDetailsService)
                 .csrf().disable()
                 .build();
     }
