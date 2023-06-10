@@ -1,8 +1,8 @@
 package com.kimtaehoonki.gateway.config;
 
-import static org.springframework.boot.autoconfigure.security.servlet.PathRequest.toH2Console;
-
+import com.kimtaehoonki.gateway.security.handler.CustomAuthenticationFailureHandler;
 import com.kimtaehoonki.gateway.security.handler.CustomLoginSuccessHandler;
+import com.kimtaehoonki.gateway.security.service.CustomOAuth2UserService;
 import javax.sql.DataSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +20,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @RequiredArgsConstructor
 public class CustomSecurityConfig {
     private final DataSource dataSource;
+    private final CustomOAuth2UserService customOAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -37,15 +38,30 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("/members/**", "/auth/**",
-                        "/users/**", "/projects/**", "/tasks/**").authenticated()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/login", "/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
+
                 .formLogin()
                 .loginPage("/login")
+                .loginProcessingUrl("/login")
                 .successHandler(authenticationSuccessHandler())
+                .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
+
+                .logout()
+                .logoutSuccessUrl("/login")
+                .invalidateHttpSession(true)
+                .and()
+
+                .oauth2Login()
+                .loginPage("/login")
+                .userInfoEndpoint()
+                .userService(customOAuth2UserService)
+                .and()
+                .failureHandler(new CustomAuthenticationFailureHandler())
+                .and()
+
 
                 .csrf().disable()
                 .build();

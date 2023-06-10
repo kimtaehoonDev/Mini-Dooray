@@ -5,8 +5,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class MemberIdPasswordResponseDto {
+public class AuthInfoResponseDto {
     private Integer id;
     private String password;
+    private String status;
     private String authority;
 }
