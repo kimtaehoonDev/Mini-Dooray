@@ -2,6 +2,7 @@ package com.kimtaehoonki.account.presentation;
 
 import com.kimtaehoonki.account.application.MemberService;
 import com.kimtaehoonki.account.application.dto.response.AuthInfo;
+import com.kimtaehoonki.account.exception.impl.InvalidParamWhenSearchAuthInfoException;
 import com.kimtaehoonki.account.presentation.dto.request.MemberRegisterRequestDto;
 import com.kimtaehoonki.account.presentation.dto.response.MemberInfo;
 import com.kimtaehoonki.account.presentation.dto.response.RegisterResponseDto;
@@ -55,27 +56,25 @@ public class MemberController {
 
 
     /**
-     * email을 통해서 사용자의 정보를 조회한다
-     * OAuth를 지원하기 위해 존재한다
-     * 존재하지 않는 email이 입력된 경우, UserNotFoundException을 반환한다
+     * email 또는 username을 통해서 사용자의 정보를 조회한다
+     * 존재하지 않는 email이나 username이 입력된 경우, UserNotFoundException을 반환한다
      *
      * @return
      */
-    @GetMapping("/search")
+    @GetMapping("/auth-info")
     @ResponseStatus(HttpStatus.OK)
-    public AuthInfo showAuthInfoUsingEmail(@RequestParam String email) {
-        return memberService.findMemberUsingEmail(email);
-    }
-
-
-    /**
-     * MemberId를 통해 암호화된 Password를 반환한다
-     * 존재하지 않는 id가 입력된 경우, UserNotFoundException을 반환한다
-     */
-    @GetMapping("/{id}/auth-info")
-    @ResponseStatus(HttpStatus.OK)
-    public AuthInfo showAuthInfo(@PathVariable("id") Integer memberId) {
-        return memberService.showAuthInfo(memberId);
+    public AuthInfo showAuthInfoUsingEmail(@RequestParam(required = false) String email,
+                                           @RequestParam(required = false) String username) {
+        if (email == null && username == null) {
+            throw new InvalidParamWhenSearchAuthInfoException();
+        }
+        if (email != null) {
+            return memberService.findMemberUsingEmail(email);
+        }
+        if (username != null) {
+            return memberService.findMemberUsingUsername(username);
+        }
+        throw new InvalidParamWhenSearchAuthInfoException();
     }
 
     private void bindMessageBeforeThrowError(BindingResult bindingResult) {
