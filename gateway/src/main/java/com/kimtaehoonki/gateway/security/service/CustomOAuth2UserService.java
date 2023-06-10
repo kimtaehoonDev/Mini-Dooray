@@ -3,6 +3,7 @@ package com.kimtaehoonki.gateway.security.service;
 import com.kimtaehoonki.gateway.security.dto.AuthInfoResponseDto;
 import com.kimtaehoonki.gateway.security.dto.GitEmailDto;
 import com.kimtaehoonki.gateway.security.dto.MemberSecurityDto;
+import com.kimtaehoonki.gateway.security.exception.AuthenticationOAuth2UserNotFoundException;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationRestTemplateException;
 import java.util.Collections;
 import java.util.List;
@@ -103,12 +104,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             }
 
             // TODO oauth 해당 이메일 사용자 없을 경우 /register 이동
-/*
             if (response.getStatusCode().is4xxClientError()) {
-
+                throw new AuthenticationOAuth2UserNotFoundException("need to register");
 
             }
-*/
 
             // RestTemplate 통신 오류
         } catch (RestClientException e) {

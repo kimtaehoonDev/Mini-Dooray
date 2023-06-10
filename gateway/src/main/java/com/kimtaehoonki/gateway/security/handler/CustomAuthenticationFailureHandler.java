@@ -1,5 +1,6 @@
 package com.kimtaehoonki.gateway.security.handler;
 
+import com.kimtaehoonki.gateway.security.exception.AuthenticationOAuth2UserNotFoundException;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationRestTemplateException;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -16,10 +17,15 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                                         AuthenticationException exception)
             throws IOException, ServletException {
         log.info("CustomAuthenticationEntryPoint");
+
         if (exception instanceof AuthenticationRestTemplateException) {
             log.info("authenticationEntryPoint");
 
             request.getRequestDispatcher("/login").forward(request, response);
+        }
+
+        if (exception instanceof AuthenticationOAuth2UserNotFoundException) {
+            request.getRequestDispatcher("/register").forward(request, response);
         }
 
     }
