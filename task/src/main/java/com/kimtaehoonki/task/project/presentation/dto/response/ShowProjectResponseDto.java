@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.project.presentation.dto;
+package com.kimtaehoonki.task.project.presentation.dto.response;
 
 import com.kimtaehoonki.task.ProjectStatus;
 import lombok.NoArgsConstructor;
