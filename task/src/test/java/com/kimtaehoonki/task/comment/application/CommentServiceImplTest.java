@@ -14,6 +14,8 @@ import static org.mockito.Mockito.when;
 import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
+import com.kimtaehoonki.task.exception.impl.AuthorizedException;
+import com.kimtaehoonki.task.exception.impl.CommentNotFoundException;
 import com.kimtaehoonki.task.exception.impl.MemberNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
@@ -109,7 +111,45 @@ class CommentServiceImplTest {
         when(commentRepository.findAllByTask_id(10L)).thenReturn(comments);
 
         List<CommentResponseDto> result = commentService.getCommentsInTask(10L);
+
         assertThat(result).hasSize(2);
+        verify(commentRepository, times(1)).findAllByTask_id(any());
+    }
+
+    @Test
+    void 댓글을_업데이트한다() throws NoSuchFieldException, IllegalAccessException {
+        int writerId = 1;
+        Comment comment = makeTestComment(1L, null, writerId, null, "ㅇ");
+        when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+
+        commentService.updateComment(1L, "변경내용", writerId);
+
+        verify(commentRepository, times(1)).findById(1L);
+        assertThat(comment.getContents()).isEqualTo("변경내용");
+    }
+
+    @Test
+    void 댓글수정시_댓글이_존재하지_않으면_예외를_반환한다() {
+        when(commentRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() ->
+            commentService.updateComment(1L, "변경내용", 1))
+            .isInstanceOf(CommentNotFoundException.class);
+        verify(commentRepository, times(1)).findById(any());
+
+    }
+
+    @Test
+    void 댓글을_작성하지_않은_사람이_업데이트를_시도하면_예외를_반환한다() throws NoSuchFieldException, IllegalAccessException {
+        int writerId = 1;
+        Comment comment = makeTestComment(1L, null, writerId, null, "ㅇ");
+        when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+
+        assertThatThrownBy(() ->
+            commentService.updateComment(1L, "변경내용", writerId + 1))
+            .isInstanceOf(AuthorizedException.class);
+
+        verify(commentRepository, times(1)).findById(any());
     }
 
     private CommentResponseDto makeTestCommentResponseDto(Long commentId, Integer writerId,

@@ -3,6 +3,8 @@ package com.kimtaehoonki.task.comment.application;
 import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
+import com.kimtaehoonki.task.exception.impl.AuthorizedException;
+import com.kimtaehoonki.task.exception.impl.CommentNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.member.MemberResponseDto;
@@ -43,9 +45,9 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void updateComment(Long commentId, String contents, Integer writerId) {
         Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(() -> new IllegalArgumentException("TODO .. Comment가 존재하지 않습니다"));
+            .orElseThrow(CommentNotFoundException::new);
         if (!comment.isWritten(writerId)) {
-            throw new IllegalArgumentException("TODO... Comment 작성자 아닙니다");
+            throw new AuthorizedException();
         }
         comment.setContents(contents);
     }
