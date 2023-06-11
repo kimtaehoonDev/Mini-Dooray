@@ -11,12 +11,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.Getter;
 
 /**
  * Task 엔티티.
  */
 @Entity
 @Table(name = "tasks")
+@Getter
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class RegisterCommentRequestDto {
-    private String contents;
-    private Long taskId;
+public class UpdateCommentRequestDto {
+    private final String contents;
 }
