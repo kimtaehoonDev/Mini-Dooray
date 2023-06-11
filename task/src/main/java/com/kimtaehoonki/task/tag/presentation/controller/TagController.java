@@ -26,7 +26,8 @@ public class TagController {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerTag(@RequestBody RegisterTagRequestDto dto) {
         String name = dto.getName();
-        tagService.registerTag(name);
+        Long projectId = dto.getProjectId();
+        tagService.registerTag(name, projectId);
     }
 
     /**
