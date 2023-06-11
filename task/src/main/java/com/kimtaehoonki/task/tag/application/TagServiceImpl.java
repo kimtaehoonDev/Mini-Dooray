@@ -2,6 +2,7 @@ package com.kimtaehoonki.task.tag.application;
 
 import com.kimtaehoonki.task.colorcode.ColorCode;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.tag.domain.Tag;
@@ -20,6 +21,7 @@ public class TagServiceImpl implements TagService {
     private final ColorGenerator colorGenerator;
 
     @Override
+    @Transactional
     public Long registerTag(String name, Long projectId) {
         Project project = projectRepository.findById(projectId)
             .orElseThrow(ProjectNotFoundException::new);
@@ -31,7 +33,10 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
+    @Transactional
     public void deleteTag(Long tagId) {
-
+        Tag tag = tagRepository.findById(tagId)
+            .orElseThrow(TagNotFoundException::new);
+        tagRepository.delete(tag);
     }
 }
