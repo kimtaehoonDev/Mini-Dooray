@@ -19,7 +19,7 @@ public class MemberSecurityDto extends User implements OAuth2User {
     public MemberSecurityDto(String username, String password,
                              Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
-        this.id = Integer.valueOf(username);
+        this.username = username;
         this.password = password;
     }
 
@@ -30,6 +30,6 @@ public class MemberSecurityDto extends User implements OAuth2User {
 
     @Override
     public String getName() {
-        return String.valueOf(this.getId());
+        return this.username;
     }
 }

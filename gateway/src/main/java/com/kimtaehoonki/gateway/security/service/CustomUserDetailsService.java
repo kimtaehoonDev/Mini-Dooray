@@ -5,6 +5,8 @@ import com.kimtaehoonki.gateway.security.dto.MemberSecurityDto;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationRestTemplateException;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationUserNotFoundException;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -30,9 +33,15 @@ public class CustomUserDetailsService
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         try {
+            String urlTemplate = UriComponentsBuilder.fromHttpUrl(authInfoUrl)
+                    .queryParam("username", username)
+                    .encode()
+                    .toUriString();
 
             ResponseEntity<AuthInfoResponseDto> response =
-                    restTemplate.getForEntity(authInfoUrl, AuthInfoResponseDto.class,
+                    restTemplate.getForEntity(
+                            urlTemplate,
+                            AuthInfoResponseDto.class,
                             username);
 
             if (response.getStatusCode().is4xxClientError()) {

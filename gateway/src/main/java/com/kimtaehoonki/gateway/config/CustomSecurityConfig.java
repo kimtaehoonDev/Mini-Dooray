@@ -60,6 +60,7 @@ public class CustomSecurityConfig {
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
                 .and()
+                .successHandler(authenticationSuccessHandler())
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
 

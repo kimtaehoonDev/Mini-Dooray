@@ -3,12 +3,15 @@ package com.kimtaehoonki.gateway.web.controller;
 import com.kimtaehoonki.gateway.web.service.MemberService;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
@@ -18,6 +21,7 @@ public class MemberController {
     public String loginForm() {
         return "login";
     }
+
 
     @GetMapping("/register")
     public String showRegisterForm(
@@ -33,6 +37,7 @@ public class MemberController {
         }
         Integer userId = memberService.register(requestDto);
 
-        return "redirect:/home";
+        return "redirect:/login";
     }
+
 }

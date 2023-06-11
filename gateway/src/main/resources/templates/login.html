@@ -6,6 +6,10 @@
 </head>
 <body>
 <h1>login</h1>
+<div th:if="${session.containsKey('ex')}">
+    <span th:text="${session.ex}"></span>
+    <th:block th:if="${session.ex != null}" th:inline="text">[[${#session.removeAttribute('ex')}]]</th:block>
+</div>
 <div class="container">
     <form action="/login" method="POST">
         <div>
@@ -18,10 +22,10 @@
         </div>
         <button type="submit" class="btn">로그인</button>
         <div>
-            <a th:href="@{/register}">회원가입</a>
+            <button type="button" th:onclick="|location.href='@{/register}'|">회원가입</button>
         </div>
         <div>
-            <a th:href="@{/oauth2/authorization/github}">login with Github</a>
+            <button type="button" th:onclick="|location.href='@{/oauth2/authorization/github}'|">login via github</button>
         </div>
     </form>
 </div>

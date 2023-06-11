@@ -11,4 +11,9 @@ public class HomeController {
         return "home";
     }
 
+    // TODO temp
+    @GetMapping("/loginHome")
+    public String loginHome() {
+        return "loginHome";
+    }
 }

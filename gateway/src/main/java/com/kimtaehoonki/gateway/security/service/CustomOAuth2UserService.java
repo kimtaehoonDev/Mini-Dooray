@@ -25,6 +25,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Slf4j
 @Service
@@ -88,13 +89,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
      * 데이터베이스에 해당 이메일의 사용자가 있다면 정보가져오기
      */
     private MemberSecurityDto generateDTO(String email) {
+        String oauthEmailUri = UriComponentsBuilder
+                .fromHttpUrl(authInfoUrl)
+                .queryParam("email", email)
+                .encode()
+                .toUriString();
+
         try {
             ResponseEntity<AuthInfoResponseDto> response =
-                    restTemplate.getForEntity(authInfoUrl, AuthInfoResponseDto.class,
+                    restTemplate.getForEntity(
+                            oauthEmailUri,
+                            AuthInfoResponseDto.class,
                             email);
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 AuthInfoResponseDto responseDto = response.getBody();
+
                 return new MemberSecurityDto(
                         email,
                         responseDto.getPassword(),
@@ -103,14 +113,12 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 );
             }
 
-            // TODO oauth 해당 이메일 사용자 없을 경우 /register 이동
-            if (response.getStatusCode().is4xxClientError()) {
-                throw new AuthenticationOAuth2UserNotFoundException("need to register");
-
-            }
-
             // RestTemplate 통신 오류
         } catch (RestClientException e) {
+            if (e.getMessage().startsWith("404")) {
+                throw new AuthenticationOAuth2UserNotFoundException("회원가입이 필요합니다", email);
+            }
+
             throw new AuthenticationRestTemplateException(e.getMessage(), e);
         }
 

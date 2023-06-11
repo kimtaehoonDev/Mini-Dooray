@@ -22,9 +22,10 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
+        log.info("onAuthenticationSuccess");
+
         HttpSession session = request.getSession(true);
-        String uuid = UUID.randomUUID().toString();
-        session.setAttribute(uuid, ((UserDetails)authentication.getPrincipal()).getUsername());
-        response.sendRedirect("/home");
+        session.setAttribute("memberId", ((UserDetails)authentication.getPrincipal()).getUsername());
+        response.sendRedirect("/loginHome");
     }
 }
