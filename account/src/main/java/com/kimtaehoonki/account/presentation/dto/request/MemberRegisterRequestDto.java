@@ -35,6 +35,6 @@ public class MemberRegisterRequestDto {
         return new Member(null,
             this.getUsername(), this.getName(), this.getEmail(),
             this.getPhoneNum(), this.getPassword(),
-            MemberStatus.SUBSCRIPTION, Authority.NORMAL);
+            MemberStatus.SUBSCRIPTION, Authority.USER);
     }
 }

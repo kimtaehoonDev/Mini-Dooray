@@ -47,8 +47,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public AuthInfo showAuthInfo(Integer memberId) {
-        AuthInfo authInfo = memberRepository.findById(memberId, AuthInfo.class)
+    public AuthInfo findMemberUsingUsername(String username) {
+        AuthInfo authInfo = memberRepository.findByUsername(username, AuthInfo.class)
             .orElseThrow(UserNotFoundException::new);
 
         if (authInfo.getStatus() == MemberStatus.DORMANCY) {

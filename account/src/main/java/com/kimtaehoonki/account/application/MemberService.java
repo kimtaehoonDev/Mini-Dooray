@@ -18,7 +18,7 @@ public interface MemberService {
      */
     MemberInfo findMember(Integer memberId);
 
-    AuthInfo showAuthInfo(Integer memberId);
+    AuthInfo findMemberUsingUsername(String username);
 
     AuthInfo findMemberUsingEmail(String email);
 }
