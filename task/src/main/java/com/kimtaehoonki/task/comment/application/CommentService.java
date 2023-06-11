@@ -4,7 +4,7 @@ import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto
 import java.util.List;
 
 public interface CommentService {
-    Long comment(String contents, Integer memberId);
+    Long comment(String contents, Integer memberId, Long taskId);
 
     List<CommentResponseDto> getCommentsInTask(Long taskId);
 

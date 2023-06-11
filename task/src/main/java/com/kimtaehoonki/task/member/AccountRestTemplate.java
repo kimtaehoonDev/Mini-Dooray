@@ -41,4 +41,28 @@ public class AccountRestTemplate {
         }
     }
 
+    public MemberResponseDto getMemberInfo(Integer memberId) {
+        URI uri = UriComponentsBuilder.fromUriString(ACCOUNT_SERVER_URL)
+            .path("/members/{id}")
+            .build()
+            .expand(memberId)
+            .toUri();
+
+        try {
+            ResponseEntity<MemberResponseDto> response = rt.getForEntity(uri, MemberResponseDto.class);
+            HttpStatus statusCode = response.getStatusCode();
+            if (statusCode == HttpStatus.OK) {
+                return response.getBody();
+            }
+            throw new RuntimeException("예상하지 못한 응답코드입니다");
+        } catch (HttpClientErrorException e) {
+            if (e.getStatusCode() == HttpStatus.NOT_FOUND) {
+                throw new MemberNotFoundException();
+            }
+        } catch (HttpServerErrorException e) {
+            throw new RuntimeException(e.getMessage());
+        }
+
+        throw new RuntimeException("예상하지 못한 에러");
+    }
 }

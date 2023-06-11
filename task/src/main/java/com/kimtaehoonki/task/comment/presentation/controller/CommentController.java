@@ -35,7 +35,8 @@ public class CommentController {
         @RequestBody RegisterCommentRequestDto requestDto,
         @CookieValue Integer memberId) {
         String contents = requestDto.getContents();
-        commentService.comment(contents, memberId);
+        Long taskId = requestDto.getTaskId();
+        commentService.comment(contents, memberId, taskId);
     }
 
     /**
