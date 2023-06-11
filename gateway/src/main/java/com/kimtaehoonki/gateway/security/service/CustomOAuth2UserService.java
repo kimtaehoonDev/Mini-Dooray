@@ -105,7 +105,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             if (response.getStatusCode().is2xxSuccessful()) {
                 AuthInfoResponseDto responseDto = response.getBody();
 
+                log.info("responseIs2xxSuccessful");
+
                 return new MemberSecurityDto(
+                        responseDto.getId(),
                         email,
                         responseDto.getPassword(),
                         Collections.singleton(

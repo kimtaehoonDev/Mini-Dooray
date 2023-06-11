@@ -2,8 +2,11 @@ package com.kimtaehoonki.gateway.security.handler;
 
 import com.kimtaehoonki.gateway.security.exception.AuthenticationOAuth2UserNotFoundException;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationRestTemplateException;
+import com.kimtaehoonki.gateway.utils.CookieUtils;
 import java.io.IOException;
+import java.net.URLEncoder;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,17 +23,18 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
             throws IOException, ServletException {
         log.info("CustomAuthenticationEntryPoint");
 
-        HttpSession session = request.getSession(true);
+        String message = CookieUtils.removeInvalidCharacter(exception.getMessage());
+        Cookie ex = new Cookie("ex", message);
+        ex.setPath("/");
+        response.addCookie(ex);
 
         if (exception instanceof InternalAuthenticationServiceException) {
             log.info("InternalAuthenticationServiceException");
-            session.setAttribute("ex", exception.getMessage());
             response.sendRedirect("/login");
             return;
         }
 
         if (exception instanceof AuthenticationRestTemplateException) {
-            session.setAttribute("ex", exception.getMessage());
             response.sendRedirect("/login");
             return;
 
@@ -38,15 +42,15 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
 
         if (exception instanceof AuthenticationOAuth2UserNotFoundException) {
             log.info("AuthenticationOAuth2UserNotFoundException");
-            session.setAttribute("ex", exception.getMessage());
-            session.setAttribute("email",
+            Cookie email = new Cookie("email",
                     ((AuthenticationOAuth2UserNotFoundException) exception).getEmail());
+            email.setPath("/");
+            response.addCookie(email);
             response.sendRedirect("/register");
             return;
         }
 
 
-        session.setAttribute("ex", "fail to login");
         response.sendRedirect("/login");
     }
 }

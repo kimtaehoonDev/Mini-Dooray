@@ -16,9 +16,10 @@ public class MemberSecurityDto extends User implements OAuth2User {
     private String password;
     private Map<String, Object> props; // 소셜 로그인 정보
 
-    public MemberSecurityDto(String username, String password,
+    public MemberSecurityDto(Integer id, String username, String password,
                              Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
+        this.id = id;
         this.username = username;
         this.password = password;
     }

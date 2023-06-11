@@ -6,9 +6,8 @@
 </head>
 <body>
 <h1>login</h1>
-<div th:if="${session.containsKey('ex')}">
-    <span th:text="${session.ex}"></span>
-    <th:block th:if="${session.ex != null}" th:inline="text">[[${#session.removeAttribute('ex')}]]</th:block>
+<div th:if="${ex != null}">
+    <span th:text="${ex}"></span>
 </div>
 <div class="container">
     <form action="/login" method="POST">

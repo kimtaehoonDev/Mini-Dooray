@@ -6,9 +6,8 @@
 </head>
 <body>
 <h2>회원가입</h2>
-<div th:if="${session.containsKey('ex')}">
-    <span th:text="${session.ex}"></span>
-    <th:block th:if="${session.ex != null}" th:inline="text">[[${#session.removeAttribute('ex')}]]</th:block>
+<div th:if="${ex != null}">
+    <span th:text="${ex}"></span>
 </div>
 
 <div>
@@ -26,15 +25,15 @@
             <input type="text" th:field="*{name}" class="form-control">
         </div>
 
-        <div th:if="${session.email == null}">
+        <div th:if="${email == null}">
             <label th:for="email">이메일</label>
 
             <input type="text" th:field="*{email}" class="form-control">
 
         </div>
-        <div th:if="${session.email != null}">
+        <div th:if="${email != null}">
             <label th:for="email">이메일</label>
-            <span th:text="${session.email}"></span>
+            <span th:text="${email}"></span>
 
         </div>
         <div>

@@ -5,9 +5,10 @@
     <title>로그인 성공</title>
 </head>
 <body>
+<h2 th:text="|${username}님 반갑습니다|"></h2>
 
 <div>
-  <button class="btn-project-list" type="button" th:onclick="|location.href='@{/project/list'}|">
+  <button class="btn-project-list" type="button" th:onclick="|location.href='@{/project/list}'|">
     프로젝트 목록
   </button>
 </div>

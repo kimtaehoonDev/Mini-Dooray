@@ -52,6 +52,7 @@ public class CustomUserDetailsService
                 AuthInfoResponseDto responseDto = response.getBody();
 
                 return new MemberSecurityDto(
+                        responseDto.getId(),
                         username,
                         responseDto.getPassword(),
                         Collections.singleton(

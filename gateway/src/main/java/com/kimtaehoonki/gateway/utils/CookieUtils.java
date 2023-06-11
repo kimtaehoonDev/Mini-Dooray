@@ -2,12 +2,34 @@ package com.kimtaehoonki.gateway.utils;
 
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Objects;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.springframework.util.SerializationUtils;
 
-public class CookieUtil {
+public class CookieUtils {
+    public static Cookie getCookie(HttpServletRequest request, String cookieName) {
+        if (Objects.isNull(request.getCookies())) {
+            return null;
+        }
+
+        return Arrays.stream(request.getCookies())
+                .filter(cookie -> cookie.getName().equals(cookieName))
+                .findFirst().orElse(null);
+    }
+
+    public static String getCookieValueAsString(HttpServletRequest request, String cookieName) {
+        Cookie cookie = getCookie(request, cookieName);
+
+        if (Objects.isNull(cookie)) {
+            return null;
+        }
+
+        return cookie.getValue();
+    }
+
+
     // 요청 값(이름, 값, 만료기간)을 바탕으로 쿠키 추가
     public static void addCookie(HttpServletResponse resp, String name, String value, int maxAge) {
         Cookie cookie = new Cookie(name, value);
@@ -46,5 +68,11 @@ public class CookieUtil {
                         Base64.getUrlDecoder().decode(cookie.getValue())
                 )
         );
+    }
+
+    public static String removeInvalidCharacter(String input) {
+        return input.replace(";", "").replace(",", "")
+                .replace("=", "").replace(" ", "_")
+                .replace("\"", "");
     }
 }

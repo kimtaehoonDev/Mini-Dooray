@@ -22,6 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 public class CustomSecurityConfig {
     private final CustomOAuth2UserService customOAuth2UserService;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomLoginSuccessHandler customLoginSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -46,13 +47,14 @@ public class CustomSecurityConfig {
                 .formLogin()
                 .loginPage("/login")
                 .loginProcessingUrl("/login")
-                .successHandler(authenticationSuccessHandler())
+                .successHandler(customLoginSuccessHandler)
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
 
                 .logout()
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true)
+                .deleteCookies("KING")
                 .and()
 
                 .oauth2Login()
@@ -60,7 +62,7 @@ public class CustomSecurityConfig {
                 .userInfoEndpoint()
                 .userService(customOAuth2UserService)
                 .and()
-                .successHandler(authenticationSuccessHandler())
+                .successHandler(customLoginSuccessHandler)
                 .failureHandler(new CustomAuthenticationFailureHandler())
                 .and()
 
@@ -69,8 +71,4 @@ public class CustomSecurityConfig {
                 .build();
     }
 
-    @Bean
-    public AuthenticationSuccessHandler authenticationSuccessHandler() {
-        return new CustomLoginSuccessHandler(passwordEncoder());
-    }
 }
