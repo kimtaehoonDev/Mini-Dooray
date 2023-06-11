@@ -2,9 +2,7 @@ package com.kimtaehoonki.task.comment.application;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
@@ -28,13 +26,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -48,13 +44,8 @@ class CommentServiceImplTest {
     @Mock
     private AccountRestTemplate accountRt;
 
+    @InjectMocks
     CommentServiceImpl commentService;
-
-    @BeforeEach
-    void beforeEach() {
-        commentService = new CommentServiceImpl(commentRepository, taskRepository, accountRt);
-
-    }
 
     @Test
     void 댓글을_작성한다() throws NoSuchFieldException, IllegalAccessException {
@@ -136,7 +127,6 @@ class CommentServiceImplTest {
             commentService.updateComment(1L, "변경내용", 1))
             .isInstanceOf(CommentNotFoundException.class);
         verify(commentRepository, times(1)).findById(any());
-
     }
 
     @Test
@@ -150,6 +140,44 @@ class CommentServiceImplTest {
             .isInstanceOf(AuthorizedException.class);
 
         verify(commentRepository, times(1)).findById(any());
+    }
+
+    @Test
+    void 댓글을_삭제한다() throws NoSuchFieldException, IllegalAccessException {
+        int writerId = 1;
+        Comment comment = makeTestComment(1L, null, writerId, null, "ㅇ");
+        when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+
+        commentService.deleteComment(1L, writerId);
+
+        verify(commentRepository, times(1)).findById(1L);
+        verify(commentRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void 댓글삭제시_댓글이_존재하지_않으면_예외를_반환한다() {
+        when(commentRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() ->
+            commentService.deleteComment(1L, 1))
+            .isInstanceOf(CommentNotFoundException.class);
+        verify(commentRepository, times(1)).findById(any());
+        verify(commentRepository, never()).delete(any());
+
+    }
+
+    @Test
+    void 댓글을_작성하지_않은_사람이_삭제를_시도하면_예외를_반환한다() throws NoSuchFieldException, IllegalAccessException {
+        int writerId = 1;
+        Comment comment = makeTestComment(1L, null, writerId, null, "ㅇ");
+        when(commentRepository.findById(any())).thenReturn(Optional.of(comment));
+
+        assertThatThrownBy(() ->
+            commentService.deleteComment(1L, writerId + 1))
+            .isInstanceOf(AuthorizedException.class);
+
+        verify(commentRepository, times(1)).findById(any());
+        verify(commentRepository, never()).delete(any());
     }
 
     private CommentResponseDto makeTestCommentResponseDto(Long commentId, Integer writerId,

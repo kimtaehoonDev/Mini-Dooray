@@ -56,9 +56,9 @@ public class CommentServiceImpl implements CommentService {
     @Transactional
     public void deleteComment(Long commentId, Integer writerId) {
         Comment comment = commentRepository.findById(commentId)
-            .orElseThrow(() -> new IllegalArgumentException("TODO .. Comment가 존재하지 않습니다"));
+            .orElseThrow(CommentNotFoundException::new);
         if (!comment.isWritten(writerId)) {
-            throw new IllegalArgumentException("TODO... Comment 작성자 아닙니다");
+            throw new AuthorizedException();
         }
         commentRepository.delete(comment);
     }
