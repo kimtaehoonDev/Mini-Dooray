@@ -3,6 +3,7 @@ package com.kimtaehoonki.task.comment.application;
 import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
+import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.task.domain.Task;
@@ -26,7 +27,7 @@ public class CommentServiceImpl implements CommentService {
         MemberResponseDto memberInfo = accountRt.getMemberInfo(memberId);
 
         Task task = taskRepository.findById(taskId)
-            .orElseThrow(() -> new IllegalArgumentException("TODO.. Task가 존재하지 않습니다"));
+            .orElseThrow(TaskNotFoundException::new);
 
         Comment savedComment = commentRepository.save(Comment.create(task, memberId,
             memberInfo.getName(), contents));
