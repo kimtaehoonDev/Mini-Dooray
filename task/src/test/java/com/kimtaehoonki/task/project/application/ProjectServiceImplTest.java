@@ -19,7 +19,6 @@ import com.kimtaehoonki.task.exception.impl.ProjectNameDuplicateException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
-import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
 import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
@@ -38,8 +37,6 @@ class ProjectServiceImplTest {
     ProjectRepository projectRepository;
     @MockBean
     MemberInProjectRepository memberInProjectRepository;
-    @MockBean
-    MemberInProjectQueryRepository memberInProjectQueryRepository;
     @MockBean
     AccountRestTemplate accountRt;
 
@@ -105,7 +102,7 @@ class ProjectServiceImplTest {
 
         verify(accountRt, times(1))
             .validateMemberExists(anyInt());
-        verify(memberInProjectQueryRepository, times(1))
+        verify(memberInProjectRepository, times(1))
             .findProjectsPreviewsUsingMemberId(anyInt());
     }
 
@@ -117,7 +114,7 @@ class ProjectServiceImplTest {
         assertThatThrownBy(() ->
             projectService.showProjectsPreviewsBelongsToMember(1)
         ).isInstanceOf(MemberNotFoundException.class);
-        verify(memberInProjectQueryRepository, never()).findProjectsPreviewsUsingMemberId(anyInt());
+        verify(memberInProjectRepository, never()).findProjectsPreviewsUsingMemberId(anyInt());
     }
 
     @Test

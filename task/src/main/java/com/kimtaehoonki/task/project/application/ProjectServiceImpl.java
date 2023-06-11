@@ -9,7 +9,6 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
-import com.kimtaehoonki.task.project.domain.MemberInProjectQueryRepository;
 import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
@@ -27,7 +26,6 @@ public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
     private final MemberInProjectRepository memberInProjectRepository;
-    private final MemberInProjectQueryRepository memberInProjectQueryRepository;
     private final AccountRestTemplate accountRt;
 
     /**
@@ -61,7 +59,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public List<ProjectPreview> showProjectsPreviewsBelongsToMember(Integer memberId) {
         accountRt.validateMemberExists(memberId);
-        return memberInProjectQueryRepository.findProjectsPreviewsUsingMemberId(memberId);
+        return memberInProjectRepository.findProjectsPreviewsUsingMemberId(memberId);
     }
 
     /**
