@@ -21,6 +21,7 @@ public class CommentServiceImpl implements CommentService {
     private final AccountRestTemplate accountRt;
 
     @Override
+    @Transactional
     public Long comment(String contents, Integer memberId, Long taskId) {
         MemberResponseDto memberInfo = accountRt.getMemberInfo(memberId);
 
@@ -38,8 +39,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void updateComment(Long commentId, String contents, Integer writerId) {
-        // 권한을 확인한다
         Comment comment = commentRepository.findById(commentId)
             .orElseThrow(() -> new IllegalArgumentException("TODO .. Comment가 존재하지 않습니다"));
         if (!comment.isWritten(writerId)) {
@@ -49,8 +50,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteComment(Long commentId, Integer memberId) {
-        // 권한을 확인한다
-
+    @Transactional
+    public void deleteComment(Long commentId, Integer writerId) {
+        Comment comment = commentRepository.findById(commentId)
+            .orElseThrow(() -> new IllegalArgumentException("TODO .. Comment가 존재하지 않습니다"));
+        if (!comment.isWritten(writerId)) {
+            throw new IllegalArgumentException("TODO... Comment 작성자 아닙니다");
+        }
+        commentRepository.delete(comment);
     }
 }

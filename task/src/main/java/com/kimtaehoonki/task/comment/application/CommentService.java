@@ -8,7 +8,7 @@ public interface CommentService {
 
     List<CommentResponseDto> getCommentsInTask(Long taskId);
 
-    void updateComment(Long commentId, String contents, Integer memberId);
+    void updateComment(Long commentId, String contents, Integer writerId);
 
-    void deleteComment(Long commentId, Integer memberId);
+    void deleteComment(Long commentId, Integer writerId);
 }
