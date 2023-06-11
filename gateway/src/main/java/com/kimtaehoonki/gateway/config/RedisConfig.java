@@ -12,19 +12,19 @@ import org.springframework.session.data.redis.config.annotation.web.http.EnableR
 @Configuration
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
 public class RedisConfig {
-    @Value("${spring.redis.database")
+    @Value("${spring.redis.database}")
     private String database;
 
-    @Value("${spring.redis.host")
+    @Value("${spring.redis.host}")
     private String host;
 
-    @Value("${spring.redis.port")
+    @Value("${spring.redis.port}")
     private String port;
 
-    @Value("${spring.redis.password")
+    @Value("${spring.redis.password}")
     private String password;
 
-    @Value("${spring.redis.timeout")
+    @Value("${spring.redis.timeout}")
     private String timeout;
 
 
