@@ -28,7 +28,7 @@ public class Milestone {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "milestone_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -39,4 +39,9 @@ public class Milestone {
     private LocalDate startDate;
 
     private LocalDate endDate;
+
+    public static Milestone create(Project project, String name, LocalDate startDate,
+                                   LocalDate endDate) {
+        return new Milestone(null, project, name, startDate, endDate);
+    }
 }

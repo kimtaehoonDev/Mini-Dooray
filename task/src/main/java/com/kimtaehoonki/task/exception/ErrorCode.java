@@ -13,6 +13,7 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND("해당되는 멤버를 찾을 수 없습니다"),
     TASK_NOT_FOUND("존재하지 않는 태스크입니다"),
     TAG_NOT_FOUND("존재하지 않는 태그입니다"),
+    MILESTONE_NOT_FOUND("존재하지 않는 마일스톤입니다"),
     COMMENT_NOT_FOUND("존재하지_않는_댓글입니다");
 
     private String message;
