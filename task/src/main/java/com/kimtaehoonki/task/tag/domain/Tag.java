@@ -4,6 +4,8 @@ import com.kimtaehoonki.task.colorcode.ColorCode;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,8 +37,8 @@ public class Tag {
 
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "color_id")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "color_id")
     private ColorCode colorCode;
 
     public static Tag create(Project project, String name, ColorCode colorCode) {
