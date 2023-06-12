@@ -12,6 +12,7 @@ public enum ErrorCode {
     ALREADY_PROJECT_MEMBER("이미 해당 프로젝트에 소속된 멤버입니다"),
     MEMBER_NOT_FOUND("해당되는 멤버를 찾을 수 없습니다"),
     TASK_NOT_FOUND("존재하지 않는 태스크입니다"),
+    TAG_NOT_FOUND("존재하지 않는 태그입니다"),
     COMMENT_NOT_FOUND("존재하지_않는_댓글입니다");
 
     private String message;
