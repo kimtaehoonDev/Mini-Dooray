@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
 import com.kimtaehoonki.task.milestone.presentation.dto.RegisterMilestoneRequestDto;
@@ -38,8 +39,9 @@ class MilestoneServiceImplTest {
     @Test
     void 마일스톤을_등록한다() throws NoSuchFieldException, IllegalAccessException {
         Project project = Project.make(1, null, null);
-        Milestone milestone = Milestone.create(project, "", LocalDate.now(),
-            LocalDate.of(2023, 10, 10));
+        Milestone milestone = Milestone.create(project, "",
+            LocalDate.of(2023, 9, 1),
+            LocalDate.of(2023, 10, 1));
 
         Class<Milestone> milestoneClazz = Milestone.class;
         Field idField = milestoneClazz.getDeclaredField("id");
@@ -50,7 +52,9 @@ class MilestoneServiceImplTest {
         when(milestoneRepository.save(any())).thenReturn(milestone);
 
         Long registeredId = milestoneService.registerMilestone(
-            new RegisterMilestoneRequestDto("야야", 1L, null, null));
+            new RegisterMilestoneRequestDto("야야", 1L,
+                LocalDate.of(2023, 9, 1),
+                LocalDate.of(2023, 10, 1)));
 
         assertThat(registeredId).isEqualTo(10L);
         verify(projectRepository, times(1)).findById(any());
@@ -63,7 +67,9 @@ class MilestoneServiceImplTest {
 
         assertThatThrownBy(() ->
             milestoneService.registerMilestone(
-                new RegisterMilestoneRequestDto("야야", 1L, null, null)
+                new RegisterMilestoneRequestDto("야야", 1L,
+                    LocalDate.of(2023, 9, 1),
+                    LocalDate.of(2023, 10, 1))
             ))
             .isInstanceOf(ProjectNotFoundException.class);
 
@@ -72,8 +78,20 @@ class MilestoneServiceImplTest {
     }
 
     @Test
+    void 종료일이_시작일보다_빠르면_예외를_반환한다() {
+        assertThatThrownBy(() ->
+            milestoneService.registerMilestone(
+                new RegisterMilestoneRequestDto("야야", 1L,
+                    LocalDate.of(2023, 9, 1),
+                    LocalDate.of(2010, 10, 10))
+            ))
+            .isInstanceOf(StartDateLaterThanEndDateException.class);
+    }
+
+    @Test
     void 마일스톤을_삭제한다() {
-        Milestone milestone = Milestone.create(null, "", LocalDate.now(),
+        Milestone milestone = Milestone.create(null, "",
+            LocalDate.of(2023,9,10),
             LocalDate.of(2023, 10, 10));
 
         when(milestoneRepository.findById(any())).thenReturn(Optional.of(milestone));

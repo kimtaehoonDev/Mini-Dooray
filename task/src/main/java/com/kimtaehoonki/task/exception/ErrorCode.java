@@ -14,7 +14,8 @@ public enum ErrorCode {
     TASK_NOT_FOUND("존재하지 않는 태스크입니다"),
     TAG_NOT_FOUND("존재하지 않는 태그입니다"),
     MILESTONE_NOT_FOUND("존재하지 않는 마일스톤입니다"),
-    COMMENT_NOT_FOUND("존재하지_않는_댓글입니다");
+    COMMENT_NOT_FOUND("존재하지_않는_댓글입니다"),
+    START_DATE_LATER_THAN_END_DATE("시작일은 종료일보다 빨라야 합니다");
 
     private String message;
 

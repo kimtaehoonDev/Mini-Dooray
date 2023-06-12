@@ -2,11 +2,13 @@ package com.kimtaehoonki.task.milestone.application;
 
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
 import com.kimtaehoonki.task.milestone.presentation.dto.RegisterMilestoneRequestDto;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,12 +23,17 @@ public class MilestoneServiceImpl implements MilestoneService {
     @Override
     @Transactional
     public Long registerMilestone(RegisterMilestoneRequestDto dto) {
-        // TODO 시작-끝 날짜 검증
+        LocalDate startDate = dto.getStartDate();
+        LocalDate endDate = dto.getEndDate();
+
+        if (startDate.isAfter(endDate)) {
+            throw new StartDateLaterThanEndDateException();
+        }
         Project project = projectRepository.findById(dto.getProjectId())
             .orElseThrow(ProjectNotFoundException::new);
 
         Milestone milestone =
-            Milestone.create(project, dto.getName(), dto.getStartDate(), dto.getEndDate());
+            Milestone.create(project, dto.getName(), startDate, endDate);
         Milestone savedMilestone = milestoneRepository.save(milestone);
         return savedMilestone.getId();
     }
