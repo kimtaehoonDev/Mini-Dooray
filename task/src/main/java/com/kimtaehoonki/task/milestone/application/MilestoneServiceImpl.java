@@ -21,6 +21,7 @@ public class MilestoneServiceImpl implements MilestoneService {
     @Override
     @Transactional
     public Long registerMilestone(RegisterMilestoneRequestDto dto) {
+        // TODO 시작-끝 날짜 검증
         Project project = projectRepository.findById(dto.getProjectId())
             .orElseThrow(ProjectNotFoundException::new);
 
