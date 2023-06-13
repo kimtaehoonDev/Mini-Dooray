@@ -1,7 +1,7 @@
 package com.kimtaehoonki.task.tagtask;
 
-import com.kimtaehoonki.task.task.Task;
-import com.kimtaehoonki.task.tag.Tag;
+import com.kimtaehoonki.task.task.domain.Task;
+import com.kimtaehoonki.task.tag.domain.Tag;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입</title>
+</head>
+<body>
+<h2>회원가입</h2>
+<div th:if="${ex != null}">
+    <span th:text="${ex}"></span>
+</div>
+
+<div>
+    <form th:object="${requestDto}" th:action="@{/register}" method="POST">
+        <div>
+            <label th:for="username">아이디</label>
+            <input type="text" th:field="*{username}" class="form-control">
+        </div>
+        <div>
+            <label th:for="password">비밀번호</label>
+            <input type="password" th:field="*{password}" class="form-control">
+        </div>
+        <div>
+            <label th:for="name">이름</label>
+            <input type="text" th:field="*{name}" class="form-control">
+        </div>
+
+        <div th:if="${email == null}">
+            <label th:for="email">이메일</label>
+
+            <input type="text" th:field="*{email}" class="form-control">
+
+        </div>
+        <div th:if="${email != null}">
+            <label th:for="email">이메일</label>
+            <span th:text="${email}"></span>
+
+        </div>
+        <div>
+            <label th:for="phoneNum">전화번호</label>
+            <input type="text" th:field="*{phoneNum}" class="form-control">
+        </div>
+        <button type="submit">회원가입</button>
+    </form>
+
+</div>
+</body>
+</html>

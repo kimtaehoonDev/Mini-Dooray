@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.taskmanager;
 
-import com.kimtaehoonki.task.task.Task;
+import com.kimtaehoonki.task.task.domain.Task;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

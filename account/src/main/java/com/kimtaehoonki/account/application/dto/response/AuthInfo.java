@@ -1,15 +1,13 @@
 package com.kimtaehoonki.account.application.dto.response;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import com.kimtaehoonki.account.domain.Authority;
+import com.kimtaehoonki.account.domain.MemberStatus;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class AuthInfo {
-    @Getter
-    private Integer memberId;
+public interface AuthInfo {
+    Integer getId();
+    String getPassword();
 
-    public static AuthInfo of(AuthInfoServiceResponseDto dto) {
-        return new AuthInfo(dto.getId());
-    }
+    MemberStatus getStatus();
+
+    Authority getAuthority();
 }

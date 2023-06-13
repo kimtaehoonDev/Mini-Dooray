@@ -1,5 +1,5 @@
 ### init - 회원가입 성공
-POST localhost:9091/users
+POST localhost:9091/members
 Content-Type: application/json
 
 {
@@ -11,10 +11,10 @@ Content-Type: application/json
 }
 
 ### 회원 조회 성공 - 계정이 존재하는 경우
-GET localhost:9091/users/1
+GET localhost:9091/members/1
 
 ### 회원 조회 실패 - 계정이 없는 경우
-GET localhost:9091/users/123123
+GET localhost:9091/members/123123
 
 ### 회원 조회 실패 - 정수 이외의 숫자가 들어온 경우
-GET localhost:9091/users/ds
+GET localhost:9091/members/ds
