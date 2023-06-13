@@ -4,7 +4,7 @@ import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectI
 
 public interface TagService {
 
-    Long registerTag(String name, Long projectId);
+    Long registerTag(String name, Long projectId, Integer memberId);
 
     void deleteTag(Long tagId);
 
