@@ -112,10 +112,13 @@ class TagServiceImplTest {
 
     @Test
     void 태그를_삭제한다() {
-        Tag tag = Tag.create(null, "dsds", ColorCode.BLUE);
+        Tag tag = Tag.create(Project.make(1, null, null),
+            "dsds", ColorCode.BLUE);
 
         when(tagRepository.findById(any())).thenReturn(Optional.of(tag));
-        tagService.deleteTag(10L);
+        when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
+            .thenReturn(true);
+        tagService.deleteTag(10L, 1);
 
         verify(tagRepository, times(1)).findById(any());
         verify(tagRepository, times(1)).delete(any());
@@ -126,7 +129,7 @@ class TagServiceImplTest {
         when(tagRepository.findById(1L)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() ->
-            tagService.deleteTag(1L))
+            tagService.deleteTag(1L, 1))
             .isInstanceOf(TagNotFoundException.class);
         verify(tagRepository, times(1)).findById(any());
         verify(tagRepository, never()).delete(any());

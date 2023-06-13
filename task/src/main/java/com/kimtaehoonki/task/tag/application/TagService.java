@@ -6,7 +6,7 @@ public interface TagService {
 
     Long registerTag(String name, Long projectId, Integer memberId);
 
-    void deleteTag(Long tagId);
+    void deleteTag(Long tagId, Integer memberId);
 
     GetTagsByProjectIdResponseDto getTagsByProjectId(Long projectId);
 }

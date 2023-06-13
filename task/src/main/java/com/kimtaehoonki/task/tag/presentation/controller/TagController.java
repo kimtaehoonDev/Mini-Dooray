@@ -37,7 +37,8 @@ public class TagController {
      *
      */
     @DeleteMapping("/tags/{id}")
-    public void deleteTag(@PathVariable("id") Long tagId) {
-        tagService.deleteTag(tagId);
+    public void deleteTag(@PathVariable("id") Long tagId,
+                          @CookieValue Integer memberId) {
+        tagService.deleteTag(tagId, memberId);
     }
 }

@@ -50,9 +50,18 @@ public class TagServiceImpl implements TagService {
 
     @Override
     @Transactional
-    public void deleteTag(Long tagId) {
+    public void deleteTag(Long tagId, Integer memberId) {
+        accountRt.validateMemberExists(memberId);
+
         Tag tag = tagRepository.findById(tagId)
             .orElseThrow(TagNotFoundException::new);
+
+        boolean isMemberInProject =
+            memberInProjectRepository.existsByProject_idAndMemberId(tag.getProject().getId(), memberId);
+        if (!isMemberInProject) {
+            throw new AuthorizedException();
+        }
+
         tagRepository.delete(tag);
     }
 
