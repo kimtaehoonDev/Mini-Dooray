@@ -41,16 +41,11 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    void 아이디로_조회할수_있다() throws NoSuchFieldException, IllegalAccessException {
+    void 아이디로_조회할수_있다() {
         Project project = Project.make(1, "hello", null);
-
-        Class<Project> projectClazz = Project.class;
-        Field idField = projectClazz.getDeclaredField("id");
-        idField.setAccessible(true);
-        idField.set(project, 1L);
         projectRepository.save(project);
 
-        ProjectDetail projectDetail = projectRepository.findById(1L, ProjectDetail.class)
+        ProjectDetail projectDetail = projectRepository.findById(project.getId(), ProjectDetail.class)
             .get();
         assertThat(projectDetail.getName()).isEqualTo("hello");
     }
