@@ -1,7 +1,6 @@
 package com.kimtaehoonki.task.comment.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.kimtaehoonki.task.TestConfig;
 import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;

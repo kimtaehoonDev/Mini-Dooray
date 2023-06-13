@@ -5,6 +5,7 @@ import com.kimtaehoonki.task.tag.presentation.dto.DeleteTagResponseDto;
 import com.kimtaehoonki.task.tag.presentation.dto.RegisterTagRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +25,11 @@ public class TagController {
      */
     @PostMapping("/tags")
     @ResponseStatus(HttpStatus.CREATED)
-    public void registerTag(@RequestBody RegisterTagRequestDto dto) {
+    public void registerTag(@RequestBody RegisterTagRequestDto dto,
+                            @CookieValue Integer memberId) {
         String name = dto.getName();
         Long projectId = dto.getProjectId();
-        tagService.registerTag(name, projectId);
+        tagService.registerTag(name, projectId, memberId);
     }
 
     /**
@@ -35,7 +37,8 @@ public class TagController {
      *
      */
     @DeleteMapping("/tags/{id}")
-    public void deleteTag(@PathVariable("id") Long tagId) {
-        tagService.deleteTag(tagId);
+    public void deleteTag(@PathVariable("id") Long tagId,
+                          @CookieValue Integer memberId) {
+        tagService.deleteTag(tagId, memberId);
     }
 }
