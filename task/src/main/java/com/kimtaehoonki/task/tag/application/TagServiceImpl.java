@@ -5,9 +5,12 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
+import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.utils.ColorGenerator;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,5 +41,11 @@ public class TagServiceImpl implements TagService {
         Tag tag = tagRepository.findById(tagId)
             .orElseThrow(TagNotFoundException::new);
         tagRepository.delete(tag);
+    }
+
+    @Override
+    public GetTagsByProjectIdResponseDto getTagsByProjectId(Long projectId) {
+        List<TagResponseDto> tags = tagRepository.findAllByProject_id(projectId);
+        return new GetTagsByProjectIdResponseDto(tags);
     }
 }

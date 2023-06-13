@@ -8,6 +8,7 @@ import com.kimtaehoonki.task.project.presentation.dto.request.CreateProjectReque
 import com.kimtaehoonki.task.project.presentation.dto.response.CreateProjectResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectId;
 import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
+import com.kimtaehoonki.task.tag.application.TagService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ProjectController {
     private final ProjectService projectService;
+    private final TagService tagService;
 
     /**
      * 프로젝트를 만든다.
@@ -104,8 +106,7 @@ public class ProjectController {
      */
     @GetMapping("/projects/{id}/tags")
     public GetTagsByProjectIdResponseDto getTagsByProject(@PathVariable("id") Long projectId) {
-        // TODO 태그 관련한 패키지가 만들어진 이후 작업할 예정입니다
-        return null;
+        return tagService.getTagsByProjectId(projectId);
     }
 
     /**
