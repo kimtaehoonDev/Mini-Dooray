@@ -7,6 +7,7 @@ import com.kimtaehoonki.task.milestone.presentation.dto.RegisterMilestoneRespons
 import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,22 +23,23 @@ public class MilestoneController {
 
     /**
      * 마일스톤을 등록한다.
-     *
      */
     @PostMapping("/milestones")
     @ResponseStatus(HttpStatus.CREATED)
     public void registerMilestone(
-            @RequestBody RegisterMilestoneRequestDto dto) {
-        milestoneService.registerMilestone(dto);
+        @RequestBody RegisterMilestoneRequestDto dto,
+        @CookieValue Integer memberId) {
+        milestoneService.registerMilestone(dto, memberId);
     }
 
     /**
      * 마일스톤을 삭제한다.
-     *
      */
     @DeleteMapping("/milestones/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteMilestone(@PathVariable("id") Long milestoneId) {
+    public void deleteMilestone(@PathVariable("id") Long milestoneId,
+                                @CookieValue Integer memberId) {
+        // TODO memberId 추가하기
         milestoneService.deleteMilestone(milestoneId);
     }
 }
