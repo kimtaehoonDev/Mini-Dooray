@@ -39,7 +39,6 @@ public class MilestoneController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteMilestone(@PathVariable("id") Long milestoneId,
                                 @CookieValue Integer memberId) {
-        // TODO memberId 추가하기
-        milestoneService.deleteMilestone(milestoneId);
+        milestoneService.deleteMilestone(milestoneId, memberId);
     }
 }

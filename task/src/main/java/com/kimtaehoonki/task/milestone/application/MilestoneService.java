@@ -5,7 +5,7 @@ import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectIdRe
 
 public interface MilestoneService {
     Long registerMilestone(RegisterMilestoneRequestDto dto, Integer memberId);
-    void deleteMilestone(Long milestoneId);
+    void deleteMilestone(Long milestoneId, Integer memberId);
 
     GetMilestonesByProjectIdResponseDto getMilestonesByProjectId(Long projectId);
 }

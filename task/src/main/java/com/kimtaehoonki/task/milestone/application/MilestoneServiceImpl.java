@@ -57,9 +57,21 @@ public class MilestoneServiceImpl implements MilestoneService {
 
     @Override
     @Transactional
-    public void deleteMilestone(Long milestoneId) {
+    public void deleteMilestone(Long milestoneId, Integer memberId) {
+        accountRt.validateMemberExists(memberId);
+
         Milestone milestone = milestoneRepository.findById(milestoneId)
             .orElseThrow(MilestoneNotFoundException::new);
+
+        Long projectId = milestone.getProject().getId();
+        Project project = projectRepository.findById(projectId)
+            .orElseThrow(ProjectNotFoundException::new);
+        boolean isMemberInProject =
+            memberInProjectRepository.existsByProject_idAndMemberId(project.getId(), memberId);
+        if (!isMemberInProject) {
+            throw new AuthorizedException();
+        }
+
         milestoneRepository.delete(milestone);
     }
 

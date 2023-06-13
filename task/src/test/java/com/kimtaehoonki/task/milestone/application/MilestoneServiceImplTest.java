@@ -135,16 +135,37 @@ class MilestoneServiceImplTest {
 
     @Test
     void 마일스톤을_삭제한다() {
-        Milestone milestone = Milestone.create(null, "",
+        Project project = Project.make(1, null, null);
+
+        Milestone milestone = Milestone.create(project, "",
             LocalDate.of(2023,9,10),
             LocalDate.of(2023, 10, 10));
 
         when(milestoneRepository.findById(any())).thenReturn(Optional.of(milestone));
+        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+        when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
+            .thenReturn(true);
 
-        milestoneService.deleteMilestone(10L);
+        milestoneService.deleteMilestone(10L, 1);
 
         verify(milestoneRepository, times(1)).findById(any());
         verify(milestoneRepository, times(1)).delete(any());
+    }
+
+    @Test
+    void 마일스톤을_삭제할때_해당_프로젝트에_소속된_사람이_아니면_예외를_반환한다() {
+        Project project = Project.make(1, null, null);
+        Milestone milestone = Milestone.create(project, "",
+            LocalDate.of(2023,9,10),
+            LocalDate.of(2023, 10, 10));
+
+        when(milestoneRepository.findById(any())).thenReturn(Optional.of(milestone));
+        when(projectRepository.findById(any())).thenReturn(Optional.of(project));
+        when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
+            .thenReturn(false);
+
+        assertThatThrownBy(() -> milestoneService.deleteMilestone(10L, 1))
+            .isInstanceOf(AuthorizedException.class);
     }
 
     @Test
@@ -152,7 +173,7 @@ class MilestoneServiceImplTest {
         when(milestoneRepository.findById(any())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() ->
-            milestoneService.deleteMilestone(1L))
+            milestoneService.deleteMilestone(1L, 1))
             .isInstanceOf(MilestoneNotFoundException.class);
 
         verify(milestoneRepository, times(1)).findById(any());
