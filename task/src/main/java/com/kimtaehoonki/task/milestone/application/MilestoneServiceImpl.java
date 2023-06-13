@@ -5,10 +5,13 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
+import com.kimtaehoonki.task.milestone.dto.MilestoneResponseDto;
 import com.kimtaehoonki.task.milestone.presentation.dto.RegisterMilestoneRequestDto;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectIdResponseDto;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,5 +47,12 @@ public class MilestoneServiceImpl implements MilestoneService {
         Milestone milestone = milestoneRepository.findById(milestoneId)
             .orElseThrow(MilestoneNotFoundException::new);
         milestoneRepository.delete(milestone);
+    }
+
+    @Override
+    public GetMilestonesByProjectIdResponseDto getMilestonesByProjectId(Long projectId) {
+        List<MilestoneResponseDto> milestones = milestoneRepository.findAllByProject_id(projectId);
+        return new GetMilestonesByProjectIdResponseDto(milestones);
+
     }
 }
