@@ -75,4 +75,8 @@ public class CookieUtils {
                 .replace("=", "").replace(" ", "_")
                 .replace("\"", "");
     }
+
+    public static String resetWhitespace(String input) {
+        return input.replace("_", " ");
+    }
 }

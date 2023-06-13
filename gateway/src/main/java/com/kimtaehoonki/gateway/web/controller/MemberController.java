@@ -2,6 +2,7 @@ package com.kimtaehoonki.gateway.web.controller;
 
 import com.kimtaehoonki.gateway.utils.CookieUtils;
 import com.kimtaehoonki.gateway.web.service.MemberService;
+import java.util.Objects;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -52,6 +53,10 @@ public class MemberController {
     private static void getModelFromCookie(HttpServletRequest req, HttpServletResponse resp,
                                            String cookieName, Model model) {
         String cookieValue = CookieUtils.getCookieValueAsString(req, cookieName);
+        if (Objects.nonNull(cookieValue)) {
+            cookieValue = CookieUtils.resetWhitespace(cookieValue);
+        }
+
         model.addAttribute("" + cookieName, cookieValue);
         CookieUtils.deleteCookie(req, resp, cookieName);
     }
