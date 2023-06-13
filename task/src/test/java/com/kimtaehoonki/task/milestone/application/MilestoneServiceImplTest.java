@@ -13,11 +13,14 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
+import com.kimtaehoonki.task.milestone.dto.MilestoneResponseDto;
 import com.kimtaehoonki.task.milestone.presentation.dto.RegisterMilestoneRequestDto;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectIdResponseDto;
 import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -114,5 +117,21 @@ class MilestoneServiceImplTest {
 
         verify(milestoneRepository, times(1)).findById(any());
         verify(milestoneRepository, never()).delete(any());
+    }
+
+    @Test
+    void 프로젝트_아이디로_마일스톤을_조회한다() {
+        Milestone milestone = Milestone.create(null, "1주차",
+            LocalDate.of(2021, 2, 3),
+            LocalDate.of(2021, 3, 3));
+        MilestoneResponseDto milestoneResponseDto = MilestoneResponseDto.from(milestone);
+        when(milestoneRepository.findAllByProject_id(any()))
+            .thenReturn(List.of(milestoneResponseDto));
+
+        GetMilestonesByProjectIdResponseDto result =
+            milestoneService.getMilestonesByProjectId(1L);
+
+        assertThat(result.getMilestones()).contains(milestoneResponseDto);
+        assertThat(result.getMilestones()).hasSize(1);
     }
 }
