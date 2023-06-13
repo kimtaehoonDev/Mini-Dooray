@@ -1,5 +1,8 @@
 package com.kimtaehoonki.gateway.web.service;
 
+import com.kimtaehoonki.gateway.security.dto.ExceptionDto;
+import com.kimtaehoonki.gateway.utils.CookieUtils;
+import com.kimtaehoonki.gateway.utils.JsonUtils;
 import com.kimtaehoonki.gateway.web.controller.MemberRegisterRequestDto;
 import com.kimtaehoonki.gateway.web.exception.MemberRegisterException;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +11,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 public class MemberService {
     private final RestTemplate restTemplate;
     private final PasswordEncoder passwordEncoder;
+    private final JsonUtils jsonUtils;
 
 
     @Value("${kimteahoonki.accountapi.members.register}")
@@ -39,9 +44,16 @@ public class MemberService {
                 return responseDto.getMemberId();
             }
         } catch (RestClientException e) {
-            throw new MemberRegisterException(e.getMessage());
+            HttpClientErrorException ex = (HttpClientErrorException) e;
+            String responseBodyAsString = ex.getResponseBodyAsString();
+
+            ExceptionDto exceptionDto =
+                    (ExceptionDto) jsonUtils.readValue(responseBodyAsString, ExceptionDto.class);
+            String message = CookieUtils.removeInvalidCharacter(exceptionDto.getMessage());
+
+            throw new MemberRegisterException(message);
         }
 
-        throw new MemberRegisterException("member register failure");
+        throw new MemberRegisterException("회원가입_실패");
     }
 }
