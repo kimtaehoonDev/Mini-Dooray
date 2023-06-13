@@ -1,5 +1,6 @@
 package com.kimtaehoonki.task.tag.application;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -12,10 +13,14 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
+import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.utils.ColorGenerator;
 import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -94,4 +99,16 @@ class TagServiceImplTest {
         verify(tagRepository, never()).delete(any());
     }
 
+    @Test
+    void 프로젝트_아이디로_태그목록을_조회한다() {
+        Tag tag = Tag.create(null, "tag1", ColorCode.GREEN);
+        TagResponseDto tagResponseDto = TagResponseDto.from(tag);
+        when(tagRepository.findAllByProject_id(any()))
+            .thenReturn(List.of(tagResponseDto));
+
+        GetTagsByProjectIdResponseDto result = tagService.getTagsByProjectId(1L);
+        assertThat(result.getTags()).contains(tagResponseDto);
+        assertThat(result.getTags()).hasSize(1);
+
+    }
 }
