@@ -10,6 +10,7 @@ import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
+    public static int PAGE_SIZE = 10;
+
     private final TaskService taskService;
     /**
      * 태스크를 등록한다.
@@ -51,7 +54,8 @@ public class TaskController {
     @GetMapping("/tasks")
     public List<GetTaskResponseDto> getTasks(@RequestParam(required = false) Integer page,
                                              @RequestParam Long projectId) {
-        return taskService.showTasks(projectId, page);
+        PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
+        return taskService.showTasks(projectId, pageable);
     }
 
     /**

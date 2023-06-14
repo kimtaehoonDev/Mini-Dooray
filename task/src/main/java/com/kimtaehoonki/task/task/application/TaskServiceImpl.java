@@ -17,12 +17,11 @@ import com.kimtaehoonki.task.tagtask.TagTask;
 import com.kimtaehoonki.task.tagtask.TagTaskRepository;
 import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
 import com.kimtaehoonki.task.task.domain.Task;
-import com.kimtaehoonki.task.task.domain.TaskRepository;
+import com.kimtaehoonki.task.task.domain.repository.TaskRepository;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -47,7 +46,6 @@ public class TaskServiceImpl implements TaskService {
         Integer memberId = dto.getMemberId();
         MemberResponseDto memberInfo = accountRt.getMemberInfo(memberId);
 
-        // 프로젝트 소속되어있는지 확인한다
         boolean isProjectMember =
             memberInProjectRepository.existsByProject_idAndMemberId(dto.getProjectId(), memberId);
         if (!isProjectMember) {
@@ -79,37 +77,20 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<GetTaskResponseDto> showTasks(Long projectId, Integer page) {
+    public List<GetTaskResponseDto> showTasks(Long projectId, Pageable pageable) {
 
-        List<Task> allByProjectId =
-                taskRepository.findAllByProjectId(projectId, Pageable.ofSize(page));
-
-        return allByProjectId.stream().map(
-                task -> new GetTaskResponseDto(
-                        task.getProject().getId(),
-                        task.getIndexInProject(),
-                        task.getTitle(),
-                        task.getContents(),
-                        task.getWriterId(),
-                        task.getWriterName(),
-                        task.getCreatedAt()
-                )).collect(Collectors.toList());
-
+//        List<Task> allByProjectId =
+//                taskRepository.findAllByProjectId(projectId, Pageable.ofSize(page));
+//        return allByProjectId.stream().map(GetTaskResponseDto::to)
+//            .collect(Collectors.toList());
+        return null;
     }
 
     @Override
     public GetTaskResponseDto showTask(Long taskId) {
-        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-
-        return new GetTaskResponseDto(
-                task.getProject().getId(),
-                task.getIndexInProject(),
-                task.getTitle(),
-                task.getContents(),
-                task.getWriterId(),
-                task.getWriterName(),
-                task.getCreatedAt()
-        );
+//        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+//        return GetTaskResponseDto.to(task);
+        return null;
     }
 
     @Transactional
@@ -127,13 +108,5 @@ public class TaskServiceImpl implements TaskService {
         Task findTask
                 = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskRepository.delete(findTask);
-    }
-
-    @Override
-    public void showTagTasks(Long taskId) {
-//        List<TagTask> allByTaskId = tagTaskRepository.findAllByTaskId(taskId);
-//        allByTaskId.stream().map(tagTask -> {
-//            return tagTask.
-//        })
     }
 }

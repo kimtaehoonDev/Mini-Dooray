@@ -9,7 +9,7 @@ import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.task.domain.Task;
-import com.kimtaehoonki.task.task.domain.TaskRepository;
+import com.kimtaehoonki.task.task.domain.repository.TaskRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
