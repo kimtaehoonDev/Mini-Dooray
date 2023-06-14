@@ -1,10 +1,12 @@
 package com.kimtaehoonki.gateway.security.service;
 
 import com.kimtaehoonki.gateway.security.dto.AuthInfoResponseDto;
+import com.kimtaehoonki.gateway.security.dto.ExceptionDto;
 import com.kimtaehoonki.gateway.security.dto.GitEmailDto;
 import com.kimtaehoonki.gateway.security.dto.MemberSecurityDto;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationOAuth2UserNotFoundException;
 import com.kimtaehoonki.gateway.security.exception.AuthenticationRestTemplateException;
+import com.kimtaehoonki.gateway.utils.JsonUtils;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -17,12 +19,15 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -32,8 +37,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final RestTemplate restTemplate;
-    @Value("${github.token}")
-    private String githubToken;
+    private final JsonUtils jsonUtils;
 
     @Value("${github.email.url}")
     private String githubEmailUrl;
@@ -49,7 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             /**
              * github email 가져오기
              */
-            HttpHeaders httpHeaders = getGithubHttpHeaders();
+            HttpHeaders httpHeaders = getGithubHttpHeaders(userRequest.getAccessToken());
             HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
 
             ResponseEntity<List<GitEmailDto>> response =
@@ -65,10 +69,16 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             }
 
         } catch (RestClientException e) {
-            throw new AuthenticationRestTemplateException(e.getMessage(), e);
+            HttpClientErrorException ex = (HttpClientErrorException) e;
+            String responseBodyAsString = ex.getResponseBodyAsString();
+
+            ExceptionDto exceptionDto =
+                    (ExceptionDto) jsonUtils.readValue(responseBodyAsString, ExceptionDto.class);
+
+            throw new AuthenticationRestTemplateException(exceptionDto.getMessage(), e);
         }
 
-        throw new RuntimeException();
+        throw new AuthenticationServiceException("오류 발생");
     }
 
     private MemberSecurityDto getMemberSecurityDto(ResponseEntity<List<GitEmailDto>> response) {
@@ -129,10 +139,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
 
-    private HttpHeaders getGithubHttpHeaders() {
+    private HttpHeaders getGithubHttpHeaders(OAuth2AccessToken accessToken) {
         HttpHeaders httpHeaders = getDefaultHeaders();
         httpHeaders.setAccept(List.of(MediaType.valueOf("application/vnd.github+json")));
-        httpHeaders.setBearerAuth(githubToken);
+        httpHeaders.setBearerAuth(accessToken.getTokenValue());
         httpHeaders.set("X-GibHub-Api-Version", "2022-11-28");
         return httpHeaders;
     }
