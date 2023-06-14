@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.project.domain;
+package com.kimtaehoonki.task.project.domain.repository;
 
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import org.springframework.data.jpa.repository.JpaRepository;

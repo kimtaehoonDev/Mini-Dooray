@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.project.application.dto.response;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 
 public interface ProjectDetail {
     Long getId();

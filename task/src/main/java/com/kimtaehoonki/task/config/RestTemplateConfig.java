@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task;
+package com.kimtaehoonki.task.config;
 
 import java.time.Duration;
 import org.springframework.boot.web.client.RestTemplateBuilder;

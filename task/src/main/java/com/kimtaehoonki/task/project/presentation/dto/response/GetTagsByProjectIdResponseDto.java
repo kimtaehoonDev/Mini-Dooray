@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.project.presentation.dto.response;
 
-import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
+import com.kimtaehoonki.task.tag.dto.TagResponseDto;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

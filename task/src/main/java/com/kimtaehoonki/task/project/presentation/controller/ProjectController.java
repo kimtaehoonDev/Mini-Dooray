@@ -1,13 +1,13 @@
 package com.kimtaehoonki.task.project.presentation.controller;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 import com.kimtaehoonki.task.milestone.application.MilestoneService;
 import com.kimtaehoonki.task.project.application.ProjectService;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.presentation.dto.request.CreateProjectRequestDto;
 import com.kimtaehoonki.task.project.presentation.dto.response.CreateProjectResponseDto;
-import com.kimtaehoonki.task.project.presentation.dto.GetMilestonesByProjectIdResponseDto;
+import com.kimtaehoonki.task.project.presentation.dto.response.GetMilestonesByProjectIdResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
 import com.kimtaehoonki.task.tag.application.TagService;
 import java.util.List;

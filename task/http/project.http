@@ -48,6 +48,7 @@ Cookie: memberId=1
 ###
 POST localhost:9092/tags
 Content-Type: application/json
+Cookie: memberId=1;
 
 {
   "name": "taeuon",
@@ -60,6 +61,7 @@ GET localhost:9092/projects/1/tags
 ###
 POST localhost:9092/tags
 Content-Type: application/json
+Cookie: memberId=1;
 
 {
   "name": "taeuon",

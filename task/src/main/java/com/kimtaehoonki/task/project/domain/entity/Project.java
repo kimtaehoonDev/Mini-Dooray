@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.project.domain.entity;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;

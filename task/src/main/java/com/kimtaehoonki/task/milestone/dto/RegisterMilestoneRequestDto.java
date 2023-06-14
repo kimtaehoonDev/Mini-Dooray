@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.milestone.presentation.dto;
+package com.kimtaehoonki.task.milestone.dto;
 
 import java.time.LocalDate;
 import lombok.AllArgsConstructor;

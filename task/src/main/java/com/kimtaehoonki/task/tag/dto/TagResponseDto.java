@@ -1,6 +1,6 @@
-package com.kimtaehoonki.task.tag.application.dto;
+package com.kimtaehoonki.task.tag.dto;
 
-import com.kimtaehoonki.task.colorcode.ColorCode;
+import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

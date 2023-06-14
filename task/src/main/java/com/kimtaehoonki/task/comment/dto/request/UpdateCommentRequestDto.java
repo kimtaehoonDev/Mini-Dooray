@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.comment.presentation.dto;
+package com.kimtaehoonki.task.comment.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

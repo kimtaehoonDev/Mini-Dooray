@@ -1,8 +1,7 @@
-package com.kimtaehoonki.task.tag.presentation.controller;
+package com.kimtaehoonki.task.tag.presentation;
 
 import com.kimtaehoonki.task.tag.application.TagService;
-import com.kimtaehoonki.task.tag.presentation.dto.DeleteTagResponseDto;
-import com.kimtaehoonki.task.tag.presentation.dto.RegisterTagRequestDto;
+import com.kimtaehoonki.task.tag.dto.RegisterTagRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CookieValue;

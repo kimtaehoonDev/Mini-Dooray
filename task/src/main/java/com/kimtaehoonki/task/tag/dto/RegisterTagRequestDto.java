@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.tag.presentation.dto;
+package com.kimtaehoonki.task.tag.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,14 +1,11 @@
 package com.kimtaehoonki.task.utils;
 
-import com.kimtaehoonki.task.colorcode.ColorCode;
+import com.kimtaehoonki.task.tag.ColorCode;
 import java.util.Random;
-import org.springframework.stereotype.Component;
 
-@Component
 public class ColorGenerator {
-    public ColorCode get() {
+    public static ColorCode generate(Random random) {
         ColorCode[] values = ColorCode.values();
-        Random random = new Random();
         return values[random.nextInt(values.length)];
     }
 }

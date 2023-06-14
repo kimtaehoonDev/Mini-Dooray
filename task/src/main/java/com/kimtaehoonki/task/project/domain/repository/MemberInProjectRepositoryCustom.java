@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.project.domain;
+package com.kimtaehoonki.task.project.domain.repository;
 
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import java.util.List;
