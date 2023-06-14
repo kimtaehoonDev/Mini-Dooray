@@ -23,6 +23,7 @@ import org.springframework.security.authentication.AuthenticationServiceExceptio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private final RestTemplate restTemplate;
     private final JsonUtils jsonUtils;
 
-    @Value("${github.token}")
-    private String githubToken;
-
     @Value("${github.email.url}")
     private String githubEmailUrl;
 
@@ -55,7 +53,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             /**
              * github email 가져오기
              */
-            HttpHeaders httpHeaders = getGithubHttpHeaders();
+            HttpHeaders httpHeaders = getGithubHttpHeaders(userRequest.getAccessToken());
             HttpEntity<Object> requestEntity = new HttpEntity<>(httpHeaders);
 
             ResponseEntity<List<GitEmailDto>> response =
@@ -141,10 +139,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     }
 
 
-    private HttpHeaders getGithubHttpHeaders() {
+    private HttpHeaders getGithubHttpHeaders(OAuth2AccessToken accessToken) {
         HttpHeaders httpHeaders = getDefaultHeaders();
         httpHeaders.setAccept(List.of(MediaType.valueOf("application/vnd.github+json")));
-        httpHeaders.setBearerAuth(githubToken);
+        httpHeaders.setBearerAuth(accessToken.getTokenValue());
         httpHeaders.set("X-GibHub-Api-Version", "2022-11-28");
         return httpHeaders;
     }
