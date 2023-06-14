@@ -40,7 +40,7 @@ public class CustomSecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests()
-                .requestMatchers("/login", "/register").permitAll()
+                .requestMatchers("/login", "/register", "/favicon.ico").permitAll()
                 .anyRequest().authenticated()
                 .and()
 

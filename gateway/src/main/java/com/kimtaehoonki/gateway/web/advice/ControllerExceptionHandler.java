@@ -1,5 +1,6 @@
 package com.kimtaehoonki.gateway.web.advice;
 
+import com.kimtaehoonki.gateway.utils.CookieUtils;
 import com.kimtaehoonki.gateway.web.controller.MemberRegisterRequestDto;
 import com.kimtaehoonki.gateway.web.exception.MemberRegisterException;
 import org.springframework.stereotype.Controller;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 public class ControllerExceptionHandler {
     @ExceptionHandler(MemberRegisterException.class)
     public String memberRegisterExceptionHandler(Exception ex, Model model) {
-        model.addAttribute("ex", ex.getMessage());
+        model.addAttribute("ex", CookieUtils.resetWhitespace(ex.getMessage()));
         model.addAttribute("requestDto", new MemberRegisterRequestDto());
 
         return "register";
