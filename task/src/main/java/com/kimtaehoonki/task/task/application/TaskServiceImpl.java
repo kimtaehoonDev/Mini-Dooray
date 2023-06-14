@@ -1,20 +1,24 @@
 package com.kimtaehoonki.task.task.application;
 
+import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
+import com.kimtaehoonki.task.member.AccountRestTemplate;
+import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.tagtask.TagTask;
 import com.kimtaehoonki.task.tagtask.TagTaskRepository;
+import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
 import com.kimtaehoonki.task.task.domain.Task;
 import com.kimtaehoonki.task.task.domain.TaskRepository;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
-import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import java.util.List;
 import java.util.Objects;
@@ -33,27 +37,39 @@ public class TaskServiceImpl implements TaskService {
     private final MilestoneRepository milestoneRepository;
     private final TagRepository tagRepository;
     private final TagTaskRepository tagTaskRepository;
+    private final AccountRestTemplate accountRt;
+    private final MemberInProjectRepository memberInProjectRepository;
+
 
     @Transactional
     @Override
-    public Long createTask(RegisterTaskRequestDto requestDto) {
-        Project findProject = projectRepository.findById(requestDto.getProjectId())
+    public Long registerTask(RegisterTaskServiceRequestDto dto) {
+        Integer memberId = dto.getMemberId();
+        MemberResponseDto memberInfo = accountRt.getMemberInfo(memberId);
+
+        // 프로젝트 소속되어있는지 확인한다
+        boolean isProjectMember =
+            memberInProjectRepository.existsByProject_idAndMemberId(dto.getProjectId(), memberId);
+        if (!isProjectMember) {
+            throw new AuthorizedException();
+        }
+
+        Project project = projectRepository.findById(dto.getProjectId())
                 .orElseThrow(ProjectNotFoundException::new);
 
-        Integer index = taskRepository.countByProjectId(findProject.getId());
-
         Milestone milestone = null;
-        if (Objects.nonNull(requestDto.getMilestoneId())) {
-            milestone = milestoneRepository.findById(requestDto.getMilestoneId())
+        if (Objects.nonNull(dto.getMilestoneId())) {
+            milestone = milestoneRepository.findById(dto.getMilestoneId())
                     .orElseThrow(MilestoneNotFoundException::new);
         }
 
-        Task task = Task.make(findProject, milestone, index, requestDto.getTitle(),
-                requestDto.getContent(), requestDto.getWriterId(), requestDto.getWriterName());
+        Integer index = taskRepository.countByProjectId(project.getId());
+        Task task = Task.make(project, milestone, index, dto.getTitle(),
+                dto.getContent(), dto.getMemberId(), memberInfo.getName());
         Task saveTask = taskRepository.save(task);
 
-        if (Objects.nonNull(requestDto.getTaskIds())) {
-            requestDto.getTaskIds().stream()
+        if (Objects.nonNull(dto.getTagIds())) {
+            dto.getTagIds().stream()
                     .map(taskId -> tagRepository.findById(taskId)
                             .orElseThrow(TagNotFoundException::new))
                     .forEach(tag -> tagTaskRepository.save(TagTask.make(tag, task)));

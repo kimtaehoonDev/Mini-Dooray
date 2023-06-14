@@ -13,7 +13,5 @@ public class RegisterTaskRequestDto {
     private Long milestoneId;
     private String title;
     private String content;
-    private Integer writerId;
-    private String writerName;
-    private List<Long> taskIds;
+    private List<Long> tagIds;
 }

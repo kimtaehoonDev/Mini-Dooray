@@ -1,6 +1,7 @@
 package com.kimtaehoonki.task.task.presentation.controller;
 
 import com.kimtaehoonki.task.task.application.TaskService;
+import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetMilestoneInTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
@@ -10,6 +11,7 @@ import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskResponseDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,8 +33,11 @@ public class TaskController {
      * @return RegisterTaskResponseDto
      */
     @PostMapping("/tasks")
-    public RegisterTaskResponseDto registerTask(@RequestBody RegisterTaskRequestDto requestDto) {
-        Long taskId = taskService.createTask(requestDto);
+    public RegisterTaskResponseDto registerTask(@RequestBody RegisterTaskRequestDto requestDto,
+                                                @CookieValue Integer memberId) {
+        RegisterTaskServiceRequestDto serviceRequestDto =
+            new RegisterTaskServiceRequestDto(requestDto, memberId);
+        Long taskId = taskService.registerTask(serviceRequestDto);
 
         return new RegisterTaskResponseDto(taskId);
     }

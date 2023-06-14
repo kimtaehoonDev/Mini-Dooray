@@ -1,13 +1,13 @@
 package com.kimtaehoonki.task.task.application;
 
+import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
-import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import java.util.List;
 
 public interface TaskService {
 
-    Long createTask(RegisterTaskRequestDto requestDto);
+    Long registerTask(RegisterTaskServiceRequestDto requestDto);
 
     List<GetTaskResponseDto> showTasks(Long projectId, Integer page);
 
