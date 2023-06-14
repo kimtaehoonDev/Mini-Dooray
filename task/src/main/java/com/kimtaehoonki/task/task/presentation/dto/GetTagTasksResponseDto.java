@@ -7,6 +7,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateTaskResponseDto {
-    private Long id;
+public class GetTagTasksResponseDto {
+
 }
