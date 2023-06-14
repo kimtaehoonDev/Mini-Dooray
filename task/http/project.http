@@ -44,3 +44,40 @@ Cookie: memberId=1
 ### 회원을 프로젝트에 등록 실패 - 프로젝트가 존재하지 않음
 POST localhost:9092/projects/13123/register?targetId=2
 Cookie: memberId=1
+
+###
+POST localhost:9092/tags
+Content-Type: application/json
+Cookie: memberId=1;
+
+{
+  "name": "taeuon",
+  "projectId": 1
+}
+
+###
+GET localhost:9092/projects/1/tags
+
+###
+POST localhost:9092/tags
+Content-Type: application/json
+Cookie: memberId=1;
+
+{
+  "name": "taeuon",
+  "projectId": 1
+}
+
+###
+GET localhost:9092/projects/1/milestones
+
+###
+POST localhost:9092/milestones
+Content-Type: application/json
+
+{
+  "name": "taehoon",
+  "projectId": 1,
+  "startDate": "2021-06-10",
+  "endDate": "2021-07-10"
+}

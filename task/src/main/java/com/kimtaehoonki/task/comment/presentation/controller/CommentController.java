@@ -1,12 +1,10 @@
 package com.kimtaehoonki.task.comment.presentation.controller;
 
 import com.kimtaehoonki.task.comment.application.CommentService;
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
-import com.kimtaehoonki.task.comment.presentation.dto.DeleteCommentResponseDto;
-import com.kimtaehoonki.task.comment.presentation.dto.GetCommentsInTaskResponseDto;
-import com.kimtaehoonki.task.comment.presentation.dto.RegisterCommentRequestDto;
-import com.kimtaehoonki.task.comment.presentation.dto.UpdateCommentRequestDto;
-import com.kimtaehoonki.task.comment.presentation.dto.UpdateCommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.GetCommentsInTaskResponseDto;
+import com.kimtaehoonki.task.comment.dto.request.RegisterCommentRequestDto;
+import com.kimtaehoonki.task.comment.dto.request.UpdateCommentRequestDto;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

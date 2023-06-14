@@ -1,6 +1,5 @@
 package com.kimtaehoonki.task.task.application;
 
-import com.kimtaehoonki.task.task.presentation.dto.GetTagTasksResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
@@ -18,5 +17,5 @@ public interface TaskService {
 
     void deleteTask(Long taskId);
 
-    List<GetTagTasksResponseDto> showTagTasks(Long taskId);
+    void showTagTasks(Long taskId);
 }

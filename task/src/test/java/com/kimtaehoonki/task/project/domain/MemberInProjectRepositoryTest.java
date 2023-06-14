@@ -2,11 +2,13 @@ package com.kimtaehoonki.task.project.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 import com.kimtaehoonki.task.TestConfig;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import java.lang.reflect.Field;
 import java.util.List;
 import org.junit.jupiter.api.Test;

@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
@@ -52,7 +52,7 @@ class CommentServiceImplTest {
         MemberResponseDto memberInfo = new MemberResponseDto();
         memberInfo.setName("kim");
 
-        Task task = new Task();
+        Task task = Task.make(null, null, 0, null, null, 0, null);
         Comment comment = makeTestComment(100L, task, 1, "작성자", "내용");
 
         when(accountRt.getMemberInfo(any()))

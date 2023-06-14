@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.comment.application;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import java.util.List;
 
 public interface CommentService {

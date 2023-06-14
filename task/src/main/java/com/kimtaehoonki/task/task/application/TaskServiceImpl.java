@@ -6,14 +6,13 @@ import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
 import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
-import com.kimtaehoonki.task.project.domain.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.tagtask.TagTask;
 import com.kimtaehoonki.task.tagtask.TagTaskRepository;
 import com.kimtaehoonki.task.task.domain.Task;
 import com.kimtaehoonki.task.task.domain.TaskRepository;
-import com.kimtaehoonki.task.task.presentation.dto.GetTagTasksResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
@@ -115,11 +114,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<GetTagTasksResponseDto> showTagTasks(Long taskId) {
-        List<TagTask> allByTaskId = tagTaskRepository.findAllByTaskId(taskId);
-        allByTaskId.stream().map(tagTask -> {
-            return tagTask.
-        })
-        return null;
+    public void showTagTasks(Long taskId) {
+//        List<TagTask> allByTaskId = tagTaskRepository.findAllByTaskId(taskId);
+//        allByTaskId.stream().map(tagTask -> {
+//            return tagTask.
+//        })
     }
 }

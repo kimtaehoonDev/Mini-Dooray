@@ -1,14 +1,12 @@
 package com.kimtaehoonki.task.project.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.kimtaehoonki.task.TestConfig;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.domain.entity.Project;
-import java.lang.reflect.Field;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -41,16 +39,11 @@ class ProjectRepositoryTest {
     }
 
     @Test
-    void 아이디로_조회할수_있다() throws NoSuchFieldException, IllegalAccessException {
+    void 아이디로_조회할수_있다() {
         Project project = Project.make(1, "hello", null);
-
-        Class<Project> projectClazz = Project.class;
-        Field idField = projectClazz.getDeclaredField("id");
-        idField.setAccessible(true);
-        idField.set(project, 1L);
         projectRepository.save(project);
 
-        ProjectDetail projectDetail = projectRepository.findById(1L, ProjectDetail.class)
+        ProjectDetail projectDetail = projectRepository.findById(project.getId(), ProjectDetail.class)
             .get();
         assertThat(projectDetail.getName()).isEqualTo("hello");
     }

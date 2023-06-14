@@ -2,7 +2,6 @@ package com.kimtaehoonki.task.task.presentation.controller;
 
 import com.kimtaehoonki.task.task.application.TaskService;
 import com.kimtaehoonki.task.task.presentation.dto.GetMilestoneInTaskResponseDto;
-import com.kimtaehoonki.task.task.presentation.dto.GetTagTasksResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskResponseDto;
@@ -94,8 +93,8 @@ public class TaskController {
      * @return GetTagsInTaskResponseDto
      */
     @GetMapping("/tasks/{id}/tags")
-    public List<GetTagTasksResponseDto> getTagTasks(@PathVariable("id") Long taskId) {
-        return taskService.showTagTasks(taskId);
+    public void getTagTasks(@PathVariable("id") Long taskId) {
+        //TODO
     }
 
     /**
