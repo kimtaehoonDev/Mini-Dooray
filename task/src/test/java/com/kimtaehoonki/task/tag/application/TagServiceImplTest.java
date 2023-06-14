@@ -10,26 +10,26 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.kimtaehoonki.task.colorcode.ColorCode;
+import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
-import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
-import com.kimtaehoonki.task.project.domain.ProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
-import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
+import com.kimtaehoonki.task.tag.dto.TagResponseDto;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
-import com.kimtaehoonki.task.utils.ColorGenerator;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -47,8 +47,13 @@ class TagServiceImplTest {
     @Mock
     AccountRestTemplate accountRt;
 
-    @InjectMocks
     TagServiceImpl tagService;
+
+    @BeforeEach
+    void beforeEach() {
+        tagService = new TagServiceImpl(tagRepository, projectRepository, memberInProjectRepository,
+            accountRt, new Random());
+    }
 
     @Test
     void 태그를_등록한다() throws NoSuchFieldException, IllegalAccessException {

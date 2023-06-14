@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.comment.domain;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 

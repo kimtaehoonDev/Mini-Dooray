@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task;
+package com.kimtaehoonki.task.config;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import javax.persistence.EntityManager;

@@ -3,10 +3,9 @@ package com.kimtaehoonki.task.comment.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kimtaehoonki.task.TestConfig;
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.task.domain.Task;
 import java.util.List;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;

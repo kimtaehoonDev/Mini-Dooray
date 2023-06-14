@@ -1,19 +1,20 @@
 package com.kimtaehoonki.task.tag.application;
 
-import com.kimtaehoonki.task.colorcode.ColorCode;
+import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.exception.impl.TagNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
-import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
-import com.kimtaehoonki.task.project.domain.ProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
-import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
+import com.kimtaehoonki.task.tag.dto.TagResponseDto;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.utils.ColorGenerator;
 import java.util.List;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,6 +27,7 @@ public class TagServiceImpl implements TagService {
     private final ProjectRepository projectRepository;
     private final MemberInProjectRepository memberInProjectRepository;
     private final AccountRestTemplate accountRt;
+    private final Random random;
 
     @Override
     @Transactional
@@ -41,7 +43,7 @@ public class TagServiceImpl implements TagService {
             throw new AuthorizedException();
         }
 
-        ColorCode colorCode = ColorGenerator.generate();
+        ColorCode colorCode = ColorGenerator.generate(random);
         Tag tag = Tag.create(project, name, colorCode);
         Tag savedTag = tagRepository.save(tag);
         return savedTag.getId();

@@ -9,7 +9,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;

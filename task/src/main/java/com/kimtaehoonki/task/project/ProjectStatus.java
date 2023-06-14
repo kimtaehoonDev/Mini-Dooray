@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task;
+package com.kimtaehoonki.task.project;
 
 /**
  * 프로젝트 상태 코드.

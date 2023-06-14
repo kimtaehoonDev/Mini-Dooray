@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.comment.application;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.comment.domain.Comment;
 import com.kimtaehoonki.task.comment.domain.CommentRepository;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;

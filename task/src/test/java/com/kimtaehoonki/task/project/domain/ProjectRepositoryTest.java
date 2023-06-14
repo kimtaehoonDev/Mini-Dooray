@@ -1,14 +1,12 @@
 package com.kimtaehoonki.task.project.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 import com.kimtaehoonki.task.TestConfig;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.domain.entity.Project;
-import java.lang.reflect.Field;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import java.util.Optional;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;

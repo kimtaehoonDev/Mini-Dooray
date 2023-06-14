@@ -1,4 +1,4 @@
-package com.kimtaehoonki.task.comment.application.dto.response;
+package com.kimtaehoonki.task.comment.dto.response;
 
 import java.time.LocalDateTime;
 

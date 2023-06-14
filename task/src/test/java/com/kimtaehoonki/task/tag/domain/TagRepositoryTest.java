@@ -3,10 +3,9 @@ package com.kimtaehoonki.task.tag.domain;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.kimtaehoonki.task.TestConfig;
-import com.kimtaehoonki.task.colorcode.ColorCode;
+import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.project.domain.entity.Project;
-import com.kimtaehoonki.task.tag.application.dto.TagResponseDto;
-import com.kimtaehoonki.task.task.domain.Task;
+import com.kimtaehoonki.task.tag.dto.TagResponseDto;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

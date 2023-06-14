@@ -1,6 +1,5 @@
-package com.kimtaehoonki.task.comment.presentation.dto;
+package com.kimtaehoonki.task.comment.dto.response;
 
-import com.kimtaehoonki.task.comment.application.dto.response.CommentResponseDto;
 import java.util.List;
 
 public class GetCommentsInTaskResponseDto {

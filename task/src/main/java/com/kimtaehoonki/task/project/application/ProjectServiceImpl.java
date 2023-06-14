@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.project.application;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 import com.kimtaehoonki.task.exception.impl.AlreadyProjectMemberException;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectExitException;
@@ -9,8 +9,8 @@ import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectDetail;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
-import com.kimtaehoonki.task.project.domain.MemberInProjectRepository;
-import com.kimtaehoonki.task.project.domain.ProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
+import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
 import com.kimtaehoonki.task.project.domain.entity.MemberInProject;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.presentation.dto.request.CreateProjectRequestDto;

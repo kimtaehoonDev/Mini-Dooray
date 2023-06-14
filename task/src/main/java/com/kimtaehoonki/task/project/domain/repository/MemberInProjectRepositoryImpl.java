@@ -1,9 +1,9 @@
-package com.kimtaehoonki.task.project.domain;
+package com.kimtaehoonki.task.project.domain.repository;
 
 import static com.kimtaehoonki.task.project.domain.entity.QMemberInProject.memberInProject;
 import static com.kimtaehoonki.task.project.domain.entity.QProject.project;
 
-import com.kimtaehoonki.task.ProjectStatus;
+import com.kimtaehoonki.task.project.ProjectStatus;
 import com.kimtaehoonki.task.project.application.dto.response.ProjectPreview;
 import com.kimtaehoonki.task.project.application.dto.response.QProjectPreview;
 import com.querydsl.jpa.impl.JPAQueryFactory;
