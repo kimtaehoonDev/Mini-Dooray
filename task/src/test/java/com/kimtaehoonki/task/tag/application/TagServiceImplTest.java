@@ -42,14 +42,10 @@ class TagServiceImplTest {
     ProjectRepository projectRepository;
 
     @Mock
-    ColorGenerator colorGenerator;
-
-    @Mock
     MemberInProjectRepository memberInProjectRepository;
 
     @Mock
     AccountRestTemplate accountRt;
-
 
     @InjectMocks
     TagServiceImpl tagService;
@@ -67,7 +63,6 @@ class TagServiceImplTest {
         doNothing().when(accountRt).validateMemberExists(anyInt());
 
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
-        when(colorGenerator.get()).thenReturn(ColorCode.BLUE);
         when(tagRepository.save(any())).thenReturn(tag);
         when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
             .thenReturn(true);
@@ -76,7 +71,6 @@ class TagServiceImplTest {
 
         Assertions.assertThat(result).isEqualTo(10L);
         verify(projectRepository, times(1)).findById(any());
-        verify(colorGenerator, times(1)).get();
         verify(tagRepository, times(1)).save(any());
     }
 
@@ -89,7 +83,6 @@ class TagServiceImplTest {
             .isInstanceOf(ProjectNotFoundException.class);
 
         verify(projectRepository, times(1)).findById(any());
-        verify(colorGenerator, never()).get();
         verify(tagRepository, never()).save(any());
     }
 
@@ -106,7 +99,6 @@ class TagServiceImplTest {
             .isInstanceOf(AuthorizedException.class);
 
         verify(projectRepository, times(1)).findById(any());
-        verify(colorGenerator, never()).get();
         verify(tagRepository, never()).save(any());
     }
 

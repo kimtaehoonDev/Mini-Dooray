@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ColorGenerator {
-    public ColorCode get() {
+    public static ColorCode generate() {
         ColorCode[] values = ColorCode.values();
         Random random = new Random();
         return values[random.nextInt(values.length)];

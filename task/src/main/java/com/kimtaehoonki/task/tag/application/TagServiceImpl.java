@@ -25,7 +25,6 @@ public class TagServiceImpl implements TagService {
     private final TagRepository tagRepository;
     private final ProjectRepository projectRepository;
     private final MemberInProjectRepository memberInProjectRepository;
-    private final ColorGenerator colorGenerator;
     private final AccountRestTemplate accountRt;
 
     @Override
@@ -42,7 +41,7 @@ public class TagServiceImpl implements TagService {
             throw new AuthorizedException();
         }
 
-        ColorCode colorCode = colorGenerator.get();
+        ColorCode colorCode = ColorGenerator.generate();
         Tag tag = Tag.create(project, name, colorCode);
         Tag savedTag = tagRepository.save(tag);
         return savedTag.getId();
