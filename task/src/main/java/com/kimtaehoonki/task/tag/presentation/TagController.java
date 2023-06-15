@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TagController {
     private final TagService tagService;
 
-
     /**
      * 태그를 등록한다.
      *
@@ -29,7 +28,9 @@ public class TagController {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerTag(@RequestBody @Valid RegisterTagRequestDto dto, BindingResult bindingResult,
                             @CookieValue Integer memberId) {
-        ErrorMessageBinder.throwErrorWithErrorBinding(bindingResult);
+        if (bindingResult.hasErrors()) {
+            ErrorMessageBinder.throwErrorWithErrorBinding(bindingResult);
+        }
         String name = dto.getName();
         Long projectId = dto.getProjectId();
         tagService.registerTag(name, projectId, memberId);

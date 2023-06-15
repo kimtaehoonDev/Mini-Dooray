@@ -44,7 +44,7 @@ public class TagServiceImpl implements TagService {
             throw new AuthorizedException();
         }
 
-        boolean isDuplicatedName = tagRepository.existsByName(name);
+        boolean isDuplicatedName = tagRepository.existsByNameAndProject_id(name, projectId);
         if (isDuplicatedName) {
             throw new ResourceNameDuplicatedException();
         }

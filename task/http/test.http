@@ -123,6 +123,16 @@ Content-Type: application/json
   "projectId": 2
 }
 
+### 태그 등록 실패 - 해당 프로젝트 소속이 아닌 Member
+POST localhost:9092/tags
+Cookie: memberId=2;
+Content-Type: application/json
+
+{
+  "name": "tag13",
+  "projectId": 1
+}
+
 ### 태그 등록 실패 - 파라미터 누락(projectId)
 POST localhost:9092/tags
 Cookie: memberId=1;
@@ -167,3 +177,4 @@ Cookie: memberId=1;
 ### 특정 플젝 모든 마일스톤 조회
 GET localhost:9092/projects/1/milestones
 Cookie: memberId=1;
+
