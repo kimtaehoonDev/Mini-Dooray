@@ -1,0 +1,113 @@
+# 채점의 편의를 위해 하나의 HTTP 파일에 요청들을 모아뒀습니다.
+# 위에서부터 하나씩 실행하시는게 채점하기에 수월하실 것 같습니다.
+
+# 중요: Account API 서버를 먼저 실행하고 테스트하셔야 합니다!!!
+# Task API에서 Account API로 계정이 존재하는지 검증을 위해 요청을 보냅니다
+# 따라서, Account API 서버에 등록되지 않은 계정을 사용하면 404에러와 함께 "해당되는 멤버를 찾을 수 없습니다" 메세지를 출력합니다.
+
+
+# 프로젝트에 대한 전반적인 테스트입니다
+# 프로젝트에는 member-id 인증을 깜빡했습니다..
+### 프로젝트 등록 실패 (존재하지 않는 Account 계정)
+POST localhost:9092/projects
+Content-Type: application/json
+
+{
+  "adminId": 12131313,
+  "name": "프로젝트@",
+  "description": "두레이 관련 프로젝트입니다"
+}
+
+
+### 프로젝트 등록 실패 - 파라미터 누락(adminId)
+POST localhost:9092/projects
+Content-Type: application/json
+
+{
+  "name": "등록안되는 프로젝트",
+  "description": "이건 설명입니다 ㅋㅋ"
+}
+
+### 프로젝트 등록 성공
+POST localhost:9092/projects
+Content-Type: application/json
+
+{
+  "adminId": 1,
+  "name": "프로젝트@",
+  "description": "두레이 관련 프로젝트입니다"
+}
+
+### 프로젝트 등록 실패 - 이름 중복
+POST localhost:9092/projects
+Content-Type: application/json
+
+{
+  "adminId": 1,
+  "name": "프로젝트@",
+  "description": "이름중복이라 등록안됨"
+}
+
+### 프로젝트 등록 성공(2)
+POST localhost:9092/projects
+Content-Type: application/json
+
+{
+  "adminId": 1,
+  "name": "프로젝트##",
+  "description": "두레이 관련 프로젝트입니다22"
+}
+
+### 프로젝트 목록 조회 성공 (프로젝트는 페이징 처리를 하지 않았습니다.)
+GET localhost:9092/projects
+Cookie: memberId=1;
+
+### 프로젝트 1개 조회 성공
+GET localhost:9092/projects/1
+Cookie: memberId=1;
+
+### 프로젝트 조회 실패 - 파라미터가 Int가 아닐 때
+GET localhost:9092/projects/a
+Cookie: memberId=1;
+
+### 프로젝트 조회 실패 - 쿠키 ID 누락
+GET localhost:9092/projects/1
+
+### 프로젝트 조회 실패 - 존재하지 않는 Project
+GET localhost:9092/projects/1231
+Cookie: memberId=1;
+
+### 프로젝트 수정 실패 - 존재하지 않는 Project
+PUT localhost:9092/projects/123123/status?status=EXIT
+Cookie: memberId=1;
+
+### 프로젝트 수정 실패 - 존재하지 않는 프로젝트 상태
+PUT localhost:9092/projects/2/status?status=HELLO
+Cookie: memberId=1;
+
+### 프로젝트 수정 성공
+PUT localhost:9092/projects/2/status?status=EXIT
+Cookie: memberId=1;
+
+### 프로젝트 조회 실패 - 이미 EXIT된 프로젝트
+GET localhost:9092/projects/2
+Cookie: memberId=1;
+
+### 태그 등록 성공
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  ""
+}
+
+
+
+### 특정 플젝 모든 태그 조회
+GET localhost:9092/projects/1/
+Cookie: memberId=1;
+
+### 특정 플젝 모든 마일스톤 조회
+GET localhost:9092/projects/1
+Cookie: memberId=1;

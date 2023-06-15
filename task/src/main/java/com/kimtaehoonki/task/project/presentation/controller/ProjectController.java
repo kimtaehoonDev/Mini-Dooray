@@ -10,9 +10,12 @@ import com.kimtaehoonki.task.project.presentation.dto.response.CreateProjectResp
 import com.kimtaehoonki.task.project.presentation.dto.response.GetMilestonesByProjectIdResponseDto;
 import com.kimtaehoonki.task.project.presentation.dto.response.GetTagsByProjectIdResponseDto;
 import com.kimtaehoonki.task.tag.application.TagService;
+import com.kimtaehoonki.task.utils.ErrorMessageBinder;
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,7 +46,10 @@ public class ProjectController {
     @PostMapping("/projects")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateProjectResponseDto createProject(
-        @RequestBody CreateProjectRequestDto dto) {
+        @RequestBody @Valid CreateProjectRequestDto dto, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            ErrorMessageBinder.throwErrorWithErrorBinding(bindingResult);
+        }
         long projectId = projectService.createProject(dto);
         return new CreateProjectResponseDto(projectId);
     }
