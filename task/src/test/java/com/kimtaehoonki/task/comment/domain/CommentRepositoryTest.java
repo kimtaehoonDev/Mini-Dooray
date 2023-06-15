@@ -27,10 +27,11 @@ class CommentRepositoryTest {
 
     @Test
     void 태스크_아이디로_게시물을_전체_조회한다() {
-        Task task1 = new Task();
+        Task task1 = Task.make(null, null, 0, null, null, 0, null);
+
         em.persist(task1);
 
-        Task task2 = new Task();
+        Task task2 = Task.make(null, null, 0, null, null, 0, null);
         em.persist(task2);
 
         Comment comment1 = Comment.create(task1, 1, null, null);

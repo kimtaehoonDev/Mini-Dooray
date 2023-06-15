@@ -10,17 +10,25 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * TagTask 엔티티.
  */
+
+@Getter
 @Entity
 @Table(name = "Tags_Tasks")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class TagTask {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "tags_tasks_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")
@@ -29,4 +37,8 @@ public class TagTask {
     @ManyToOne
     @JoinColumn(name = "task_id")
     private Task task;
+
+    public static TagTask make(Tag tag, Task task) {
+        return new TagTask(null, tag, task);
+    }
 }

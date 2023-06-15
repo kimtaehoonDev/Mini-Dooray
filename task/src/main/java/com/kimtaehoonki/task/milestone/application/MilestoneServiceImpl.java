@@ -3,6 +3,7 @@ package com.kimtaehoonki.task.milestone.application;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.exception.impl.ResourceNameDuplicatedException;
 import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
@@ -47,6 +48,11 @@ public class MilestoneServiceImpl implements MilestoneService {
             memberInProjectRepository.existsByProject_idAndMemberId(project.getId(), memberId);
         if (!isMemberInProject) {
             throw new AuthorizedException();
+        }
+
+        boolean isDuplicatedName = milestoneRepository.existsByName(dto.getName());
+        if (isDuplicatedName) {
+            throw new ResourceNameDuplicatedException();
         }
 
         Milestone milestone =

@@ -1,14 +1,20 @@
 package com.kimtaehoonki.task.task.presentation.controller;
 
-import com.kimtaehoonki.task.task.presentation.dto.DeleteTaskResponseDto;
+import com.kimtaehoonki.task.exception.impl.PageParamInvalidException;
+import com.kimtaehoonki.task.task.application.TaskService;
+import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
+import com.kimtaehoonki.task.task.application.dto.TaskPreview;
 import com.kimtaehoonki.task.task.presentation.dto.GetMilestoneInTaskResponseDto;
-import com.kimtaehoonki.task.task.presentation.dto.GetTagsInTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskResponseDto;
 import java.util.List;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,10 +22,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 public class TaskController {
+    public static final int PAGE_SIZE = 10;
+
+    private final TaskService taskService;
     /**
      * 태스크를 등록한다.
      *
@@ -27,8 +38,13 @@ public class TaskController {
      * @return RegisterTaskResponseDto
      */
     @PostMapping("/tasks")
-    public RegisterTaskResponseDto registerTask(@RequestBody RegisterTaskRequestDto requestDto) {
-        return null;
+    public RegisterTaskResponseDto registerTask(@RequestBody RegisterTaskRequestDto requestDto,
+                                                @CookieValue Integer memberId) {
+        RegisterTaskServiceRequestDto serviceRequestDto =
+            new RegisterTaskServiceRequestDto(requestDto, memberId);
+        Long taskId = taskService.registerTask(serviceRequestDto);
+
+        return new RegisterTaskResponseDto(taskId);
     }
 
     /**
@@ -38,8 +54,16 @@ public class TaskController {
      * @return GetTasksResponseDto
      */
     @GetMapping("/tasks")
-    public List<GetTaskResponseDto> getTasks(@RequestParam(required = false) int page) {
-        return null;
+    public List<TaskPreview> getTasks(@RequestParam(required = false) Integer page,
+                                      @RequestParam Long projectId) {
+        if (page == null) {
+            page = 0;
+        }
+        if (page < 0) {
+            throw new PageParamInvalidException();
+        }
+        PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
+        return taskService.showTasks(projectId, pageable);
     }
 
     /**
@@ -50,7 +74,7 @@ public class TaskController {
      */
     @GetMapping("/tasks/{id}")
     public GetTaskResponseDto getTask(@PathVariable("id") Long taskId) {
-        return null;
+        return taskService.showTask(taskId);
     }
 
     /**
@@ -63,7 +87,8 @@ public class TaskController {
     @PutMapping("/tasks/{id}")
     public UpdateTaskResponseDto updateTask(@PathVariable("id") Long taskId,
                                             @RequestBody UpdateTaskRequestDto requestDto) {
-        return null;
+        Long id = taskService.updateTask(taskId, requestDto);
+        return new UpdateTaskResponseDto(id);
     }
 
     /**
@@ -73,29 +98,9 @@ public class TaskController {
      * @return DeleteTaskResponseDto
      */
     @DeleteMapping("/tasks/{id}")
-    public DeleteTaskResponseDto deleteTask(@PathVariable("id") Long taskId) {
-        return null;
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteTask(@PathVariable("id") Long taskId) {
+        taskService.deleteTask(taskId);
     }
 
-    /**
-     * 해당 태스크의 태그들을 조회한다.
-     *
-     * @param taskId @PathVariable
-     * @return GetTagsInTaskResponseDto
-     */
-    @GetMapping("/tasks/{id}/tags")
-    public List<GetTagsInTaskResponseDto> getTagsInTask(@PathVariable("id") Long taskId) {
-        return null;
-    }
-
-    /**
-     * 해당 태스크의 마일스톤(1개)를 조회한다.
-     *
-     * @param taskId @PathVariable
-     * @return GetMilestoneInTaskResponseDto
-     */
-    @GetMapping("/tasks/{id}/milestones")
-    public GetMilestoneInTaskResponseDto getMilestoneInTask(@PathVariable("id") Long taskId) {
-        return null;
-    }
 }

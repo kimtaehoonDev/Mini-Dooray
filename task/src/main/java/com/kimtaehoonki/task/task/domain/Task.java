@@ -11,19 +11,24 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
- * Task 엔티티.
+ * Task 도메인객체.
  */
 @Entity
 @Table(name = "tasks")
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "task_id")
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "project_id")
@@ -33,17 +38,27 @@ public class Task {
     @JoinColumn(name = "milestone_id")
     private Milestone mileStone;
 
-    private int indexInProject;
+    private Integer indexInProject;
 
     private String title;
 
     private String contents;
 
-    private int writerId;
+    private Integer writerId;
 
     private String writerName;
 
-    private String email;
-
     private LocalDateTime createdAt;
+
+    public static Task make(Project project, Milestone mileStone, int indexInProject,
+                            String title, String contents, int writerId,
+                            String writerName) {
+        return new Task(null, project, mileStone, indexInProject, title, contents, writerId,
+                writerName, LocalDateTime.now());
+    }
+
+    public void update(String title, String contents) {
+        this.title = title;
+        this.contents = contents;
+    }
 }

@@ -1,0 +1,30 @@
+#POST /tasks // 태스크를 등록한다
+#GET /tasks?page={page} // 태스크 목록을 확인한다(개수는 서버에서 정하기)
+#GET /tasks/{id} // 특정 태스크 상세정보를 확인한다
+#PUT /tasks/{id} // 태스크를 수정할 수 있다
+#DELETE /tasks/{id} // 특정 태스크를 삭제한다
+
+#GET /tasks/{id}/tags // 해당 태스크의 태그들을 조회한다
+#GET /tasks/{id}/milestones // 해당 태스크의 마일스톤(1개)를 조회한다
+
+### 태스크 등록
+POST localhost:9092/tasks
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "title": "taskTitle1",
+  "content": "taskContent1",
+  "writerId": 1,
+  "writerName": "writerName"
+}
+
+
+### 태스트 목록 조회
+# GET /tasks?page={page}&projectId={id} // 태스크 목록을 확인한다(개수는 서버에서 정하기)
+GET localhost:9092/tasks?page=2&projectId=2
+Content-Type: application/json
+
+
+### 태스크 상세정보 조회
+GET localhost:9092/tasks/2

@@ -19,7 +19,7 @@ import com.kimtaehoonki.task.exception.impl.TaskNotFoundException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.member.MemberResponseDto;
 import com.kimtaehoonki.task.task.domain.Task;
-import com.kimtaehoonki.task.task.domain.TaskRepository;
+import com.kimtaehoonki.task.task.domain.repository.TaskRepository;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -52,7 +52,7 @@ class CommentServiceImplTest {
         MemberResponseDto memberInfo = new MemberResponseDto();
         memberInfo.setName("kim");
 
-        Task task = new Task();
+        Task task = Task.make(null, null, 0, null, null, 0, null);
         Comment comment = makeTestComment(100L, task, 1, "작성자", "내용");
 
         when(accountRt.getMemberInfo(any()))
