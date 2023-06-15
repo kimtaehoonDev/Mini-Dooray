@@ -42,8 +42,6 @@ public class TaskRepositoryImpl implements TaskRepositoryCustom {
                         task.project.id,
                         task.indexInProject,
                         task.title,
-                        task.contents,
-                        task.writerId,
                         task.writerName,
                         task.createdAt,
                         Projections.constructor(TaskPreview.MilestoneInGetTaskResponseDto.class,

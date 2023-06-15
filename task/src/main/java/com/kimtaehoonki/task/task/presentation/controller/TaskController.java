@@ -1,7 +1,9 @@
 package com.kimtaehoonki.task.task.presentation.controller;
 
+import com.kimtaehoonki.task.exception.impl.PageParamInvalidException;
 import com.kimtaehoonki.task.task.application.TaskService;
 import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
+import com.kimtaehoonki.task.task.application.dto.TaskPreview;
 import com.kimtaehoonki.task.task.presentation.dto.GetMilestoneInTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.RegisterTaskRequestDto;
@@ -26,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 public class TaskController {
-    public static int PAGE_SIZE = 10;
+    public static final int PAGE_SIZE = 10;
 
     private final TaskService taskService;
     /**
@@ -52,8 +54,14 @@ public class TaskController {
      * @return GetTasksResponseDto
      */
     @GetMapping("/tasks")
-    public List<GetTaskResponseDto> getTasks(@RequestParam(required = false) Integer page,
-                                             @RequestParam Long projectId) {
+    public List<TaskPreview> getTasks(@RequestParam(required = false) Integer page,
+                                      @RequestParam Long projectId) {
+        if (page == null) {
+            page = 0;
+        }
+        if (page < 0) {
+            throw new PageParamInvalidException();
+        }
         PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
         return taskService.showTasks(projectId, pageable);
     }
@@ -95,25 +103,4 @@ public class TaskController {
         taskService.deleteTask(taskId);
     }
 
-    /**
-     * 해당 태스크의 태그들을 조회한다.
-     *
-     * @param taskId @PathVariable
-     * @return GetTagsInTaskResponseDto
-     */
-    @GetMapping("/tasks/{id}/tags")
-    public void getTagTasks(@PathVariable("id") Long taskId) {
-        //TODO
-    }
-
-    /**
-     * 해당 태스크의 마일스톤(1개)를 조회한다.
-     *
-     * @param taskId @PathVariable
-     * @return GetMilestoneInTaskResponseDto
-     */
-    @GetMapping("/tasks/{id}/milestones")
-    public GetMilestoneInTaskResponseDto getMilestoneInTask(@PathVariable("id") Long taskId) {
-        return null;
-    }
 }

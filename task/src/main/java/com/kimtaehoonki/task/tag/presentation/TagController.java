@@ -26,6 +26,7 @@ public class TagController {
     @ResponseStatus(HttpStatus.CREATED)
     public void registerTag(@RequestBody RegisterTagRequestDto dto,
                             @CookieValue Integer memberId) {
+        // TODO 태그이름 중복이 안되는거로 보여짐
         String name = dto.getName();
         Long projectId = dto.getProjectId();
         tagService.registerTag(name, projectId, memberId);

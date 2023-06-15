@@ -107,6 +107,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void deleteTask(Long taskId) {
+        //TODO 관련된거 다 지우기
         Task findTask
                 = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         taskRepository.delete(findTask);

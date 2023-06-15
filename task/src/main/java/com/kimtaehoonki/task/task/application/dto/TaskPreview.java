@@ -19,27 +19,20 @@ public class TaskPreview {
     private Long projectId;
     private Integer indexInProject;
     private String title;
-    private String contents;
-    private Integer writerId;
     private String writerName;
     private LocalDateTime createdAt;
-
-    // 마일스톤
     private MilestoneInGetTaskResponseDto milestone;
-    // 태그들
     private List<TagsInGetTaskResponseDto> tags;
 
     @QueryProjection
     public TaskPreview(Long taskId, Long projectId, Integer indexInProject, String title,
-                       String contents, Integer writerId, String writerName,
-                       LocalDateTime createdAt, MilestoneInGetTaskResponseDto milestone,
+                       String writerName, LocalDateTime createdAt,
+                       MilestoneInGetTaskResponseDto milestone,
                        List<TagsInGetTaskResponseDto> tags) {
         this.taskId = taskId;
         this.projectId = projectId;
         this.indexInProject = indexInProject;
         this.title = title;
-        this.contents = contents;
-        this.writerId = writerId;
         this.writerName = writerName;
         this.createdAt = createdAt;
         this.milestone = milestone;
