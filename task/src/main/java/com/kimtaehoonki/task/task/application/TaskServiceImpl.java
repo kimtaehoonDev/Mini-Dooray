@@ -12,16 +12,19 @@ import com.kimtaehoonki.task.milestone.domain.MilestoneRepository;
 import com.kimtaehoonki.task.project.domain.entity.Project;
 import com.kimtaehoonki.task.project.domain.repository.MemberInProjectRepository;
 import com.kimtaehoonki.task.project.domain.repository.ProjectRepository;
+import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.tag.domain.TagRepository;
 import com.kimtaehoonki.task.tagtask.TagTask;
 import com.kimtaehoonki.task.tagtask.TagTaskRepository;
 import com.kimtaehoonki.task.task.application.dto.RegisterTaskServiceRequestDto;
+import com.kimtaehoonki.task.task.application.dto.TaskPreview;
 import com.kimtaehoonki.task.task.domain.Task;
 import com.kimtaehoonki.task.task.domain.repository.TaskRepository;
 import com.kimtaehoonki.task.task.presentation.dto.GetTaskResponseDto;
 import com.kimtaehoonki.task.task.presentation.dto.UpdateTaskRequestDto;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -77,20 +80,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<GetTaskResponseDto> showTasks(Long projectId, Pageable pageable) {
-
-//        List<Task> allByProjectId =
-//                taskRepository.findAllByProjectId(projectId, Pageable.ofSize(page));
-//        return allByProjectId.stream().map(GetTaskResponseDto::to)
-//            .collect(Collectors.toList());
-        return null;
+    public List<TaskPreview> showTasks(Long projectId, Pageable pageable) {
+        return taskRepository.getTasksPreview(projectId, pageable);
     }
 
     @Override
     public GetTaskResponseDto showTask(Long taskId) {
-//        Task task = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
-//        return GetTaskResponseDto.to(task);
-        return null;
+        Task task = taskRepository.findById(taskId)
+            .orElseThrow(TaskNotFoundException::new);
+        List<TagTask> tagTasks = tagTaskRepository.findAllByTaskId(taskId);
+        List<Tag> tags =
+            tagTasks.stream().map(TagTask::getTag).collect(Collectors.toList());
+
+        return GetTaskResponseDto.of(task, tags);
     }
 
     @Transactional
