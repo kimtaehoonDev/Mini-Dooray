@@ -10,6 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.kimtaehoonki.task.exception.impl.TagNameDuplicatedException;
 import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
@@ -58,7 +59,7 @@ class TagServiceImplTest {
     @Test
     void 태그를_등록한다() throws NoSuchFieldException, IllegalAccessException {
         Project project = Project.make(1, null, null);
-        Tag tag = Tag.create(project, "dsds", ColorCode.BLUE);
+        Tag tag = Tag.create(project, "hard", ColorCode.BLUE);
 
         Class<Tag> tagClazz = Tag.class;
         Field idField = tagClazz.getDeclaredField("id");
@@ -68,9 +69,10 @@ class TagServiceImplTest {
         doNothing().when(accountRt).validateMemberExists(anyInt());
 
         when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
-        when(tagRepository.save(any())).thenReturn(tag);
         when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
             .thenReturn(true);
+        when(tagRepository.existsByName("hard")).thenReturn(false);
+        when(tagRepository.save(any())).thenReturn(tag);
 
         Long result = tagService.registerTag("hard", 1L, 1);
 
@@ -107,6 +109,32 @@ class TagServiceImplTest {
         verify(tagRepository, never()).save(any());
     }
 
+    @Test
+    void 태그를_등록할때_태그이름이_중복되면_예외를_반환한다() throws NoSuchFieldException, IllegalAccessException {
+        Project project = Project.make(1, null, null);
+        Tag tag = Tag.create(project, "hard", ColorCode.BLUE);
+
+        Class<Tag> tagClazz = Tag.class;
+        Field idField = tagClazz.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(tag, 10L);
+
+        doNothing().when(accountRt).validateMemberExists(anyInt());
+
+        when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
+        when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
+            .thenReturn(true);
+        when(tagRepository.existsByName("hard")).thenReturn(true);
+
+        Assertions.assertThatThrownBy(() ->
+                tagService.registerTag("hard", 1L, 1))
+            .isInstanceOf(TagNameDuplicatedException.class);
+
+        verify(projectRepository, times(1)).findById(any());
+
+        verify(tagRepository, times(1)).existsByName(any());
+        verify(tagRepository, never()).save(any());
+    }
     @Test
     void 태그를_삭제한다() {
         Tag tag = Tag.create(Project.make(1, null, null),

@@ -16,7 +16,8 @@ public enum ErrorCode {
     MILESTONE_NOT_FOUND("존재하지 않는 마일스톤입니다"),
     COMMENT_NOT_FOUND("존재하지_않는_댓글입니다"),
     START_DATE_LATER_THAN_END_DATE("시작일은 종료일보다 빨라야 합니다"),
-    PAGE_PARAM_INVALID("0보다 작은 숫자의 페이지는 입력될 수 없습니다");
+    PAGE_PARAM_INVALID("0보다 작은 숫자의 페이지는 입력될 수 없습니다"),
+    TAG_NAME_DUPLICATED("해당 태그의 이름은 사용중입니다");
 
     private String message;
 
