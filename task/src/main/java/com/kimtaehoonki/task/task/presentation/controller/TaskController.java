@@ -63,7 +63,8 @@ public class TaskController {
             throw new PageParamInvalidException();
         }
         PageRequest pageable = PageRequest.of(page, PAGE_SIZE);
-        return taskService.showTasks(projectId, pageable);
+        List<TaskPreview> taskPreviews = taskService.showTasks(projectId, pageable);
+        return taskPreviews;
     }
 
     /**
