@@ -99,15 +99,71 @@ Cookie: memberId=1;
 Content-Type: application/json
 
 {
-  ""
+  "name": "tag1",
+  "projectId": 1
 }
 
+### 태그 등록 성공2
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
 
+{
+  "name": "tag2",
+  "projectId": 1
+}
 
-### 특정 플젝 모든 태그 조회
-GET localhost:9092/projects/1/
+### 태그 등록 성공3
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "name": "tag3",
+  "projectId": 2
+}
+
+### 태그 등록 실패 - 파라미터 누락(projectId)
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "name": "tasd1"
+}
+
+### 태그 등록 실패 - 동일 프로젝트 내 이름 겹침
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "name": "tag1",
+  "projectId": 1
+}
+
+### 태그 등록 실패 - 존재하지 않는 프로젝트
+POST localhost:9092/tags
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "name": "tag3",
+  "projectId": 12313
+}
+
+### 특정 플젝 모든 태그 조회 성공
+GET localhost:9092/projects/1/tags
+Cookie: memberId=1;
+
+### 특정 태그 삭제
+DELETE localhost:9092/tags/1
+Cookie: memberId=1;
+
+### 태그 삭제 실패 - 존재하지 않는 태그(방금 삭제함)
+DELETE localhost:9092/tags/1
 Cookie: memberId=1;
 
 ### 특정 플젝 모든 마일스톤 조회
-GET localhost:9092/projects/1
+GET localhost:9092/projects/1/milestones
 Cookie: memberId=1;
