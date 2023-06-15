@@ -1,5 +1,7 @@
 package com.kimtaehoonki.task.task.application;
 
+import com.kimtaehoonki.task.comment.domain.CommentRepository;
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
@@ -41,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
     private final TagTaskRepository tagTaskRepository;
     private final AccountRestTemplate accountRt;
     private final MemberInProjectRepository memberInProjectRepository;
+    private final CommentRepository commentRepository;
 
 
     @Transactional
@@ -91,8 +94,8 @@ public class TaskServiceImpl implements TaskService {
         List<TagTask> tagTasks = tagTaskRepository.findAllByTaskId(taskId);
         List<Tag> tags =
             tagTasks.stream().map(TagTask::getTag).collect(Collectors.toList());
-
-        return GetTaskResponseDto.of(task, tags);
+        List<CommentResponseDto> comments = commentRepository.findAllByTask_id(taskId);
+        return GetTaskResponseDto.of(task, tags, comments);
     }
 
     @Transactional
@@ -107,9 +110,10 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void deleteTask(Long taskId) {
-        //TODO 관련된거 다 지우기
         Task findTask
                 = taskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
+        commentRepository.deleteAllByTask_id(taskId);
+        tagTaskRepository.deleteAllByTask_id(taskId);
         taskRepository.delete(findTask);
     }
 }

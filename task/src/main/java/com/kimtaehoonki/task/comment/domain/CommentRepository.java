@@ -6,4 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     List<CommentResponseDto> findAllByTask_id(Long taskId);
+
+    void deleteAllByTask_id(Long taskId);
 }

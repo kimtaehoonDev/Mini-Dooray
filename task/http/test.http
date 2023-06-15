@@ -6,7 +6,6 @@
 # 따라서, Account API 서버에 등록되지 않은 계정을 사용하면 404에러와 함께 "해당되는 멤버를 찾을 수 없습니다" 메세지를 출력합니다.
 
 
-# 프로젝트에 대한 전반적인 테스트입니다
 # 프로젝트에는 member-id 인증을 깜빡했습니다..
 ### 프로젝트 등록 실패 (존재하지 않는 Account 계정)
 POST localhost:9092/projects
@@ -174,7 +173,7 @@ Cookie: memberId=1;
 DELETE localhost:9092/tags/1
 Cookie: memberId=1;
 
-### 마일스톤 등록 성공 (시간관계상 마일스톤은 검증을 만들지 못했습니다)
+### 마일스톤 등록 성공 (시간관계상 마일스톤은 파라미터 검증을 만들지 못했습니다)
 POST localhost:9092/milestones
 Cookie: memberId=1;
 Content-Type: application/json
@@ -201,3 +200,77 @@ Content-Type: application/json
 ### 특정 플젝 모든 마일스톤 조회
 GET localhost:9092/projects/1/milestones
 Cookie: memberId=1;
+
+### 태스크 등록 (시간관계상 파라미터 검증을 만들지 못했습니다)
+POST localhost:9092/tasks
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "title": "제목",
+  "content": "내용"
+}
+
+### 태스크 등록 - 마일스톤, 태그 달기
+POST localhost:9092/tasks
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "projectId": 1,
+  "milestoneId": 1,
+  "title": "제목",
+  "content": "내용",
+  "tagIds": [1,2]
+}
+
+### 댓글 등록 성공
+POST localhost:9092/comments
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "contents": "댓글댓글",
+  "taskId": 1
+}
+
+### 댓글 등록 성공2
+POST localhost:9092/comments
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "contents": "삭제할 댓글",
+  "taskId": 1
+}
+
+### 댓글 삭제
+DELETE localhost:9092/comments/2
+Cookie: memberId=1;
+
+
+### 태스크 조회 성공 - 페이징 적용되어있습니다 ( 몇 개의 데이터를 받아올지는 클라이언트의 권한이 아니라고 생각해 서버에서 넣어주고 있습니다)
+GET localhost:9092/tasks?projectId=1
+
+### 태스크 조회 성공
+GET localhost:9092/tasks?projectId=1&page=0
+
+### 태스크 조회 실패 - 페이지 숫자 오류
+GET localhost:9092/tasks?projectId=1&page=-1
+
+### 특정 태스크 조회 (태스크에 달린 태그, 댓글 함께 출력합니다)
+GET localhost:9092/tasks/1
+
+### 태스크 수정
+PUT localhost:9092/tasks/1
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "title": "변경",
+  "contents": "변경되었습니다"
+}
+
+### 태스크 삭제
+DELETE localhost:9092/tasks/1

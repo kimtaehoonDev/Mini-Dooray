@@ -1,5 +1,6 @@
 package com.kimtaehoonki.task.task.presentation.dto;
 
+import com.kimtaehoonki.task.comment.dto.response.CommentResponseDto;
 import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.tag.domain.Tag;
 import com.kimtaehoonki.task.task.domain.Task;
@@ -24,8 +25,10 @@ public class GetTaskResponseDto {
     private String writerName;
     private LocalDateTime createdAt;
     private List<TagInGetTaskResponseDto> tags;
+    private List<CommentResponseDto> comments;
 
-    public static GetTaskResponseDto of(Task task, List<Tag> tags) {
+    public static GetTaskResponseDto of(Task task, List<Tag> tags,
+                                        List<CommentResponseDto> comments) {
         return new GetTaskResponseDto(
             task.getProject().getId(),
             task.getIndexInProject(),
@@ -36,7 +39,8 @@ public class GetTaskResponseDto {
             task.getCreatedAt(),
             tags.stream()
                 .map(tag -> new TagInGetTaskResponseDto(tag.getName(), tag.getColorCode()))
-                .collect(Collectors.toList())
+                .collect(Collectors.toList()),
+            comments
         );
     }
 
