@@ -12,6 +12,7 @@ import static org.mockito.Mockito.when;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.MilestoneNotFoundException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
+import com.kimtaehoonki.task.exception.impl.ResourceNameDuplicatedException;
 import com.kimtaehoonki.task.exception.impl.StartDateLaterThanEndDateException;
 import com.kimtaehoonki.task.member.AccountRestTemplate;
 import com.kimtaehoonki.task.milestone.domain.Milestone;
@@ -26,6 +27,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -67,6 +69,7 @@ class MilestoneServiceImplTest {
         when(milestoneRepository.save(any())).thenReturn(milestone);
         when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
             .thenReturn(true);
+        when(milestoneRepository.existsByName(any())).thenReturn(false);
 
         Long registeredId = milestoneService.registerMilestone(
             new RegisterMilestoneRequestDto("야야", 1L,
@@ -119,6 +122,33 @@ class MilestoneServiceImplTest {
             .isInstanceOf(ProjectNotFoundException.class);
 
         verify(projectRepository, times(1)).findById(any());
+        verify(milestoneRepository, never()).save(any());
+    }
+
+    @Test
+    void 마일스톤을_등록할때_이름이_중복되면_예외를_반환한다() throws NoSuchFieldException, IllegalAccessException {
+        Project project = Project.make(1, null, null);
+        Milestone milestone = Milestone.create(project, "",
+            LocalDate.of(2023, 9, 1),
+            LocalDate.of(2023, 10, 1));
+
+        Class<Milestone> milestoneClazz = Milestone.class;
+        Field idField = milestoneClazz.getDeclaredField("id");
+        idField.setAccessible(true);
+        idField.set(milestone, 10L);
+
+        when(projectRepository.findById(1L)).thenReturn(Optional.of(project));
+        when(memberInProjectRepository.existsByProject_idAndMemberId(any(), anyInt()))
+            .thenReturn(true);
+        when(milestoneRepository.existsByName(any())).thenReturn(true);
+
+        RegisterMilestoneRequestDto dto = new RegisterMilestoneRequestDto("야야", 1L,
+            LocalDate.of(2023, 9, 1),
+            LocalDate.of(2023, 10, 1));
+
+        Assertions.assertThatThrownBy(
+            () -> milestoneService.registerMilestone(dto, 1))
+            .isInstanceOf(ResourceNameDuplicatedException.class);
         verify(milestoneRepository, never()).save(any());
     }
 

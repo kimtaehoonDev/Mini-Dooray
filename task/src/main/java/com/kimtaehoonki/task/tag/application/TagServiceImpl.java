@@ -1,6 +1,6 @@
 package com.kimtaehoonki.task.tag.application;
 
-import com.kimtaehoonki.task.exception.impl.TagNameDuplicatedException;
+import com.kimtaehoonki.task.exception.impl.ResourceNameDuplicatedException;
 import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
@@ -46,7 +46,7 @@ public class TagServiceImpl implements TagService {
 
         boolean isDuplicatedName = tagRepository.existsByName(name);
         if (isDuplicatedName) {
-            throw new TagNameDuplicatedException();
+            throw new ResourceNameDuplicatedException();
         }
         ColorCode colorCode = ColorGenerator.generate(random);
         Tag tag = Tag.create(project, name, colorCode);

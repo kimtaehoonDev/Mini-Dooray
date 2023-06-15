@@ -10,7 +10,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import com.kimtaehoonki.task.exception.impl.TagNameDuplicatedException;
+import com.kimtaehoonki.task.exception.impl.ResourceNameDuplicatedException;
 import com.kimtaehoonki.task.tag.ColorCode;
 import com.kimtaehoonki.task.exception.impl.AuthorizedException;
 import com.kimtaehoonki.task.exception.impl.ProjectNotFoundException;
@@ -128,7 +128,7 @@ class TagServiceImplTest {
 
         Assertions.assertThatThrownBy(() ->
                 tagService.registerTag("hard", 1L, 1))
-            .isInstanceOf(TagNameDuplicatedException.class);
+            .isInstanceOf(ResourceNameDuplicatedException.class);
 
         verify(projectRepository, times(1)).findById(any());
 
