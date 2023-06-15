@@ -62,12 +62,3 @@ GET localhost:9091/members/qwer123/auth-info
 
 ### 이메일로 회원정보를 가져온다
 GET localhost:9091/members/auth-info?email=qwer@maver.com
-
-### 회원 조회 성공 - 계정이 존재하는 경우
-GET localhost:9091/members/1
-
-### 회원 조회 실패 - 계정이 없는 경우
-GET localhost:9091/members/123123
-
-### 회원 조회 실패 - 정수 이외의 숫자가 들어온 경우
-GET localhost:9091/members/ds
