@@ -29,7 +29,7 @@ public class ControllerAdvice {
         StartDateLaterThanEndDateException.class
     })
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorResponse handleIllegalArgumentException(IllegalArgumentException exception) {
+    public ErrorResponse handleIllegalArgumentException(Exception exception) {
         return new ErrorResponse(exception.getMessage());
     }
 

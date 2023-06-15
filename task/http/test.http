@@ -120,7 +120,7 @@ Content-Type: application/json
 
 {
   "name": "tag3",
-  "projectId": 2
+  "projectId": 1
 }
 
 ### 태그 등록 실패 - 해당 프로젝트 소속이 아닌 Member
@@ -174,7 +174,30 @@ Cookie: memberId=1;
 DELETE localhost:9092/tags/1
 Cookie: memberId=1;
 
+### 마일스톤 등록 성공 (시간관계상 마일스톤은 검증을 만들지 못했습니다)
+POST localhost:9092/milestones
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+  "name":"마일스톤1",
+  "projectId": 1,
+  "startDate": "2021-04-11",
+  "endDate": "2021-05-11"
+}
+
+### 마일스톤 등록 실패 - startDate 가 endDate보다 늦은 경우
+POST localhost:9092/milestones
+Cookie: memberId=1;
+Content-Type: application/json
+
+{
+"name":"마일스톤1",
+"projectId": 1,
+"startDate": "2022-04-11",
+"endDate": "2021-05-11"
+}
+
 ### 특정 플젝 모든 마일스톤 조회
 GET localhost:9092/projects/1/milestones
 Cookie: memberId=1;
-
